@@ -12,7 +12,7 @@ describe('Login for CDD app', async ()=>{
       const USER_ID = '';
       const PASSWORD='';
       const URL='';
-      const SECRET_KEY='y72mq5zqbnrsr5f7';
+      const SECRET_KEY='';
       console.log('value of id'+USER_ID+'pass'+PASSWORD+'url'+URL+'secret'+SECRET_KEY);
       await browser.url(URL);
        await browser.maximizeWindow()
