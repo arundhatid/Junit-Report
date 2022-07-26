@@ -26,6 +26,9 @@ class Layers{
     get $FieldLayer(){
         return $('mat-icon[data-mat-icon-name="field"]')
     }
+    get $BasinLayer(){
+        return $('mat-icon[data-mat-icon-name="basin"]')
+    }
 
 }
 module.exports=new Layers()

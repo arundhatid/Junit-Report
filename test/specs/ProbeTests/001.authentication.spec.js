@@ -24,7 +24,7 @@ describe('Login for CDD app', async ()=>{
       //expectchai(await map.$infoIcon.isDisplayed()).to.be.true  
       //expectchai(await map.$closeIcon.isDisplayed()).to.be.true  
       //await  map.$closeIcon.click(); 
-      //expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true
+      expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true
 
     })
    
