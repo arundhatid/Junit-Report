@@ -9,7 +9,7 @@ class Collections{
         return $('[data-mat-icon-name="drag"]')
     }
     get $newCollection(){
-        return $('[data-slb-id="show-all-filters-button"]')
+        return $("//span[contains(text(),'New Collection')]")
     }
     get $activeCollections(){
         return $('data-slb-id="clear-all-filters-button"')

@@ -24,6 +24,10 @@ return $('button[data-slb-id="login"]');
     get $YesBox(){
         return $('[value="Yes"]');
     }
+    get $CloseBox(){
+        return $('delfi-gui-data-partition section [data-mat-icon-name="close"] svg')
+
+    }
  
 
 }
