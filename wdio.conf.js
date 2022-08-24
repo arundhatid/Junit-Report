@@ -63,6 +63,36 @@ exports.config = {
         maxInstances: 5,
         //
         browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: [
+              '--lang=en-US',
+              '--no-sandbox',
+              '--incognito',
+           //   '--headless',
+              "--autoplay-policy=no-user-gesture-required", // https://developer.chrome.com/blog/autoplay/
+              //'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
+              '--log-level=3', // Disable unusual logging in windows run
+              '--disable-gpu',
+              '--start-maximized',
+              '--disable-popup-blocking',
+              '--profile-directory=Default',
+              '--disable-infobars',
+              '--ignore-certificate-errors',
+              '--disable-plugins-discovery',
+              '--disable-dev-shm-usage',
+              '--no-first-run',
+              '--no-service-autorun',
+              '--no-default-browser-check',
+              '--disable-blink-features=AutomationControlled',
+              '--disable-infobars',
+              '--disable-browser-side-navigation',
+              '--disable-translate',
+              '--disable-extensions',
+              '--allow-insecure-localhost',
+            //  '--window-size=1920,1080', // This is browser size
+              '--disable-features=VizDisplayCompositor'
+            
+            ] },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -103,7 +133,7 @@ exports.config = {
     baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 40000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -147,7 +177,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 1200000
     },
     //
     // =====

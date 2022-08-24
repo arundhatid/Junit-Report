@@ -11,113 +11,85 @@ var multiResultsflag=false;
 var singleResultflag=false;
 describe("Create a collection:", async () => {
 
-  it("Zoom out to world view ", async () => {
-    await map.$zoomToWorldView.waitForDisplayed({ timeout: 20000 });
-    await map.$zoomToWorldView.click();
-    await browser.pause(1000);
-  });
+  it('View all search results and click on the first result',async ()=>{
 
-  it("Unhide the layers", async () => {
-    //layeys panel icon
-   await layers.$showLayers.waitForDisplayed({ timeout: 25000 });
-   await  layers.$showLayers.click();
-    await browser.pause(10000);
-    //if in hide mode unhide it
-    if (await layers.$globalUnHideLayersBtn.isDisplayed()) {
-        await layers.$globalUnHideLayersBtn.click();
-    }
-
-    //close left panel
-   await layers.$closeLayersBtn.waitForClickable();
-   await layers.$closeLayersBtn.click();
-   await browser.pause(1000);
-  });
-
-  // it("Rectangular selection",async () => {
-  //   const mapWebelement =await  map.$map
-  //   const mapWidth = await mapWebelement.getSize("width");
-  //   const mapHeight =await mapWebelement.getSize("height");
-  //   console.log("mapheight" + mapHeight);
-  //   console.log("mapwidth" + mapWidth);
-  //   //click on rect selection
-  //   await map.$rectSelect.waitForClickable();
-  //   await map.$rectSelect.click();
-  //   await browser.pause(1000);
-
-  //   await mapWebelement.dragAndDrop({ x: 400, y: 200})
-  // await  browser.pause(10000);
-  // await searchPanel.$searchIcon.getValue()
-  // }); 
-
-  // it("Select data for the collection", async () => {
-  // await browser.pause(10000)
-  
-  //   //either there are no results or we have multiple results
-  //   if (await searchPanel.$searchResults.isDisplayed()) {
-  //     if (
-  //       await searchPanel.$searchResults
-  //         .$('[class="gis-no-matching-results"] .title')
-  //         .isDisplayed()
-  //     ) {
-  //      expectchai(
-  //         await searchPanel.$searchResults
-  //           .$('[class="gis-no-matching-results"] .title')
-  //           .getValue()
-  //       ).to.have.string(" No matching results ");
-  //     }
-  //     else{
-
-  //      multiResultsflag=true;
-  //      console.log('Number of selected datasets ='+await searchPanel.$searchResults.getText())
-  //      await searchPanel.$searchBox.getValue($searchResults);
-  //      await searchPanel.$searchResults.isClickable();
-  //      await searchPanel.$searchResults.click();
-  //     }
-  //   }//else we have a single card result
-  //   else{
-
-  //    singleResultflag=true;
-  //    console.log('bye'+singleResultflag)
-  //   }
-
-  //   await  browser.pause(10000);
+    await (await searchPanel.$searchBox).waitForDisplayed({timeout:100000})
+    await (await searchPanel.$searchIcon).waitForClickable()
+    await (await searchPanel.$searchIcon).click()
+    await browser.pause(10000)
+    await (await searchPanel.$firstSearchResults).waitForDisplayed({timeout:80000})
     
+
     
-  //   //await map.$collectionTray.isClickable();
-  //   //await map.$collectionTray.click();
-  //   await layers.$WellLayer.isClickable();
-  //   await layers.$WellLayer.click();
-  //   await searchPanel.$checkbox.click();
+
+  })
 
 
-  //   //await browser.pause(10000);
-  //  await browser.pause(10000)
-  // });
 
   it('Data Selection',async ()=>{
-    await layers.$showLayers.waitForDisplayed({ timeout: 25000 });
-    await  layers.$showLayers.click();
+ 
+    await (await searchPanel.$firstSearchResults).waitForDisplayed({timeout:80000})
+    await (await searchPanel.$firstSearchResults).waitForClickable()
+    await (await searchPanel.$firstSearchResults).click()
      await browser.pause(10000);
      //click on layer
-     await  layers.$BasinLayer.click();
+    
+    await (await $('//gis-search-result-header[1]//section[1]//div[1]//div[1]//img[1]')).waitForDisplayed()
+     await (await $('//gis-search-result-header[1]//section[1]//div[1]//div[1]//img[1]')).click()
+    // await (await $('(//gis-search-result-header[1]//section[1]//mat-checkbox[1]//span[1]//input)[1]')).click()
      await  Collections.$Actions.click();    
      await  Collections.$Add.click(); 
      await  Collections.$newCollection.click();
   
  
      //close left panel
-    await layers.$closeLayersBtn.waitForClickable();
-    await layers.$closeLayersBtn.click();
-    await browser.pause(1000);
+    // await layers.$closeLayersBtn.waitForClickable();
+    // await layers.$closeLayersBtn.click();
+    // await browser.pause(1000);
 
   })
 
   it('Create Collection',async ()=>{
+
+    //enter collection name
+    await (await $('(//form//input)[1]')).waitForDisplayed()
+    await (await $('(//form//input)[1]')).setValue('Probe Testing')
+     //enter description 
+     await (await $('(//form//input)[2]')).waitForDisplayed()
+     await (await $('(//form//input)[2]')).setValue('Probe Testing Descriptions')
+     //make it active collection
+      //enter description 
+      await (await $("(//span[@class='mat-checkbox-inner-container']//input)[3]")).click()
+      await (await $("//span[normalize-space()='Save']")).click()
+
+
+
+
   })
 
   it('Validate Collection',async ()=>{
-    await map.$collectionTray.isClickable();
-    await map.$collectionTray.click();
+    await browser.pause(10000)
+    await (await map.$collectionTray).waitForClickable();
+    await (await map.$collectionTray).click();
+    //validating if collection card is present of not
+    const activeProbeCard=await $('div.active-cards pioneer-collection-item')
+    const cardTitle= await (await activeProbeCard.$('div.collection-container__title h6')).getText()
+    expectchai(cardTitle).to.have.string('Probe Testing')
+
+  })
+
+  it('Delete the collection',async ()=>{
+    const activeProbeCard=await $('div.active-cards pioneer-collection-item')
+     await (await activeProbeCard.$('mat-icon[svgicon="more"]')).click()
+   await (await $("//button[normalize-space()='Delete']")).waitForDisplayed()
+   await (await $("//button[normalize-space()='Delete']")).click()
+   //validate the delete container
+   await (await $('mat-dialog-container')).waitForDisplayed()
+   await (await $("//span[normalize-space()='Confirm']")).click()
+   await browser.pause(10000)
+
+   expectchai(await (await $('div.active-cards pioneer-collection-item')).isDisplayed()).to.be.not.true
+
   })
 });
 

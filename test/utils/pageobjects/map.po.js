@@ -1,4 +1,4 @@
-const { default: $ } = require("webdriverio/build/commands/browser/$");
+//const { default: $ } = require("webdriverio/build/commands/browser/$");
 
 class Map{
 
@@ -27,7 +27,8 @@ class Map{
         return  $('mat-icon[data-mat-icon-name="rectangle-selection"]');
     }
     get $collectionTray(){
-        return $('button[data-slb-id="collection-tray-pin"]')
+        //return $('button[data-slb-id="collection-tray-pin"]')
+        return $("//button[normalize-space()='Collections']")
     }
     
 }
