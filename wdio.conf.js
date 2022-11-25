@@ -23,7 +23,8 @@ exports.config = {
 
     baseUrl:process.env,
     suites: {
-        PROBE:[['./test/specs/ProbeTests/*.spec.js']]
+        PROBE:[['./test/specs/ProbeTests/*.spec.js']], 
+        E2E: [['./test/specs/E2ETests/*.spec.js']]
     },
 
     specs: [

@@ -7,7 +7,7 @@ const delfi= require('../../utils/methods/Login')
 const SearchPanel=require('../../utils/pageobjects/searchPanel.po')
 const map=require('../../utils/pageobjects/map.po')
 
-describe('Login for CDD app', async ()=>{
+describe('Login for CDD app xyz', async ()=>{
     it('User should be able to login successfully',async ()=>{
       const USER_ID = 'DELFI-6976-SM-001@slb.com';
       const PASSWORD='4BFZcKeA8SnW@21!#1#%%%';
