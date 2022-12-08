@@ -11,7 +11,6 @@ describe('Login for CDD app ', async ()=>{
     it('User should be able to login successfully',async ()=>{
       const USER_ID = 'DELFI-6976-SM-002@slb.com';
       const PASSWORD='4BFZcKeA8SnW@21!#1#%%%';
-
       const URL='https://evq.discovery.cloud.slb-ds.com/';
       const SECRET_KEY='6gqld7mbpmhjpzgv';
       console.log('value of id'+USER_ID+'pass'+PASSWORD+'url'+URL+'secret'+SECRET_KEY);
