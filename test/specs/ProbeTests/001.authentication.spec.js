@@ -9,7 +9,7 @@ const map=require('../../utils/pageobjects/map.po')
 
 describe('Login for CDD app xyz', async ()=>{
     it('User should be able to login successfully',async ()=>{
-      const USER_ID = 'DELFI-6976-SM-001@slb.com';
+      const USER_ID = 'DELFI-6976-SM-002@slb.com';
       const PASSWORD='4BFZcKeA8SnW@21!#1#%%%';
       const URL='https://evq.discovery.cloud.slb-ds.com/';
       const SECRET_KEY='y72mq5zqbnrsr5f7';
