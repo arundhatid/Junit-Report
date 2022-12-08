@@ -18,5 +18,8 @@ class SearchPanel{
     get $firstSearchResults(){
         return $('(//div[@class="search-item-row"]/div)[1]')
     }
+    get $crossResult(){
+        return $("//mat-icon[@svgicon='close']")
+    }
 }
 module.exports=new SearchPanel();

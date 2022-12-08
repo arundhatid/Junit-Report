@@ -29,6 +29,16 @@ class Layers{
     get $BasinLayer(){
         return $('mat-icon[data-mat-icon-name="basin"]')
     }
+    get $WellLayerHideBtn(){
+        return $("(//mat-icon[@role='img'])[11]")
+    }
+    get $WellLayerDropdown(){
+        return $("div[class='layer-item-buttons'] div[class='toggle-filters-and-loading'] mat-icon[role='img']")
+    }
+    get $WellFilterSearch(){
+        return $("(//div[contains(@class,'mat-form-field-wrapper')])[1]")
+    }
+   
 
 }
 module.exports=new Layers()

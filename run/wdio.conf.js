@@ -20,14 +20,6 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-
-    baseUrl:process.env,
-    suites: {
-        PROBE:[['./test/specs/ProbeTests/003.createCollection2.spec.js']], 
-        E2E: [['./test/specs/E2ETests/005.deleteCollection.spec.js']],
-        REGRESSION:[['./test/specs/RegressionTests/007.collection.spec.js']]
-    },
-
     specs: [
         './test/specs/**/*.js'
     ],
@@ -65,36 +57,6 @@ exports.config = {
         maxInstances: 5,
         //
         browserName: 'chrome',
-        'goog:chromeOptions': {
-            args: [
-              '--lang=en-US',
-              '--no-sandbox',
-              '--incognito',
-           //   '--headless',
-              "--autoplay-policy=no-user-gesture-required", // https://developer.chrome.com/blog/autoplay/
-              //'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
-              '--log-level=3', // Disable unusual logging in windows run
-              '--disable-gpu',
-              '--start-maximized',
-              '--disable-popup-blocking',
-              '--profile-directory=Default',
-              '--disable-infobars',
-              '--ignore-certificate-errors',
-              '--disable-plugins-discovery',
-              '--disable-dev-shm-usage',
-              '--no-first-run',
-              '--no-service-autorun',
-              '--no-default-browser-check',
-              '--disable-blink-features=AutomationControlled',
-              '--disable-infobars',
-              '--disable-browser-side-navigation',
-              '--disable-translate',
-              '--disable-extensions',
-              '--allow-insecure-localhost',
-            //  '--window-size=1920,1080', // This is browser size
-              '--disable-features=VizDisplayCompositor'
-            
-            ] },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -135,7 +97,7 @@ exports.config = {
     baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 40000,
+    waitforTimeout: 10000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -148,15 +110,8 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: [[['chromedriver', 
-    {
-        logFileName: 'wdio-chromedriver.log', // default
-        outputDir: 'driver-logs', // overwrites the config.outputDir
-        args: ['--silent'],
-        chromedriverCustomPath:'C:\\Users\\priya.Ingole\\Downloads\\chromedriver_win32'
-    }]]], 
+    services: ['chromedriver'],
     
-
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -186,7 +141,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 1200000
+        timeout: 60000
     },
     //
     // =====
@@ -335,5 +290,4 @@ exports.config = {
     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
-    
 }

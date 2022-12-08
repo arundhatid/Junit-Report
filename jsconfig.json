@@ -7,6 +7,7 @@
             "@wdio/mocha-framework"
         ]
     },
+    
     "include": [
         "test/specs/**/*.js",
       //  "test/specs/**/*.js",
@@ -19,4 +20,3 @@
 
   ]
   }
-  

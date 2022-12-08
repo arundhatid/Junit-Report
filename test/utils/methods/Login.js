@@ -17,7 +17,8 @@ await browser.pause(5000)
       await login.$SignInBox.click()
       await  login.$YesBox.waitForDisplayed()
      await   login.$YesBox.click()
-     await   browser.pause(20000)   
+     await   browser.pause(20000)  
+     
     }
 }
 module.exports=new DelfiLogin()
