@@ -25,7 +25,7 @@ exports.config = {
     suites: {
         PROBE:[['./test/specs/ProbeTests/003.createCollection2.spec.js']], 
         E2E: [['./test/specs/E2ETests/005.deleteCollection.spec.js']],
-        REGRESSION:[['./test/specs/RegressionTests/007.collection.spec.js']]
+        REGRESSION:[['./test/specs/RegressionTests/008.GIS.spec.js']]
     },
 
     specs: [

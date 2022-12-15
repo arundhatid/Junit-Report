@@ -103,7 +103,7 @@ before(async () => {
     await browser.pause(10000);
     await (await searchPanel.$firstSearchResults).click()
     await (await $('//gis-search-result-header[1]//section[1]//div[1]//div[1]//img[1]')).waitForDisplayed()
-    await (await $('//gis-search-result-header[1]//section[1]//div[1]//div[1]//img[1]')).click()
+    await (await $('//gis-search-result-header[1]//section[1]//div[1]//div[1]//img[1]')).click();
     await browser.pause(10000);
     await  Collections.$Actions.click();     
      await  Collections.$Add.click();
@@ -180,7 +180,26 @@ before(async () => {
   it('Enable focus mode & remove one layer from active collection ',async ()=>{
     await (await $("//mat-icon[@data-mat-icon-name='target-icon']")).click()
     await browser.pause(10000);
+    await (await searchPanel.$searchBox).click()
+    await (await searchPanel.$searchIcon).click()
     await (await searchPanel.$firstSearchResults).waitForDisplayed({timeout:80000})
+    await (await $("(//div[@class='search-item-row']/div)[2]")).waitForDisplayed()
+    await (await $("(//div[@class='search-item-row']/div)[3]")).waitForDisplayed()
+    await (await $("(//div[@class='search-item-row']/div)[4]")).waitForDisplayed()
+    expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true
+    expectchai(await $("(//div[@class='search-item-row']/div)[2]").isDisplayed()).to.be.true
+    expectchai(await $("(//div[@class='search-item-row']/div)[3]").isDisplayed()).to.be.true
+    expectchai(await $("(//div[@class='search-item-row']/div)[4]").isDisplayed()).to.be.true
+    const elem1 = await $("(//div[@class='search-item-row']/div)[1]/div")
+    expect(elem1).toHaveTextContaining([' Prospects (1) '],'focus mode is not working')
+    const elem2 = await $("(//div[@class='search-item-row']/div)[2]/div")
+    expect(elem2).toHaveTextContaining([' Seismic 2D Line (1) '],'focus mode is not working')
+    const elem3 = await $("(//div[@class='search-item-row']/div)[3]/div")
+    expect(elem3).toHaveTextContaining([' Seismic 3D Survey (1) '],'focus mode is not working')
+    const elem4 = await $("(//div[@class='search-item-row']/div)[4]/div")
+    expect(elem4).toHaveTextContaining([' Well Log (38) '],'focus mode is not working')
+
+    await browser.pause(10000);
     await (await searchPanel.$firstSearchResults).waitForClickable()
     await browser.pause(10000);
     await (await searchPanel.$firstSearchResults).click()

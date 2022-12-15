@@ -21,7 +21,7 @@ class Map{
         return $('svg[id="Layer_1"]');
     }
     get $map(){
-        return $('#MLSvg1002');
+        return $('#MLSvg1003');
     }
     get $rectSelect(){
         return  $('mat-icon[data-mat-icon-name="rectangle-selection"]');
@@ -30,6 +30,35 @@ class Map{
         //return $('button[data-slb-id="collection-tray-pin"]')
         return $("//button[normalize-space()='Collections']")
     }
-    
+    get $zoomplus(){
+        //return $('button[data-slb-id="collection-tray-pin"]')
+        return $("//mat-icon[@svgicon='plus']")
+    }
+    get $zoomMinus(){
+        //return $('button[data-slb-id="collection-tray-pin"]')
+        return $("//mat-icon[@svgicon='minus']")
+    }
+    get $RubberbandZoom(){
+        //return $('button[data-slb-id="collection-tray-pin"]')
+        return $("//mat-icon[@id='rubberband-selection']")
+    }
+    get $PolygonSelection(){
+        return $("//mat-icon[@id='polygon-selection']")
+    }
+    get $LassoSelection(){
+        return $("//mat-icon[@id='lasso-selection']")
+    }
+    get $LineAndCorridor(){
+        return $("//mat-icon[@mattooltip='Line & Corridor']")
+    }
+    get $SliderBar(){
+        return $("//div[@class='dls-slider-wrapper']")
+    }
+    get $SliderRang(){
+        return $("//span[@class='dls-slider-range-view ng-star-inserted']")
+    }
+    get $BasemapSelection(){
+        return $("//mat-icon[@id='basemap-selection']")
+    }
 }
 module.exports=new Map();

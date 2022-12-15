@@ -30,13 +30,16 @@ class Layers{
         return $('mat-icon[data-mat-icon-name="basin"]')
     }
     get $WellLayerHideBtn(){
-        return $("(//mat-icon[@role='img'])[11]")
+        return $("(//mat-icon[@role='img'])[19]")
     }
     get $WellLayerDropdown(){
         return $("div[class='layer-item-buttons'] div[class='toggle-filters-and-loading'] mat-icon[role='img']")
     }
     get $WellFilterSearch(){
         return $("(//div[contains(@class,'mat-form-field-wrapper')])[1]")
+    }
+    get $MoveCheckbox(){
+        return $("(//span[@class='mat-checkbox-inner-container'])[2]")
     }
    
 
