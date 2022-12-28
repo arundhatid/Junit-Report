@@ -183,6 +183,7 @@ it('Verify GIS tools - Polygon Selection',async ()=>{
 it('Verify GIS tools - Lasso Selection',async ()=>{
   //await (await searchPanel.$crossResult).click()
   const mapWebelement =await  map.$map
+  var screen = await $('#MLSvg1003');
   await map.$zoomToWorldView.waitForDisplayed({ timeout: 20000 });
   await map.$zoomToWorldView.click();
   await (await map.$zoomplus).waitForClickable()
@@ -191,7 +192,17 @@ it('Verify GIS tools - Lasso Selection',async ()=>{
   await map.$LassoSelection.click();
   const LassoSelection = await map.$LassoSelection
   expect(LassoSelection).toBeClickable()
+  //mapWebelement.moveTo({ x: 100, y: 100})
+  //browser.buttonDown()
+  //mapWebelement.moveTo({ x: 50, y: 50});
+  //browser.buttonUp(0);
+
   await mapWebelement.dragAndDrop({ x: 200, y: 200, x: -100})
+  browser.touchAction({
+   action: 'moveTo', x: 100, y:200, selector: map.$screen
+})
+  
+ // await mapWebelement.moveTo({ x: 100, y: 100})  
   //await mapWebelement.click();
   await (await searchPanel.$firstSearchResults).waitForDisplayed({timeout:80000})
   await  browser.pause(40000);
@@ -235,9 +246,7 @@ it(' Line and Corridor tool',async ()=>{
   await (await $("//div[@class='grey']//canvas")).waitForDisplayed();
   await  browser.pause(10000);
   await (await $("(//mat-icon[@svgicon='close'])[2]")).click()
-  await (await $("//pioneer-resizable-container[@class='ng-star-inserted']")).waitForClickable();
-  await (await $("//pioneer-resizable-container[@class='ng-star-inserted']")).click();
-  await (await $("(//mat-icon[contains(@class,'mat-icon notranslate mat-tooltip-trigger side')])")).waitForClickable();
+   await (await $("(//mat-icon[contains(@class,'mat-icon notranslate mat-tooltip-trigger side')])")).waitForClickable();
   await (await $("(//mat-icon[contains(@class,'mat-icon notranslate mat-tooltip-trigger side')])")).click()
   //await  browser.pause(20000);
   await (await $("//pioneer-resizable-container[@class='ng-star-inserted']")).waitForClickable();
@@ -246,13 +255,15 @@ it(' Line and Corridor tool',async ()=>{
   expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true
   const elem1 = await $("(//div[@class='search-item-row']/div)[1]/div")
   expect(elem1).toHaveTextContaining([' Well Log (5) '],'line & corridor selection result is wronge')
+  await  browser.pause(20000);
+  await (await $("//pioneer-resizable-container[@class='ng-star-inserted']//mat-icon[2]")).waitForClickable();
+  await (await $("//pioneer-resizable-container[@class='ng-star-inserted']//mat-icon[2]")).click();
   await  browser.pause(40000);
  
 
 })
 
 it('Verify Update Results when map moves checkbox',async ()=>{
-  await (await searchPanel.$crossResult).click()
   await (await searchPanel.$searchBox).waitForDisplayed({timeout:100000})
   await (await layers.$showLayers).waitForClickable();
   await (await layers.$showLayers).click();
@@ -265,13 +276,14 @@ it('Verify Update Results when map moves checkbox',async ()=>{
   await (await searchPanel.$searchBox).click()
   await (await searchPanel.$searchIcon).click()
   const mapWebelement =await  map.$map
+  await  browser.pause(20000);
   await layers.$MoveCheckbox.waitForClickable();
   await (await layers.$MoveCheckbox).click()
   await (await map.$zoomplus).waitForClickable()
   await (await map.$zoomplus).click();
   await mapWebelement.dragAndDrop({ x: 200, y: 100})
   await mapWebelement.click();
-  await  browser.pause(40000);
+  await  browser.pause(20000);
   await (await searchPanel.$firstSearchResults).waitForDisplayed({timeout:80000})
   await (await $("(//div[@class='search-item-row']/div)[2]")).waitForDisplayed()
     await (await $("(//div[@class='search-item-row']/div)[3]")).waitForDisplayed()
@@ -293,9 +305,8 @@ it('Verify Update Results when map moves checkbox',async ()=>{
     expect(elem4).toHaveTextContaining([' Seismic 3D Survey (16) '],'Update Results when map moves result is wronge')
     const elem5 = await $("(//div[@class='search-item-row']/div)[5]/div")
     expect(elem5).toHaveTextContaining([' Well Log (1203) '],'Update Results when map moves result is wronge')
-  await  browser.pause(40000);
-  await (await searchPanel.$crossResult).click()
-  await  browser.pause(10000);
+    await  browser.pause(20000);
+  
 })
 
 it('BasemapClickOnBasemap',async ()=>{
@@ -305,14 +316,14 @@ it('BasemapClickOnBasemap',async ()=>{
   await map.$zoomToWorldView.click();
   await browser.pause(10000);
   await map.$BasemapSelection.waitForClickable({timeout:80000})
-  await  browser.pause(20000);
+  await  browser.pause(10000);
   await map.$BasemapSelection.click();
   await (await $("//span[normalize-space()='Roadmap']")).waitForDisplayed()
   await (await $("//span[normalize-space()='Hybrid']")).waitForDisplayed()
   await (await $("//span[normalize-space()='Satellite']")).waitForDisplayed()
   await (await $("//span[normalize-space()='Terrain']")).waitForDisplayed()
   await (await $("//span[normalize-space()='Terrain']")).click();
-  await  browser.pause(40000);
+  await  browser.pause(20000);
   
 })
 });
