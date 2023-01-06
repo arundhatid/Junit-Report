@@ -1,11 +1,9 @@
 const totp = require("totp-generator");
-const path = require('path');
 var expectchai = require('chai').expect;
-const exp = require("constants");
 const login= require('../../utils/pageobjects/login.po.js')
 const delfi= require('../../utils/methods/Login')
 const SearchPanel=require('../../utils/pageobjects/searchPanel.po')
-const map=require('../../utils/pageobjects/map.po')
+
 
 describe('Login for CDD app ', async ()=>{
     it('User should be able to login successfully',async ()=>{
@@ -22,20 +20,12 @@ describe('Login for CDD app ', async ()=>{
         await (await login.$CloseBox).waitForDisplayed({timeout:100000})
         await (await login.$CloseBox).click()
        } catch (e) {
-        
+        console.log('closed box is not appear for this test User account');
        }
        
-       try{
-        await (await SearchPanel.$searchBox).waitForDisplayed({timeout:100000})
-       }
-       catch(e){
-
-       }
-       
-    
+      await (await SearchPanel.$searchBox).waitForDisplayed({timeout:10000})
       expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true
       
-
     })
    
 })
