@@ -23,9 +23,12 @@ exports.config = {
 
     baseUrl:process.env,
     suites: {
-        PROBE:[['./test/specs/ProbeTests/003.createCollection2.spec.js']], 
+        PROBE:[['./test/specs/ProbeTests/*.spec.js']], 
         E2E: [['./test/specs/E2ETests/005.deleteCollection.spec.js']],
-        REGRESSION:[['./test/specs/RegressionTests/008.GIS.spec.js']]
+        REGRESSION://[['./test/specs/RegressionTests/008.GIS.spec.js',]]
+                   [[ './test/specs/RegressionTests/007.collection.spec.js']]
+                    
+    
     },
 
     specs: [
@@ -108,7 +111,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'silent',
     //
     // Set specific log levels per logger
     // loggers:
@@ -118,11 +121,11 @@ exports.config = {
     // - @wdio/local-runner
     // - @wdio/sumologic-reporter
     // - @wdio/cli, @wdio/config, @wdio/utils
-    // Level of logging verbosity: trace | debug | info | warn | error | silent
-    // logLevels: {
-    //     webdriver: 'info',
-    //     '@wdio/appium-service': 'info'
-    // },
+    //Level of logging verbosity: trace | debug | info | warn | error | silent
+     logLevels: {
+       webdriver: 'info',
+         '@wdio/appium-service': 'info'
+    },
     //
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).

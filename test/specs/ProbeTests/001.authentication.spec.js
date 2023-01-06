@@ -9,18 +9,22 @@ const map=require('../../utils/pageobjects/map.po')
 
 describe('Login for CDD app ', async ()=>{
     it('User should be able to login successfully',async ()=>{
-      const USER_ID = 'DELFI-6976-SM-002@slb.com';
-      const PASSWORD='4BFZcKeA8SnW@21!#1#%%%';
-      const URL='https://evq.discovery.cloud.slb-ds.com/';
-      const SECRET_KEY='6gqld7mbpmhjpzgv';
+      const USER_ID = 'DELFI-6976-SM-009@slb.com';
+      const PASSWORD='Second^12345';
+      const URL='https://data.discovery.delfi.slb.com/';
+      const SECRET_KEY='fssknsltfkc2sxhy';
       console.log('value of id'+USER_ID+'pass'+PASSWORD+'url'+URL+'secret'+SECRET_KEY);
       await browser.url(URL);
-    
-      // await browser.maximizeWindow()
+
        await delfi.delfiLogin(USER_ID,PASSWORD,SECRET_KEY);
        console.log('title'+await browser.getTitle())
-       await (await login.$CloseBox).waitForDisplayed({timeout:100000})
-       await (await login.$CloseBox).click()
+       try {
+        await (await login.$CloseBox).waitForDisplayed({timeout:100000})
+        await (await login.$CloseBox).click()
+       } catch (e) {
+        
+       }
+       
        try{
         await (await SearchPanel.$searchBox).waitForDisplayed({timeout:100000})
        }
@@ -28,15 +32,7 @@ describe('Login for CDD app ', async ()=>{
 
        }
        
-      
-       await browser.pause(40000)
-       await browser.debug()
-       //Closes green information box  
-      //expectchai(await map.$infoBox.isDisplayed()).to.be.true 
-      //expectchai(await map.$infoIcon.isDisplayed()).to.be.true  
-      //expectchai(await map.$closeIcon.isDisplayed()).to.be.true  
-      //await  map.$closeIcon.click(); 
-     
+    
       expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true
       
 

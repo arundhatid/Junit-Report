@@ -30,7 +30,7 @@ class Layers{
         return $('mat-icon[data-mat-icon-name="basin"]')
     }
     get $WellLayerHideBtn(){
-        return $("(//mat-icon[@role='img'])[19]")
+        return $("(//mat-icon[@role='img'])[11]")
     }
     get $WellLayerDropdown(){
         return $("div[class='layer-item-buttons'] div[class='toggle-filters-and-loading'] mat-icon[role='img']")
@@ -41,7 +41,34 @@ class Layers{
     get $MoveCheckbox(){
         return $("(//span[@class='mat-checkbox-inner-container'])[2]")
     }
+    get $Seismic2dHideBtn(){
+        return $("(//button[@data-slb-id='toggle-layer'])[15]")
+    }
+    get $Seismic2dDropdown(){
+        return $("(//button[@data-slb-id='toggle-filters'])[15]")
+    }
+    get $SeismicFilterSearch(){
+        return $("//span[contains(text(),'New Zealand Petroleum')]")
+    }
+    get $Seismic3dHideBtn(){
+        return $("(//button[@class='mat-tooltip-trigger toggle-layer-visibility not-visible'])[14]")
+    }
+    get $Seismic3dDropdown(){
+        return $("(//button[@data-slb-id='toggle-filters'])[14]")
+    }
+
+    get $ProspectHideBtn(){
+        return $("(//button[@class='mat-tooltip-trigger toggle-layer-visibility not-visible'])[12]")
+    }
+    get $ProspectDropdown(){
+        return $("(//button[@data-slb-id='toggle-filters'])[12]")
+    }
+    get $ProspectFilterSearch(){
+        return $("//mat-chip[contains(text(),'IHS')]")
+    }
+    
    
 
 }
-module.exports=new Layers()
+
+module.exports= new Layers()
