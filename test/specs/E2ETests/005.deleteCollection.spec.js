@@ -45,7 +45,8 @@ describe("search panel", async () => {
     browser.pause(500);
 
     await mapWebelement.dragAndDrop({ x: 400, y: 200})
-  await  browser.pause(10000);
+    await mapWebelement.moveTo({x: 100, y: 100})
+   await  browser.pause(10000);
   });
 
   it("Create a collection", async () => {

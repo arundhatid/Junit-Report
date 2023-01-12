@@ -1,22 +1,17 @@
 {
-    "compilerOptions": {
-        "resolveJsonModule": true,
-        "types": [
-            "node",
-            "webdriverio/async",
-            "@wdio/mocha-framework"
-        ]
-    },
-    "include": [
-        "test/specs/**/*.js",
-      //  "test/specs/**/*.js",
-        "test/utils/methods/**/*.js",
-        "**/*.json",
-        // "test/specs/01.Consumer/MapFiltering/*.js",
-        // "test/specs/02.Vendor/*.js",
-        //"node_modules/@wdio/sync",
-        "node_modules/@wdio/mocha-framework"
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "types": ["node", "webdriverio/async", "@wdio/mocha-framework"]
+  },
 
+  "include": [
+    "test/specs/**/*.js",
+    //  "test/specs/**/*.js",
+    "test/utils/methods/**/*.js",
+    "**/*.json",
+    // "test/specs/01.Consumer/MapFiltering/*.js",
+    // "test/specs/02.Vendor/*.js",
+    //"node_modules/@wdio/sync",
+    "node_modules/@wdio/mocha-framework"
   ]
-  }
-  
+}
