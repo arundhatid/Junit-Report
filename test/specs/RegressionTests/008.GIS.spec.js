@@ -18,10 +18,10 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
 
 before(async () => {
 
-  const USER_ID = 'DELFI-6976-SM-008@slb.com';
-  const PASSWORD='First^12345';
+  const USER_ID = 'DELFI-6976-SM-009@slb.com';
+  const PASSWORD='Second^12345';
   const URL='https://evq.discovery.cloud.slb-ds.com/';
-  const SECRET_KEY='6gqld7mbpmhjpzgv';
+  const SECRET_KEY='fssknsltfkc2sxhy';
   console.log('value of id'+USER_ID+'pass'+PASSWORD+'url'+URL+'secret'+SECRET_KEY);
   //await browser.maximizeWindow()
   await browser.url(URL);
@@ -29,10 +29,15 @@ before(async () => {
    //await browser.maximizeWindow()
    await delfi.delfiLogin(USER_ID,PASSWORD,SECRET_KEY);
    console.log('title'+await browser.getTitle())
-   await (await login.$CloseBox).waitForDisplayed({timeout:100000})
-   await (await login.$CloseBox).click()
+   try {
+    await (await login.$CloseBox).waitForDisplayed({timeout:100000})
+    await (await login.$CloseBox).click()
+   } catch (e) {
+    
+   }
+   
    try{
-    await (await SearchPanel.$searchBox).waitForDisplayed({timeout:100000})
+    await (await searchPanel.$searchBox).waitForDisplayed({timeout:100000})
    }
    catch(e){
 
@@ -199,7 +204,7 @@ it('Verify GIS tools - Lasso Selection',async ()=>{
 
   await mapWebelement.dragAndDrop({ x: 200, y: 200, x: -100})
   browser.touchAction({
-   action: 'moveTo', x: 100, y:200, selector: map.$screen
+    action: 'moveTo', x: 100, y:200, selector: map.$screen
 })
   
  // await mapWebelement.moveTo({ x: 100, y: 100})  

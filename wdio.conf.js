@@ -23,7 +23,7 @@ exports.config = {
 
   baseUrl: process.env,
   suites: {
-    PROBE: [["./test/specs/ProbeTests/003.enableFocusMode.spec.js"]],
+    PROBE: [["./test/specs/ProbeTests/*.spec.js"]],
      // "./test/specs/ProbeTests/001.authentication.spec.js",
       //"./test/specs/ProbeTests/002.createCollection.spec.js",
       //"./test/specs/ProbeTests/003.enableFocusMode.spec.js",
