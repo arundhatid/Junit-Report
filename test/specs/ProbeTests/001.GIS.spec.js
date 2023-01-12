@@ -1,4 +1,4 @@
-const totp = require("totp-generator");
+
 var expectchai = require("chai").expect;
 const login = require("../../utils/pageobjects/login.po.js");
 const delfi = require("../../utils/methods/Login");
@@ -6,7 +6,7 @@ const SearchPanel = require("../../utils/pageobjects/searchPanel.po");
 const map = require("../../utils/pageobjects/map.po");
 
 describe("Login for CDD app ", async () => {
-  it("User should be able to login successfully", async () => {
+  it("User should be able to login successfully and GIS Map should be loaded correctly", async () => {
     const mapWebelement = await map.$map;
     const USER_ID = "DELFI-6976-SM-009@slb.com";
     const PASSWORD = "Second^12345";

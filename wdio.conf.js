@@ -24,10 +24,10 @@ exports.config = {
   baseUrl: process.env,
   suites: {
     PROBE: [["./test/specs/ProbeTests/*.spec.js"]],
-     // "./test/specs/ProbeTests/001.authentication.spec.js",
-      //"./test/specs/ProbeTests/002.createCollection.spec.js",
-      //"./test/specs/ProbeTests/003.enableFocusMode.spec.js",
-    
+    // "./test/specs/ProbeTests/001.authentication.spec.js",
+    //"./test/specs/ProbeTests/002.createCollection.spec.js",
+    //"./test/specs/ProbeTests/003.enableFocusMode.spec.js",
+
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
     //[['./test/specs/RegressionTests/008.GIS.spec.js',]]
     REGRESSION: [["./test/specs/RegressionTests/007.collection.spec.js"]],
@@ -97,7 +97,7 @@ exports.config = {
           "--disable-translate",
           "--disable-extensions",
           "--allow-insecure-localhost",
-          '--window-size=1920,1080', // This is browser size
+          "--window-size=1920,1080", // This is browser size
           "--disable-features=VizDisplayCompositor",
           "--disable-prompt-on-repost",
           "--new-window",
@@ -268,8 +268,7 @@ exports.config = {
    * Hook that gets executed before the suite starts
    * @param {Object} suite suite details
    */
-   beforeSuite: function (suite) {
-   },
+  beforeSuite: function (suite) {},
   /**
    * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
@@ -307,11 +306,9 @@ exports.config = {
    * Hook that gets executed after the suite has ended
    * @param {Object} suite suite details
    */
-   afterSuite: function (suite) {
-    test,
-    context,
-    { error, result, duration, passed, retries }
-   },
+  afterSuite: function (suite) {
+    test, context, { error, result, duration, passed, retries };
+  },
   /**
    * Runs after a WebdriverIO command gets executed
    * @param {String} commandName hook command name

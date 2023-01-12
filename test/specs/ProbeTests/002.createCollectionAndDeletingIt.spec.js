@@ -4,7 +4,6 @@ const delfi = require("../../utils/methods/Login");
 const login = require("../../utils/pageobjects/login.po.js");
 
 var expectchai = require("chai").expect;
-const fs = require("fs");
 describe("Create a collection and Deleting it:", async () => {
   before(async () => {
     const USER_ID = "DELFI-6976-SM-009@slb.com";
@@ -27,7 +26,7 @@ describe("Create a collection and Deleting it:", async () => {
     expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
   });
 
-  it("Data Selection & create simple collection", async () => {
+  it("Data Selection , create & delet the simple collection", async () => {
     await (await searchPanel.$searchIcon).waitForClickable({ timeout: 40000 });
     await (await searchPanel.$searchIcon).click();
     await (

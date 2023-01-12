@@ -3,11 +3,6 @@ const Collections = require("../../utils/pageobjects/collections.po");
 const delfi = require("../../utils/methods/Login");
 const login = require("../../utils/pageobjects/login.po.js");
 var expectchai = require("chai").expect;
-const fs = require("fs");
-const { createJSHandle } = require("puppeteer-core");
-const {
-  default: isDisplayed,
-} = require("webdriverio/build/commands/element/isDisplayed");
 describe("Create a collection and Enable focus mode of active colletion:", async () => {
   before(async () => {
     const USER_ID = "DELFI-6976-SM-009@slb.com";
