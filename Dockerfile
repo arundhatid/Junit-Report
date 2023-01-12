@@ -1,4 +1,7 @@
 FROM docker/whalesay:latest
-LABEL Name=cdduiautomation Version=0.0.1
-RUN apt-get -y update && apt-get install -y fortunes
-CMD ["sh", "-c", "/usr/games/fortune -a | cowsay"]
+RUN mkdir node
+COPY . ./node
+WORKDIR C:\ProgramData\Microsoft\Windows\Start Menu
+RUN npm install
+EXPOSE 8081
+CMD node server_init.js

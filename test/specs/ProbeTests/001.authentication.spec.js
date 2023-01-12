@@ -6,7 +6,9 @@ const SearchPanel=require('../../utils/pageobjects/searchPanel.po')
 
 
 describe('Login for CDD app ', async ()=>{
+
     it('User should be able to login successfully',async ()=>{
+    
       const USER_ID = 'DELFI-6976-SM-009@slb.com';
       const PASSWORD='Second^12345';
       const URL='https://data.discovery.delfi.slb.com/';
@@ -17,7 +19,7 @@ describe('Login for CDD app ', async ()=>{
        await delfi.delfiLogin(USER_ID,PASSWORD,SECRET_KEY);
        console.log('title'+await browser.getTitle())
        try {
-        await (await login.$CloseBox).waitForDisplayed({timeout:100000})
+        await (await login.$CloseBox).waitForDisplayed()
         await (await login.$CloseBox).click()
        } catch (e) {
         console.log('closed box is not appear for this test User account');
@@ -27,5 +29,5 @@ describe('Login for CDD app ', async ()=>{
       expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true
       
     })
-   
+  
 })

@@ -4,12 +4,14 @@
   "description": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run wdio.conf.js",
     "probe": "npx wdio wdio.conf.js --suite PROBE",
     "e2e": "npx wdio wdio.conf.js --suite E2E",
     "auth": "npx wdio wdio.conf.js --suite AUTH",
-    "regression": "npx wdio wdio.conf.js --suite REGRESSION"
+    "regression": "npx wdio wdio.conf.js --suite REGRESSION",
+    "performance": "npx wdio wdio.conf.js --suite PERFORMANCE"
   },
   "repository": {
     "type": "git",
