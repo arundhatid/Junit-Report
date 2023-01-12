@@ -3,9 +3,11 @@ var expectchai = require("chai").expect;
 const login = require("../../utils/pageobjects/login.po.js");
 const delfi = require("../../utils/methods/Login");
 const SearchPanel = require("../../utils/pageobjects/searchPanel.po");
+const map = require("../../utils/pageobjects/map.po");
 
 describe("Login for CDD app ", async () => {
   it("User should be able to login successfully", async () => {
+    const mapWebelement = await map.$map;
     const USER_ID = "DELFI-6976-SM-009@slb.com";
     const PASSWORD = "Second^12345";
     const URL = "https://data.discovery.delfi.slb.com/";
@@ -31,9 +33,9 @@ describe("Login for CDD app ", async () => {
     var startMinitus = startSeconds / 60;
     console.log("****minitus = " + startMinitus);
     console.log("***seconds = " + startSeconds);
-
-    console.log("title" + (await browser.getTitle()));
+    console.log("title =" + (await browser.getTitle()));
     try {
+      await (await login.$CloseBox).isDisplayed();
       await (await login.$CloseBox).waitForDisplayed();
       await (await login.$CloseBox).click();
     } catch (e) {
@@ -43,6 +45,8 @@ describe("Login for CDD app ", async () => {
     }
     await (await SearchPanel.$searchBox).waitForDisplayed({ timeout: 90000 });
     expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true;
+    await (await map.$map).waitForDisplayed({ timeout: 90000 });
+    expectchai(await map.$map.isDisplayed()).to.be.true;
     var today = new Date();
     var finishTime =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -52,8 +56,8 @@ describe("Login for CDD app ", async () => {
     var finishMinitus = finishSeconds / 60;
     console.log("****finish minitus = " + finishMinitus);
     console.log("***finish seconds = " + finishSeconds);
-    var totalMinitus = finishMinitus - startMinitus;
-    var totalSeconds = parseInt(finishSeconds - startSeconds);
+    var totalMinitus = Math.abs(finishMinitus - startMinitus);
+    var totalSeconds = Math.abs(finishSeconds - startSeconds);
     console.log("****total minitus =" + totalMinitus);
     console.log("*****total seconds =" + totalSeconds);
     console.log(

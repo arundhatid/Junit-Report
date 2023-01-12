@@ -3,15 +3,12 @@ const Collections = require("../../utils/pageobjects/collections.po");
 const delfi = require("../../utils/methods/Login");
 const login = require("../../utils/pageobjects/login.po.js");
 var expectchai = require("chai").expect;
-const path = require("path");
 const fs = require("fs");
-var multiResultsflag = false;
-var singleResultflag = false;
 const { createJSHandle } = require("puppeteer-core");
 const {
   default: isDisplayed,
 } = require("webdriverio/build/commands/element/isDisplayed");
-describe("Create a collection:", async () => {
+describe("Create a collection and Enable focus mode of active colletion:", async () => {
   before(async () => {
     const USER_ID = "DELFI-6976-SM-009@slb.com";
     const PASSWORD = "Second^12345";
@@ -20,14 +17,14 @@ describe("Create a collection:", async () => {
     await browser.url(URL);
     console.log("title =" + (await browser.getTitle()));
     try {
+      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
       console.log("title =" + (await browser.getTitle()));
       await (await login.$CloseBox).click();
     } catch (e) {
-      console.log("***run 3 test case simultenously*****");
       console.log("****close Box is not display for this test user a/c*****");
     }
-  
+
     await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
     expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
   });
@@ -155,7 +152,7 @@ describe("Create a collection:", async () => {
       await browser.pause(3000);
       await Collections.$Add.click();
       await Collections.$Add.click();
-      
+
       await (
         await Collections.$activeCollections
       ).waitForClickable({ timeout: 80000 });
@@ -208,17 +205,16 @@ describe("Create a collection:", async () => {
       await (await Collections.$closeCollectionTray).click();
 
       await (await searchPanel.$crossResult).click();
-      await browser.pause(10000);
+      await browser.pause(5000);
     } else {
       console.log("Hector Prospects is not avl");
     }
 
     //Enable Focus mode & delet one layer from active coll
     await (await $("//mat-icon[@data-mat-icon-name='target-icon']")).click();
-    await browser.pause(5000);
-    console.log(
-      "*******Enable focus mode & remove one layer from active collection******"
-    );
+    console.log("******Enable focus mode*****");
+    await browser.pause(3000);
+    console.log("*****waiting for the Focus mode result******");
 
     await (
       await searchPanel.$firstSearchResults
@@ -245,22 +241,22 @@ describe("Create a collection:", async () => {
     const elem1 = await $("(//div[@class='search-item-row']/div)[1]/div");
     expect(elem1).toHaveTextContaining(
       [" Prospects (1) "],
-      "focus mode is not working"
+      "focus mode is not working / layer not added to active coll"
     );
     const elem2 = await $("(//div[@class='search-item-row']/div)[2]/div");
     expect(elem2).toHaveTextContaining(
       [" Seismic 2D Line (1) "],
-      "focus mode is not working"
+      "focus mode is not working / layer not added to active coll"
     );
     const elem3 = await $("(//div[@class='search-item-row']/div)[3]/div");
     expect(elem3).toHaveTextContaining(
       [" Seismic 3D Survey (1) "],
-      "focus mode is not working"
+      "focus mode is not working / layer not added to active coll"
     );
     const elem4 = await $("(//div[@class='search-item-row']/div)[4]/div");
     expect(elem4).toHaveTextContaining(
       [" Well Log (38) "],
-      "focus mode is not working"
+      "focus mode is not working / layer not added to active coll"
     );
     await (
       await searchPanel.$firstSearchResults
@@ -313,7 +309,7 @@ describe("Create a collection:", async () => {
       await Collections.$closeCollectionTray
     ).waitForClickable({ timeout: 80000 });
     await (await Collections.$closeCollectionTray).click();
-    await browser.pause(2000);
+    await browser.pause(5000);
     expectchai(
       await (await $("div.active-cards pioneer-collection-item")).isDisplayed()
     ).to.be.not.true;

@@ -4,11 +4,8 @@ const delfi = require("../../utils/methods/Login");
 const login = require("../../utils/pageobjects/login.po.js");
 
 var expectchai = require("chai").expect;
-const path = require("path");
 const fs = require("fs");
-var multiResultsflag = false;
-var singleResultflag = false;
-describe("Create a collection:", async () => {
+describe("Create a collection and Deleting it:", async () => {
   before(async () => {
     const USER_ID = "DELFI-6976-SM-009@slb.com";
     const PASSWORD = "Second^12345";
@@ -17,21 +14,14 @@ describe("Create a collection:", async () => {
     await browser.url(URL);
     console.log("title =" + (await browser.getTitle()));
     try {
+      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
       console.log("title =" + (await browser.getTitle()));
       await (await login.$CloseBox).waitForDisplayed();
       await (await login.$CloseBox).click();
     } catch (e) {
-      console.log("***run 3 test case simultenously*****");
       console.log("****close Box is not display for this test user a/c*****");
     }
-
-   // try {
-    //  await (await login.$CloseBox).waitForDisplayed();
-   //   await (await login.$CloseBox).click();
-   // } catch (e) {
-   //   console.log("****close Box is not display for this test user a/c*****");
-   // }
 
     await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
     expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
@@ -43,7 +33,7 @@ describe("Create a collection:", async () => {
     await (
       await searchPanel.$firstSearchResults
     ).waitForDisplayed({ timeout: 80000 });
-    await browser.pause(5000);
+    await browser.pause(3000);
     await (
       await searchPanel.$firstSearchResults
     ).waitForClickable({ timeout: 90000 });
