@@ -13,9 +13,17 @@ export PROMETHEUS_MULTIPROC_DIR="$PWD/probe-deployment/files/dbs"
 python3 /app/probe-deployment/files/exporter.py &
 
 while [ True ]; do
+    echo "Check directory"
+    if [ -z "$(ls -A $PWD/probe-deployment/files/dbs)" ]; then
+        echo "DBs directory is empty"
+    else
+        echo "DBs directory is not empty"
+        rm -rf $PWD/probe-deployment/files/dbs/
+        mkdir -p "$PWD/probe-deployment/files/dbs"
+    fi
     echo "Starting Tests"
     npx wdio wdio.conf.js --suite PROBE || {
         echo "Tests Failed !!!"
     }
-    sleep 3600
+    sleep 1000
 done
