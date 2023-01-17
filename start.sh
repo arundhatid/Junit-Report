@@ -20,10 +20,3 @@ while [ True ]; do
     }
     sleep 1000
 done
-
-while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
-    echo "Waiting to get lock /var/lib/dpkg/lock-frontend..."
-    sleep 5
-done
-
-sudo apt-get update
