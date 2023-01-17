@@ -33,6 +33,11 @@ RUN apt-get update && \
   ttf-wqy-microhei \
   xfonts-wqy \
   && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update
+RUN apt-get -y install python3-pip
+RUN pip3 install prometheus_client
+
 # Install app related tools
 RUN npm install -g \
   @angular/cli \
