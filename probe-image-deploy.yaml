@@ -58,9 +58,9 @@ stages:
                     ArtifactName: exported
 
                 - task: PublishBuildArtifacts@1
-                  displayName: "Publish Artifact: deployment - PROD EU"
+                  displayName: "Publish Artifact: probe-deployment - PROD EU"
                   inputs:
-                    PathtoPublish: deployments
+                    PathtoPublish: probe-deployment
                     ArtifactName: deployments
 
                 - task: Bash@3
