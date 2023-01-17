@@ -102,6 +102,15 @@ stages:
                     SECRETCREDS: $(svcaccountcreds)
 
                 - task: Bash@3
+                  displayName: "Restart the Deployment for CDD Probe"
+                  condition: succeededOrFailed()
+                  inputs:
+                    targetType: inline
+                    script: |
+                      # Needed so that we do not overburden the dbs disk read/write operation
+                      kubectl rollout restart deployment cdd-probe-deployment -n data-discovery
+
+                - task: Bash@3
                   displayName: "Revoke credentials"
                   condition: succeededOrFailed()
                   inputs:
