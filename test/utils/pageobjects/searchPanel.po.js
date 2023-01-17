@@ -1,25 +1,25 @@
-class SearchPanel{
-    get $searchBox(){
+class SearchPanel {
+    get $searchBox() {
         return $('input[id="gisSearch"]');
 
     }
     // get $searchResults(){
     //     return $('div[class="search-icon-label"]')
     // }
-    get $searchIcon(){
+    get $searchIcon() {
         return $('[data-mat-icon-name="search"] svg')
     }
-    get $checkbox(){
+    get $checkbox() {
         return $('input[class="mat-checkbox-input cdk-visually-hidden"]')
     }
-    get $searchResults(){
+    get $searchResults() {
         return $$('div[class="search-item-row"]')
     }
-    get $firstSearchResults(){
+    get $firstSearchResults() {
         return $('(//div[@class="search-item-row"]/div)[1]')
     }
-    get $crossResult(){
+    get $crossResult() {
         return $("//mat-icon[@svgicon='close']")
     }
 }
-module.exports=new SearchPanel();
+module.exports = new SearchPanel();

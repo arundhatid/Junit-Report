@@ -25,12 +25,12 @@
 //    await layers.$closeLayersBtn.click();
 //   });
 //   it("zoom to world wide view ", async () => {
-  
+
 
 //     await map.$zoomToWorldView.waitForDisplayed({ timeout: 20000 });
 //     await map.$zoomToWorldView.click();
 //     await browser.pause(10000);
-    
+
 //   });
 
 //   it("Rectangular selection",async () => {
@@ -49,7 +49,7 @@
 //   });
 
 //   it("Create a collection", async () => {
-// });   
+// });
 
 //   it("Search for a collection", async () => {
 //    await searchPanel.$searchBox.isDisplayed();
@@ -59,7 +59,7 @@
 //    await searchPanel.$searchIcon.click();
 
 //  await browser.pause(10000)
-  
+
 //     //either there are no results or we have multiple results
 //     if (await searchPanel.$searchResults.isDisplayed()) {
 //       if (
@@ -118,10 +118,10 @@
 //     else{
 
 //     }
-    
+
 
 //   })
 
-  
-  
+
+
 // });

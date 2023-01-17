@@ -295,6 +295,7 @@
     "pseudomap": "^1.0.2",
     "pump": "^3.0.0",
     "puppeteer-core": "^13.7.0",
+    "python-shell": "^3.0.1",
     "query-selector-shadow-dom": "^1.0.0",
     "queue-microtask": "^1.2.3",
     "quick-lru": "^5.1.1",

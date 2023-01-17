@@ -1,34 +1,34 @@
 const totp = require("totp-generator");
-class Login{
-    get $SigninAndSignUpButton(){
-return $('button[data-slb-id="login"]');
+class Login {
+    get $SigninAndSignUpButton() {
+        return $('button[data-slb-id="login"]');
     }
-    get $EmailInputBox(){
+    get $EmailInputBox() {
         return $('#emailInput');
     }
-    get $SubmitBox(){
+    get $SubmitBox() {
         return $("#submitbutton");
     }
-    get $PasswordInputBox(){
+    get $PasswordInputBox() {
         return $('#passwordInput');
     }
-    get $VerifyPassword(){
+    get $VerifyPassword() {
         return $("#submitButton");
     }
-    get $OTPBox(){
+    get $OTPBox() {
         return $('#verificationCodeInput')
     }
-    get $SignInBox(){
-        return  $("#signInButton");
+    get $SignInBox() {
+        return $("#signInButton");
     }
-    get $YesBox(){
+    get $YesBox() {
         return $('[value="Yes"]');
     }
-    get $CloseBox(){
+    get $CloseBox() {
         return $('delfi-gui-data-partition section [data-mat-icon-name="close"] svg')
 
     }
- 
+
 
 }
-module.exports=new Login()
+module.exports = new Login()

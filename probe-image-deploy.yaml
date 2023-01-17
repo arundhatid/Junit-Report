@@ -1,0 +1,111 @@
+pool:
+  name: gaia-osdu-vsts-agents-new
+
+schedules:
+  - cron: "30 12 * * Mon,Tue,Wed,Thu,Fri,Sat,Sun"
+    displayName: Daily Docker Image Update Build
+    branches:
+      include:
+        - master
+    always: "true"
+
+variables:
+  GOOGLE_PROJECT_ID: "p-cdd-services"
+
+stages:
+  - stage: build
+    jobs:
+      - deployment: cdd_probe
+        environment: build
+        displayName: build_docker_image_for_probe
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: DownloadSecureFile@1
+                  displayName: "Download secure file"
+                  inputs:
+                    secureFile: "prod-cdd.json"
+
+                - task: Bash@3
+                  displayName: "Docker Build and Push for Probe - PROD EU"
+                  inputs:
+                    targetType: inline
+                    script: |
+                      echo "Authenticating with SA key"
+                      gcloud auth activate-service-account --key-file $(Agent.TempDirectory)/prod-cdd.json
+                      gcloud auth configure-docker --quiet
+                      docker build -f probe.Dockerfile -t gcr.io/$(GOOGLE_PROJECT_ID)/cdd-probe:latest .
+                      docker images
+                      docker push gcr.io/$(GOOGLE_PROJECT_ID_EVQ)/cdd-probe:latest
+
+                - task: Bash@3
+                  displayName: "Get Commit Description"
+                  inputs:
+                    targetType: inline
+                    script: |
+                      CHANGES=`git log -1 --pretty=%B`
+                      mkdir -p $(Build.artifactStagingDirectory)/exported
+                      echo $(Build.artifactStagingDirectory)/exported
+                      echo "$(Build.Repository.Name)" > $(Build.artifactStagingDirectory)/exported/CHANGES
+                      echo "$CHANGES" >> $(Build.artifactStagingDirectory)/exported/CHANGES
+
+                - task: PublishBuildArtifacts@1
+                  displayName: "Publish Artifact: Git commit"
+                  inputs:
+                    PathtoPublish: "$(Build.ArtifactStagingDirectory)/exported"
+                    ArtifactName: exported
+
+                - task: PublishBuildArtifacts@1
+                  displayName: "Publish Artifact: deployment - PROD EU"
+                  inputs:
+                    PathtoPublish: deployments
+                    ArtifactName: deployments
+
+                - task: Bash@3
+                  displayName: "Revoke credentials"
+                  condition: succeededOrFailed()
+                  inputs:
+                    targetType: inline
+                    script: |
+                      set -e
+                      gcloud auth revoke $(gcloud config get-value account)
+
+  - stage: deploy
+    jobs:
+      - deployment: at_probe
+        environment: deploy
+        displayName: deploy_probe_to_prod_eu_cluster
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: DownloadSecureFile@1
+                  displayName: "Download secure file"
+                  inputs:
+                    secureFile: "prod-cdd.json"
+
+                - task: Bash@3
+                  displayName: "Deploy Probe to evq cluster"
+                  inputs:
+                    targetType: inline
+                    script: |
+                      # Deploy Probe
+                      echo "Authenticating with SA key"
+                      gcloud auth activate-service-account --key-file $(Agent.TempDirectory)/prod-cdd.json
+                      chmod 777 probe-deployment/deploy.sh
+                      echo "Using the mapped env var for this task works and is recommended: $SECRETCREDS"
+                      sh probe-deployment/deploy.sh
+                  env:
+                    SECRETCREDS: $(svcaccountcreds)
+
+                - task: Bash@3
+                  displayName: "Revoke credentials"
+                  condition: succeededOrFailed()
+                  inputs:
+                    targetType: inline
+                    script: |
+                      set -e
+                      gcloud auth revoke $(gcloud config get-value account)

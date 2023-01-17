@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: cdd-probe-deployment
+  namespace: data-discovery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cdd-probe
+  template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
+          labels:
+            app: cdd-probe
+        spec:
+          containers:
+            - name: cdd-probe
+              image: gcr.io/p-cdd-services/cdd-probe:latest
+              imagePullPolicy: Always
+              ports:
+              - name: http
+                containerPort: 9877
+              volumeMounts:
+                - name: service-account-credentials-volume
+                  mountPath: /etc/gcp
+                  readOnly: true
+              env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /etc/gcp/sa_credentials.json
+          volumes:
+            - name: service-account-credentials-volume
+              secret:
+                secretName: svc-account-credentials-probe
+                items:
+                  - key: sa_json
+                    path: sa_credentials.json

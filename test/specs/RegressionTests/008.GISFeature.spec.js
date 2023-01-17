@@ -21,13 +21,13 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     console.log(
       "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
+      USER_ID +
+      "pass" +
+      PASSWORD +
+      "url" +
+      URL +
+      "secret" +
+      SECRET_KEY
     );
     //await browser.maximizeWindow()
     await browser.url(URL);
@@ -38,13 +38,13 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     try {
       await (await login.$CloseBox).waitForDisplayed({ timeout: 100000 });
       await (await login.$CloseBox).click();
-    } catch (e) {}
+    } catch (e) { }
 
     try {
       await (
         await searchPanel.$searchBox
       ).waitForDisplayed({ timeout: 100000 });
-    } catch (e) {}
+    } catch (e) { }
   });
 
   it("Verify Zoom In using mouse wheel, (+) icon", async () => {

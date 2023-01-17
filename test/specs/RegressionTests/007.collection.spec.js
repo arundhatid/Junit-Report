@@ -20,13 +20,13 @@ describe("Create a collection:", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     console.log(
       "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
+      USER_ID +
+      "pass" +
+      PASSWORD +
+      "url" +
+      URL +
+      "secret" +
+      SECRET_KEY
     );
     //await browser.maximizeWindow()
     await browser.url(URL);
@@ -37,7 +37,7 @@ describe("Create a collection:", async () => {
     try {
       await (await login.$CloseBox).waitForDisplayed({ timeout: 100000 });
       await (await login.$CloseBox).click();
-    } catch (e) {}
+    } catch (e) { }
     await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
   });
 

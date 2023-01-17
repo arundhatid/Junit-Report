@@ -9,7 +9,7 @@ ARG NPM_TOKEN
 WORKDIR /app
 COPY . /app
 
-# Install dependencies 
+# Install dependencies
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
   libgtk2.0-0 \
@@ -40,7 +40,7 @@ RUN npm install -g \
 # Install the chrome driver
 RUN apt-get update
 RUN apt-get install -y fonts-liberation libappindicator3-1 xdg-utils
-ENV CHROME_VERSION 108.0.5359.125 
+ENV CHROME_VERSION 108.0.5359.125
 RUN wget -O /usr/src/google-chrome-stable_current_amd64.deb "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 RUN apt-get install -y /usr/src/google-chrome-stable_current_amd64.deb
@@ -59,8 +59,14 @@ ADD . /app
 # Appropriate chromedriver (for linux) is installed automatically, basead on packege version in package.json.
 # for example: "chromedriver": "^102.0.0"
 RUN npm install
-# Load tests service ulr 
+# Load tests service ulr
 ENV SERVICE_URL not_defined
 ENV USERS_COUNT 1
+
+RUN chmod 777 -R /app/probe-deployment
+RUN chmod +x /app/start.sh
+RUN chmod +x /app/probe-deployment/files/exporter.py
+RUN sed -i -e 's/\r$//' /app/start.sh
 EXPOSE 80
-CMD npx wdio wdio.conf.js --suite PROBE
+
+ENTRYPOINT ["/bin/bash", "-c", "/app/start.sh"]

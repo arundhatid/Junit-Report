@@ -4,6 +4,7 @@ const login = require("../../utils/pageobjects/login.po.js");
 const delfi = require("../../utils/methods/Login");
 const SearchPanel = require("../../utils/pageobjects/searchPanel.po");
 const map = require("../../utils/pageobjects/map.po");
+const PythonShell = require('python-shell').PythonShell
 
 describe("Login for CDD app ", async () => {
   it("User should be able to login successfully and GIS Map should be loaded correctly", async () => {
@@ -14,13 +15,13 @@ describe("Login for CDD app ", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     console.log(
       "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
+      USER_ID +
+      "pass" +
+      PASSWORD +
+      "url" +
+      URL +
+      "secret" +
+      SECRET_KEY
     );
     var today = new Date();
     await browser.url(URL);
@@ -47,6 +48,20 @@ describe("Login for CDD app ", async () => {
     expectchai(await SearchPanel.$searchBox.isDisplayed()).to.be.true;
     await (await map.$map).waitForDisplayed({ timeout: 90000 });
     expectchai(await map.$map.isDisplayed()).to.be.true;
+
+    // Prepare object to be passed into Python Shell
+    var options = {
+      mode: 'text',
+      pythonOptions: ['-u'],
+      args: ['prometheus_metrics', 200, "good"]
+    };
+
+    // Pass into Python shell
+    PythonShell.run(`${process.cwd()}/probe-deployment/files/metrics.py`, options, function (err) {
+      if (err) throw err;
+      console.log('finished');
+    });
+
     var today = new Date();
     var finishTime =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
