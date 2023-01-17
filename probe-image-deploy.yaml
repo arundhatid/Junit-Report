@@ -38,7 +38,7 @@ stages:
                       gcloud auth configure-docker --quiet
                       docker build -f probe.Dockerfile -t gcr.io/$(GOOGLE_PROJECT_ID)/cdd-probe:latest .
                       docker images
-                      docker push gcr.io/$(GOOGLE_PROJECT_ID_EVQ)/cdd-probe:latest
+                      docker push gcr.io/$(GOOGLE_PROJECT_ID)/cdd-probe:latest
 
                 - task: Bash@3
                   displayName: "Get Commit Description"
