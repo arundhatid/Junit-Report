@@ -18,5 +18,5 @@ while [ True ]; do
     npx wdio wdio.conf.js --suite PROBE || {
         echo "Tests Failed !!!"
     }
-    sleep 1000
+    sleep 1800
 done
