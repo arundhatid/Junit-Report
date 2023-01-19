@@ -1,28 +1,71 @@
 # README FILE
 
-## Introduction
+## Probe
 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.
+Probe tests can be found here : `./test/specs/ProbeTests` folder where in we have three tests doing the below operations :
 
-## Getting Started
+1. Make sure user is able to login and GIS Map is compeltely loaded. We also measure performance of the GIS Map in this test
+2. Create a cocllection and delete it
+3. Enable Focus Mode, create and delete a collection with more complex steps involved
 
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+## Probe integration with Prometheus
 
-1. Installation process
-2. Software dependencies
-3. Latest releases
-4. API references
+The Probes need to update the Prometheus metrics when it runs. The Prometheus Metrics are created here : `./probe-deployment/files/metrics.py`. We have selected "python" as the default language for creating probes and creating prometheus http server as the "prom-client" python package supports almost all the use cases as compared to the "prom-client" npm package.
 
-## Build and Test
+Metrics example :
 
-TODO: Describe and show how to build your code and run the tests.
+```py
+def prometheus_metrics(responseCode, responseMessage):
+    g = Gauge('cdd_probe_total',
+              'probe correctness measurements', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
+    g.labels(responseCode, responseMessage).inc()
+```
 
-## Contribute
+I have implemented the calling of the metrics function using "globals" utility of python as below :
 
-TODO: Explain how other users and developers can contribute to make your code better.
+```py
+if __name__ == '__main__':
+    if len(sys.argv) == 5:
+        globals()[sys.argv[1]](sys.argv[2], sys.argv[3], sys.argv[4])
+    if len(sys.argv) == 4:
+        globals()[sys.argv[1]](sys.argv[2], sys.argv[3])
+```
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
+The Prometheus HTTP Server is present here : `./probe-deployment/files/exporter.py`
 
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+The tests are then integrated with Probe metrics as below, since your Probe spec files are `.js` and our metrics are in Python, there needs to be an interconnectivity for JS to call the python functions and also have access to the function's response. This is achieved using
+
+```py
+    # Prepare object to be passed into Python Shell
+    var options = {
+      mode: 'text',
+      pythonOptions: ['-u'],
+      args: ['prometheus_metrics', 200, "good"] # Calling prometheus_metrics function and passing "200" as the response code with "good" as the response message
+    };
+
+    # Pass into Python shell
+    PythonShell.run(`${process.cwd()}/probe-deployment/files/metrics.py`, options, function (err) {
+      if (err) throw err;
+      console.log('finished'); # Log Finished when everything is good from metrics.py file else log err
+    });
+```
+
+## Building of Docker Image for Probe and deployment
+
+The Probe Docker image `./probe.Dockerfile` is built here : <https://dev.azure.com/slb-swt/gaia/_build?definitionId=21320> and the `deploy` stage installs the helm chart `./probe-deployment/Chart.yaml` to the PROD EU GKE cluster resulting in Probe deployment, its exposition through a Kubernetes Service and a Service Monitor which ensures that the metrics are scraped by Prometheus from the target service's /metrics endpoint and exposed here on port 9877
+
+![Image](./images/probe.JPG)
+
+Deployment can be found here : <https://console.cloud.google.com/kubernetes/deployment/europe-west4/data-discovery/data-discovery/cdd-probe-deployment/overview?project=p-cdd-services&pageState=(%22savedViews%22:(%22i%22:%22083c15637c88405981aec69b131a4276%22,%22c%22:%5B%22gke%2Feurope-west4%2Fdata-discovery%22,%22gke%2Fus-central1%2Fdata-discovery-us%22%5D,%22n%22:%5B%22data-discovery%22%5D))>
+
+## Logs for Probe
+
+Logs can be found at Grafana - Loki : <https://grafana-prod.discovery.cloud.slb-ds.com/explore?orgId=1&left=%7B%22datasource%22:%22F1hCh5enk%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22expr%22:%22%7Bapp%3D%5C%22cdd-probe%5C%22%7D%22,%22queryType%22:%22range%22,%22datasource%22:%7B%22type%22:%22loki%22,%22uid%22:%22F1hCh5enk%22%7D,%22editorMode%22:%22code%22%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D>
+
+![Image](./images/logs.JPG)
+
+## Metrics for Probe
+
+Metrics can be found is Grafana - Thanos : <https://grafana-prod.discovery.cloud.slb-ds.com/explore?orgId=1&left=%7B%22datasource%22:%22E12jhcenz%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22datasource%22:%7B%22type%22:%22prometheus%22,%22uid%22:%22E12jhcenz%22%7D,%22editorMode%22:%22code%22,%22expr%22:%22cdd_probe_total%22,%22legendFormat%22:%22__auto%22,%22range%22:true,%22instant%22:true%7D%5D,%22range%22:%7B%22from%22:%22now-12h%22,%22to%22:%22now%22%7D%7D>
+
+![Image](./images/metrics.JPG)
