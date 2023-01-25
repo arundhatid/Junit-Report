@@ -9,6 +9,15 @@ schedules:
         - master
     always: "true"
 
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - probe-deployment
+      - test
+
 variables:
   GOOGLE_PROJECT_ID: "p-cdd-services"
 
@@ -74,7 +83,7 @@ stages:
 
   - stage: deploy
     jobs:
-      - deployment: at_probe
+      - deployment: cdd_probe
         environment: deploy
         displayName: deploy_probe_to_prod_eu_cluster
         strategy:
