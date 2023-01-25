@@ -26,7 +26,7 @@ exports.config = {
   baseUrl: process.env,
   suites: {
     PROBE: [["./test/specs/ProbeTests/002.createCollectionAndDeletingIt.spec.js"]],
-    
+
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
     //[['./test/specs/RegressionTests/008.GIS.spec.js',]]
     REGRESSION: [["./test/specs/RegressionTests/007.collection.spec.js"]],
@@ -100,8 +100,7 @@ exports.config = {
           "--disable-features=VizDisplayCompositor",
           "--disable-prompt-on-repost",
           "--new-window",
-          //"--remote-debugging-port=0"
-           //"--headless",
+          "--headless",
         ],
       },
       acceptInsecureCerts: true,
@@ -290,7 +289,7 @@ exports.config = {
    * Hook that gets executed before the suite starts
    * @param {Object} suite suite details
    */
-  beforeSuite: function (suite) {},
+  beforeSuite: function (suite) { },
   /**
    * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
@@ -322,7 +321,7 @@ exports.config = {
     test,
     context,
     { error, result, duration, passed, retries }
-  ) {},
+  ) { },
 
   /**
    * Hook that gets executed after the suite has ended

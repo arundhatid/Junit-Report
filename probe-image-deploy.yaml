@@ -13,10 +13,6 @@ trigger:
   branches:
     include:
       - master
-  paths:
-    include:
-      - probe-deployment
-      - test
 
 variables:
   GOOGLE_PROJECT_ID: "p-cdd-services"
