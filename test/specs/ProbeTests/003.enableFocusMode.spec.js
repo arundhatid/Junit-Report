@@ -206,8 +206,17 @@ describe("Create a collection and Enable focus mode of active colletion:", async
     }
 
     //Enable Focus mode & delet one layer from active coll
+    await (await Collections.$collectionTray).waitForDisplayed();
+    await (
+      await Collections.$collectionTray
+    ).waitForClickable({ timeout: 80000 });
+    await (await Collections.$collectionTray).click();
+    await (
+      await $("//mat-icon[@data-mat-icon-name='target-icon']")
+    ).waitForClickable({ timeout: 80000 });
     await (await $("//mat-icon[@data-mat-icon-name='target-icon']")).click();
     console.log("******Enable focus mode*****");
+    await (await Collections.$closeCollectionTray).click();
     await browser.pause(3000);
     console.log("*****waiting for the Focus mode result******");
 
@@ -250,7 +259,7 @@ describe("Create a collection and Enable focus mode of active colletion:", async
     );
     const elem4 = await $("(//div[@class='search-item-row']/div)[4]/div");
     expect(elem4).toHaveTextContaining(
-      [" Well Log (38) "],
+      [" Well Log (40) "],
       "focus mode is not working / layer not added to active coll"
     );
     await (

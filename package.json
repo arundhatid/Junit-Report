@@ -35,7 +35,7 @@
     "totp-generator": "^0.0.13",
     "wdio-allure-reporter": "^0.8.3",
     "wdio-chromedriver-service": "^7.3.2",
-    "wdio-image-comparison-service": "^3.1.0",
+    "wdio-image-comparison-service": "^3.1.1",
     "wdio-video-reporter": "^3.2.0"
   },
   "directories": {
@@ -151,7 +151,7 @@
     "fs-extra": "^10.1.0",
     "fs-minipass": "^2.1.0",
     "fs.realpath": "^1.0.0",
-    "fsevents": "^2.3.2",
+    "fsevents": "^2.1.2",
     "function-bind": "^1.1.1",
     "gauge": "^3.0.2",
     "gaze": "^1.1.3",

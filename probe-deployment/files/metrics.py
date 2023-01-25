@@ -2,17 +2,25 @@ from prometheus_client import Gauge, Histogram, multiprocess, CollectorRegistry
 import sys
 
 
-def prometheus_metrics(responseCode, responseMessage):
-    g = Gauge('cdd_probe_total',
-              'probe correctness measurements', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
+def prometheus_metrics_auth_gis(responseCode, responseMessage):
+    g = Gauge('cdd_probe_auth_gis_total',
+              'Auth and GIS Map Probe correctness measurements', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
     g.labels(responseCode, responseMessage).inc()
 
+def prometheus_metrics_create_delete_collec(responseCode, responseMessage):
+    g = Gauge('cdd_probe_cr_de_collec_total',
+              'Create and Delete collection probe correctness measurements', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
+    g.labels(responseCode, responseMessage).inc()
 
-def prometheus_probe_status(response_code, message):
-    g = Gauge('cdd_probe_status',
-              'probe status', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
+def prometheus_probe_auth_gis_status(response_code, message):
+    g = Gauge('cdd_probe_auth_gis_status',
+              'Auth and GIS Map probe status', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
     g.labels(response_code, message).inc()
 
+def prometheus_probe_create_delete_collec_status(response_code, message):
+    g = Gauge('cdd_probe_cr_de_collec_status',
+              'Create and Delete collection probe status', ['response_code', 'message'],  multiprocess_mode='livesum', registry=CollectorRegistry())
+    g.labels(response_code, message).inc()
 
 def prometheus_probe_latency(response_code, message, latency):
     """

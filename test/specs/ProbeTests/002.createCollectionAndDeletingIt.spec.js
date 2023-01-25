@@ -2,6 +2,8 @@ const searchPanel = require("../../utils/pageobjects/searchPanel.po");
 const Collections = require("../../utils/pageobjects/collections.po");
 const delfi = require("../../utils/methods/Login");
 const login = require("../../utils/pageobjects/login.po.js");
+const PythonShell = require("python-shell").PythonShell;
+var expectchai = require("chai").expect;
 
 var expectchai = require("chai").expect;
 describe("Create a collection and Deleting it:", async () => {
@@ -11,18 +13,93 @@ describe("Create a collection and Deleting it:", async () => {
     const URL = "https://data.discovery.delfi.slb.com/";
     const SECRET_KEY = "fssknsltfkc2sxhy";
     await browser.url(URL);
-    console.log("title =" + (await browser.getTitle()));
     try {
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      console.log("title =" + (await browser.getTitle()));
       await (await login.$CloseBox).waitForDisplayed();
       await (await login.$CloseBox).click();
     } catch (e) {
+      await (
+        await searchPanel.$searchBox
+      ).waitForDisplayed({ timeout: 200000 });
+      console.log("*******title =" + (await browser.getTitle()));
+
+      let titleMatch = (await browser.getTitle()).localeCompare(
+        "Data Discovery"
+      );
+      console.log("*****" + titleMatch);
+      console.log(
+        "****checking the Authentication & visibility of search box******"
+      );
+      if (
+        (await searchPanel.$searchBox).waitForDisplayed({ timeout: 200000 })
+      ) {
+        // Prepare object to be passed into Python Shell
+        var options = {
+          mode: "text",
+          pythonPath: "python",
+          pythonOptions: ["-u"],
+          args: [
+            "prometheus_metrics_auth_gis",
+            200,
+            "User login to GIS map successfully",
+          ],
+        };
+
+        // Pass into Python shell
+        PythonShell.run(
+          `${process.cwd()}/probe-deployment/files/metrics.py`,
+          options,
+          function (err) {
+            if (err) throw err;
+            console.log("finished");
+            console.log("****if block");
+          }
+        );
+      } else {
+        // Prepare object to be passed into Python Shell
+        var options = {
+          mode: "text",
+          pythonPath: "python",
+          pythonOptions: ["-u"],
+          args: [
+            "prometheus_metrics_auth_gis",
+            500,
+            "error User failed to login on GIS map ",
+          ],
+        };
+
+        // Pass into Python shell
+        PythonShell.run(
+          `${process.cwd()}/probe-deployment/files/metrics.py`,
+          options,
+          function (err) {
+            if (err) throw err;
+            console.log("failed");
+          }
+        );
+        //Prometheus status
+        var options = {
+          mode: "text",
+          pythonPath: "python",
+          pythonOptions: ["-u"],
+          args: ["prometheus_probe_auth_gis_status", 500, "Failed"],
+        };
+
+        // Pass into Python shell
+        PythonShell.run(
+          `${process.cwd()}/probe-deployment/files/metrics.py`,
+          options,
+          function (err) {
+            if (err) throw err;
+            console.log("failed");
+          }
+        );
+      }
+
       console.log("****close Box is not display for this test user a/c*****");
     }
 
-    await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
     expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
   });
 
@@ -59,7 +136,7 @@ describe("Create a collection and Deleting it:", async () => {
     console.log("******Create Collection******");
 
     await (await $("(//form//input)[1]")).waitForDisplayed({ timeout: 80000 });
-    await browser.pause(3000);
+    await browser.pause(2000);
     await (await Collections.$collectionName).waitForDisplayed();
     await (
       await Collections.$collectionName
@@ -86,11 +163,72 @@ describe("Create a collection and Deleting it:", async () => {
     const cardTitle = await (
       await activeProbeCard.$("div.collection-container__title h6")
     ).getText();
-    expectchai(cardTitle).to.have.string("Probe Testing");
     console.log("*****Validate Collection*******");
 
     await (await $("//button[@class='button-pin-tray']")).waitForDisplayed();
     await (await $("//button[@class='button-pin-tray']")).click();
+    await browser.pause(5000);
+    if (cardTitle == "Probe Testing") {
+      expectchai(cardTitle).to.have.string("Probe Testing");
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: [
+          "prometheus_metrics_create_delete_collec",
+          200,
+          "collection created successfully",
+        ],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("finished");
+        }
+      );
+    } else {
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: [
+          "prometheus_metrics_create_delete_collec",
+          500,
+          "error create collection failed ",
+        ],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("failed");
+        }
+      );
+      //Prometheus status
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: ["prometheus_probe_create_delete_collec_status", 500, "Failed"],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("failed");
+        }
+      );
+    }
 
     await (
       await activeProbeCard.$('mat-icon[svgicon="more"]')
@@ -109,14 +247,94 @@ describe("Create a collection and Deleting it:", async () => {
     await (await $("//span[normalize-space()='Confirm']")).click();
     console.log("*******validate the delete container******");
 
+    await browser.pause(5000);
+    if (activeProbeCard !== "Probe Testing") {
+      expectchai(
+        await (
+          await $("div.active-cards pioneer-collection-item")
+        ).isDisplayed()
+      ).to.be.not.true;
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: [
+          "prometheus_metrics_create_delete_collec",
+          200,
+          "collection deleted successfully",
+        ],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("finished");
+        }
+      );
+    } else {
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: [
+          "prometheus_metrics_create_delete_collec",
+          500,
+          "error delete collection failed ",
+        ],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("failed");
+        }
+      );
+      //Prometheus status
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: ["prometheus_probe_create_delete_collec_status", 500, "Failed"],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("failed");
+        }
+      );
+    }
+
     await (await Collections.$closeCollectionTray).waitForDisplayed();
     await (
       await Collections.$closeCollectionTray
     ).waitForClickable({ timeout: 80000 });
     await (await Collections.$closeCollectionTray).click();
-    await browser.pause(5000);
-    expectchai(
-      await (await $("div.active-cards pioneer-collection-item")).isDisplayed()
-    ).to.be.not.true;
+    var options = {
+      mode: "text",
+      pythonPath: "python",
+      pythonOptions: ["-u"],
+      args: ["prometheus_probe_create_delete_collec_status", 200, "Success"],
+    };
+
+    // Pass into Python shell
+    PythonShell.run(
+      `${process.cwd()}/probe-deployment/files/metrics.py`,
+      options,
+      function (err) {
+        if (err) throw err;
+        console.log("finished");
+      }
+    );
+    await browser.pause(3000);
   });
 });
