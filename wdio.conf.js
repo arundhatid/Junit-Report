@@ -25,17 +25,11 @@ exports.config = {
 
   baseUrl: process.env,
   suites: {
-    PROBE: [
-      ["./test/specs/ProbeTests/*.spec.js"],
-    ],
-    PROBE: [["./test/specs/ProbeTests/002.createCollectionAndDeletingIt.spec.js"]],
-
+    PROBEALL: [["./test/specs/ProbeTests/*.spec.js"]],
+    PROBE: [["./test/specs/ProbeTests/001.GIS.spec.js", "./test/specs/ProbeTests/002.createCollectionAndDeletingIt.spec.js"]],
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
-    //[['./test/specs/RegressionTests/008.GIS.spec.js',]]
     REGRESSION: [["./test/specs/RegressionTests/007.collection.spec.js"]],
-    PERFORMANCE: [
-      ["./test/specs/PerformanceTest/PerformanceTestForGIS.spec.js"],
-    ],
+    PERFORMANCE: [["./test/specs/PerformanceTest/PerformanceTestForGIS.spec.js"]]
   },
 
   specs: ["./test/specs/**/*.js"],
@@ -90,7 +84,6 @@ exports.config = {
           "--ignore-certificate-errors",
           "--disable-plugins-discovery",
           "--disable-dev-shm-usage",
-          //"--no-first-run",
           "--no-service-autorun",
           "--no-default-browser-check",
           "--disable-blink-features=AutomationControlled",
@@ -292,7 +285,7 @@ exports.config = {
    * Hook that gets executed before the suite starts
    * @param {Object} suite suite details
    */
-  beforeSuite: function (suite) {},
+  beforeSuite: function (suite) { },
   /**
    * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
@@ -324,7 +317,7 @@ exports.config = {
     test,
     context,
     { error, result, duration, passed, retries }
-  ) {},
+  ) { },
 
   /**
    * Hook that gets executed after the suite has ended
