@@ -13,13 +13,13 @@ describe("Login for CDD app ", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     console.log(
       "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
+      USER_ID +
+      "pass" +
+      PASSWORD +
+      "url" +
+      URL +
+      "secret" +
+      SECRET_KEY
     );
     var today = new Date();
     await browser.url(URL);
@@ -39,7 +39,6 @@ describe("Login for CDD app ", async () => {
       // Prepare object to be passed into Python Shell
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_auth_gis",
@@ -61,7 +60,6 @@ describe("Login for CDD app ", async () => {
       // Prepare object to be passed into Python Shell
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_auth_gis",
@@ -82,7 +80,6 @@ describe("Login for CDD app ", async () => {
       //Prometheus status
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: ["prometheus_probe_auth_gis_status", 500, "Failed"],
       };
@@ -125,7 +122,6 @@ describe("Login for CDD app ", async () => {
       expectchai(await mapWebelement.isDisplayed()).to.be.true;
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_auth_gis",
@@ -147,7 +143,6 @@ describe("Login for CDD app ", async () => {
 
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_probe_latency",
@@ -169,7 +164,6 @@ describe("Login for CDD app ", async () => {
     } else {
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_auth_gis",
@@ -191,7 +185,6 @@ describe("Login for CDD app ", async () => {
       //prometheus status
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: ["prometheus_probe_auth_gis_status", 500, "Failed"],
       };
@@ -209,7 +202,6 @@ describe("Login for CDD app ", async () => {
 
     var options = {
       mode: "text",
-      pythonPath: "python",
       pythonOptions: ["-u"],
       args: ["prometheus_probe_auth_gis_status", 200, "Success"],
     };

@@ -14,10 +14,10 @@ describe("Create a collection and Deleting it:", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     await browser.url(URL);
     try {
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).waitForDisplayed({timeout: 10000})
+      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).waitForDisplayed({ timeout: 10000 })
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({timeout:10000});
+      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
       await (await login.$CloseBox).click();
     } catch (e) {
       await (
@@ -44,7 +44,6 @@ describe("Create a collection and Deleting it:", async () => {
       // Prepare object to be passed into Python Shell
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_create_delete_collec",
@@ -67,7 +66,6 @@ describe("Create a collection and Deleting it:", async () => {
       // Prepare object to be passed into Python Shell
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_create_delete_collec",
@@ -88,7 +86,6 @@ describe("Create a collection and Deleting it:", async () => {
       //Prometheus status
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: ["prometheus_probe_create_delete_collec_status", 500, "Failed"],
       };
@@ -176,7 +173,6 @@ describe("Create a collection and Deleting it:", async () => {
       expectchai(cardTitle).to.have.string("Probe Testing");
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_create_delete_collec",
@@ -197,7 +193,6 @@ describe("Create a collection and Deleting it:", async () => {
     } else {
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_create_delete_collec",
@@ -218,7 +213,6 @@ describe("Create a collection and Deleting it:", async () => {
       //Prometheus status
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: ["prometheus_probe_create_delete_collec_status", 500, "Failed"],
       };
@@ -260,7 +254,6 @@ describe("Create a collection and Deleting it:", async () => {
       ).to.be.not.true;
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_create_delete_collec",
@@ -281,7 +274,6 @@ describe("Create a collection and Deleting it:", async () => {
     } else {
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: [
           "prometheus_metrics_create_delete_collec",
@@ -302,7 +294,6 @@ describe("Create a collection and Deleting it:", async () => {
       //Prometheus status
       var options = {
         mode: "text",
-        pythonPath: "python",
         pythonOptions: ["-u"],
         args: ["prometheus_probe_create_delete_collec_status", 500, "Failed"],
       };
@@ -325,7 +316,6 @@ describe("Create a collection and Deleting it:", async () => {
     await (await Collections.$closeCollectionTray).click();
     var options = {
       mode: "text",
-      pythonPath: "python",
       pythonOptions: ["-u"],
       args: ["prometheus_probe_create_delete_collec_status", 200, "Success"],
     };
