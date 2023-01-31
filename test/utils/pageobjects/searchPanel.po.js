@@ -7,7 +7,7 @@ class SearchPanel {
          return $("//div[@class='flexbox-row-outer']")
      }
     get $searchIcon() {
-        return $('[data-mat-icon-name="search"] svg')
+        return $("//mat-icon[@svgicon='search']")
     }
     get $checkbox() {
         return $('input[class="mat-checkbox-input cdk-visually-hidden"]')
