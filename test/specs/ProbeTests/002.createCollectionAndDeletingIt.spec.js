@@ -14,9 +14,10 @@ describe("Create a collection and Deleting it:", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     await browser.url(URL);
     try {
+      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).waitForDisplayed({timeout: 10000})
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed();
+      await (await login.$CloseBox).waitForDisplayed({timeout:10000});
       await (await login.$CloseBox).click();
     } catch (e) {
       await (
@@ -27,80 +28,83 @@ describe("Create a collection and Deleting it:", async () => {
       let titleMatch = (await browser.getTitle()).localeCompare(
         "Data Discovery"
       );
+      console.log('***checking Authentication****');
+      expectchai((await browser.getTitle()).localeCompare("Data Discovery")).to.be.equals(+0);
       console.log("*****" + titleMatch);
-      console.log(
-        "****checking the Authentication & visibility of search box******"
-      );
-      if (
-        (await searchPanel.$searchBox).waitForDisplayed({ timeout: 200000 })
-      ) {
-        // Prepare object to be passed into Python Shell
-        var options = {
-          mode: "text",
-          pythonPath: "python",
-          pythonOptions: ["-u"],
-          args: [
-            "prometheus_metrics_auth_gis",
-            200,
-            "User login to GIS map successfully",
-          ],
-        };
-
-        // Pass into Python shell
-        PythonShell.run(
-          `${process.cwd()}/probe-deployment/files/metrics.py`,
-          options,
-          function (err) {
-            if (err) throw err;
-            console.log("finished");
-            console.log("****if block");
-          }
-        );
-      } else {
-        // Prepare object to be passed into Python Shell
-        var options = {
-          mode: "text",
-          pythonPath: "python",
-          pythonOptions: ["-u"],
-          args: [
-            "prometheus_metrics_auth_gis",
-            500,
-            "error User failed to login on GIS map ",
-          ],
-        };
-
-        // Pass into Python shell
-        PythonShell.run(
-          `${process.cwd()}/probe-deployment/files/metrics.py`,
-          options,
-          function (err) {
-            if (err) throw err;
-            console.log("failed");
-          }
-        );
-        //Prometheus status
-        var options = {
-          mode: "text",
-          pythonPath: "python",
-          pythonOptions: ["-u"],
-          args: ["prometheus_probe_auth_gis_status", 500, "Failed"],
-        };
-
-        // Pass into Python shell
-        PythonShell.run(
-          `${process.cwd()}/probe-deployment/files/metrics.py`,
-          options,
-          function (err) {
-            if (err) throw err;
-            console.log("failed");
-          }
-        );
-      }
-
       console.log("****close Box is not display for this test user a/c*****");
     }
 
-    expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
+    console.log(
+      "****checking  visibility of search box******"
+    );
+    if (
+      (await searchPanel.$searchBox).waitForClickable({ timeout: 200000 })
+    ) {
+      expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
+      // Prepare object to be passed into Python Shell
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: [
+          "prometheus_metrics_create_delete_collec",
+          200,
+          "User ia able to see search box ",
+        ],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("finished");
+          console.log("****if block");
+        }
+      );
+    } else {
+      // Prepare object to be passed into Python Shell
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: [
+          "prometheus_metrics_create_delete_collec",
+          500,
+          "error search box is not displayed ",
+        ],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("failed");
+        }
+      );
+      //Prometheus status
+      var options = {
+        mode: "text",
+        pythonPath: "python",
+        pythonOptions: ["-u"],
+        args: ["prometheus_probe_create_delete_collec_status", 500, "Failed"],
+      };
+
+      // Pass into Python shell
+      PythonShell.run(
+        `${process.cwd()}/probe-deployment/files/metrics.py`,
+        options,
+        function (err) {
+          if (err) throw err;
+          console.log("failed");
+        }
+      );
+    }
+
+
   });
 
   it("Data Selection , create & delet the simple collection", async () => {
@@ -245,7 +249,7 @@ describe("Create a collection and Deleting it:", async () => {
       await $("mat-dialog-container")
     ).waitForClickable({ timeout: 80000 });
     await (await $("//span[normalize-space()='Confirm']")).click();
-    console.log("*******validate the delete container******");
+    console.log("*******validate the delete colllection******");
 
     await browser.pause(5000);
     if (activeProbeCard !== "Probe Testing") {

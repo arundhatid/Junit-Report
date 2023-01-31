@@ -35,6 +35,6 @@ def prometheus_probe_latency(response_code, message, latency):
 
 if __name__ == '__main__':
     if len(sys.argv) == 5:
-        globals()[sys.argv[1]](sys.argv[2], sys.argv[3], sys.argv[4])
+        globals()[sys.argv[1]](sys.argv[2], sys.argv[3], float(sys.argv[4]))
     if len(sys.argv) == 4:
         globals()[sys.argv[1]](sys.argv[2], sys.argv[3])

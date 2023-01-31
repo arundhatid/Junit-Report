@@ -25,6 +25,9 @@ exports.config = {
 
   baseUrl: process.env,
   suites: {
+    PROBE: [
+      ["./test/specs/ProbeTests/*.spec.js"],
+    ],
     PROBE: [["./test/specs/ProbeTests/002.createCollectionAndDeletingIt.spec.js"]],
 
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
@@ -289,7 +292,7 @@ exports.config = {
    * Hook that gets executed before the suite starts
    * @param {Object} suite suite details
    */
-  beforeSuite: function (suite) { },
+  beforeSuite: function (suite) {},
   /**
    * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
@@ -321,7 +324,7 @@ exports.config = {
     test,
     context,
     { error, result, duration, passed, retries }
-  ) { },
+  ) {},
 
   /**
    * Hook that gets executed after the suite has ended

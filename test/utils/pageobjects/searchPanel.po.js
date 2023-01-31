@@ -3,9 +3,9 @@ class SearchPanel {
         return $('input[id="gisSearch"]');
 
     }
-    // get $searchResults(){
-    //     return $('div[class="search-icon-label"]')
-    // }
+     get $flexBox(){
+         return $("//div[@class='flexbox-row-outer']")
+     }
     get $searchIcon() {
         return $('[data-mat-icon-name="search"] svg')
     }
