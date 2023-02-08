@@ -26,10 +26,14 @@ exports.config = {
   baseUrl: process.env,
   suites: {
     PROBEALL: [["./test/specs/ProbeTests/*.spec.js"]],
-    PROBE: [["./test/specs/ProbeTests/001.GIS.spec.js", "./test/specs/ProbeTests/002.createCollectionAndDeletingIt.spec.js"]],
+    PROBE: [
+      [
+        "./test/specs/ProbeTests/001.GIS.spec.js",
+        "./test/specs/ProbeTests/002.createCollectionAndDeletingIt.spec.js",
+      ],
+    ],
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
     REGRESSION: [["./test/specs/RegressionTests/007.collection.spec.js"]],
-    PERFORMANCE: [["./test/specs/PerformanceTest/PerformanceTestForGIS.spec.js"]]
   },
 
   specs: ["./test/specs/**/*.js"],

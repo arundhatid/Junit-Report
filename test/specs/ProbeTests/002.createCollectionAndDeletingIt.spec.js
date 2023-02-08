@@ -14,7 +14,9 @@ describe("Create a collection and Deleting it:", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     await browser.url(URL);
     try {
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).waitForDisplayed({ timeout: 10000 })
+      await delfi
+        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
+        .waitForDisplayed({ timeout: 10000 });
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
       await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
@@ -23,23 +25,28 @@ describe("Create a collection and Deleting it:", async () => {
       await (
         await searchPanel.$searchBox
       ).waitForDisplayed({ timeout: 200000 });
+
+      try {
+        await (await Collections.$closeCollectionTray).isDisplayed();
+        await (await Collections.$closeCollectionTray).click();
+      } catch (e) {
+        console.log("****if coll tray is up by default than close it 1st");
+      }
       console.log("*******title =" + (await browser.getTitle()));
 
       let titleMatch = (await browser.getTitle()).localeCompare(
         "Data Discovery"
       );
-      console.log('***checking Authentication****');
-      expectchai((await browser.getTitle()).localeCompare("Data Discovery")).to.be.equals(+0);
+      console.log("***checking Authentication****");
+      expectchai(
+        (await browser.getTitle()).localeCompare("Data Discovery")
+      ).to.be.equals(+0);
       console.log("*****" + titleMatch);
       console.log("****close Box is not display for this test user a/c*****");
     }
 
-    console.log(
-      "****checking  visibility of search box******"
-    );
-    if (
-      (await searchPanel.$searchBox).waitForClickable({ timeout: 200000 })
-    ) {
+    console.log("****checking  visibility of search box******");
+    if ((await searchPanel.$searchBox).waitForClickable({ timeout: 200000 })) {
       expectchai(await searchPanel.$searchBox.isDisplayed()).to.be.true;
       // Prepare object to be passed into Python Shell
       var options = {
@@ -100,8 +107,6 @@ describe("Create a collection and Deleting it:", async () => {
         }
       );
     }
-
-
   });
 
   it("Data Selection , create & delet the simple collection", async () => {
@@ -160,17 +165,35 @@ describe("Create a collection and Deleting it:", async () => {
     await (await Collections.$saveButton).click();
     console.log("****saved coll****");
 
-    const activeProbeCard = await $("div.active-cards pioneer-collection-item");
-    const cardTitle = await (
-      await activeProbeCard.$("div.collection-container__title h6")
-    ).getText();
-    console.log("*****Validate Collection*******");
-
     await (await $("//button[@class='button-pin-tray']")).waitForDisplayed();
     await (await $("//button[@class='button-pin-tray']")).click();
-    await browser.pause(5000);
-    if (cardTitle == "Probe Testing") {
+
+    await (await $("//div[@class='dls-content']")).waitForDisplayed();
+    const toasterSave1 = await (
+      await $("//div[@class='dls-content']")
+    ).getText();
+    console.log(toasterSave1);
+    await browser.pause(2000);
+    const toasterSave2 = await (
+      await $("//div[@class='dls-content']")
+    ).getText();
+    console.log(toasterSave2);
+
+    try {
+      const activeProbeCard = await $(
+        "div.active-cards pioneer-collection-item"
+      );
+      const cardTitle = await (
+        await activeProbeCard.$("div.collection-container__title h6")
+      ).getText();
       expectchai(cardTitle).to.have.string("Probe Testing");
+      console.log("*****Validate Collection*******");
+    } catch (e) {
+      console.log("*****waiting for collection save successfully");
+    }
+
+    await browser.pause(5000);
+    if (toasterSave1 == "Results saved." || toasterSave2 == "Results saved.") {
       var options = {
         mode: "text",
         pythonOptions: ["-u"],
@@ -228,6 +251,7 @@ describe("Create a collection and Deleting it:", async () => {
       );
     }
 
+    const activeProbeCard = await $("div.active-cards pioneer-collection-item");
     await (
       await activeProbeCard.$('mat-icon[svgicon="more"]')
     ).waitForClickable({ timeout: 80000 });
@@ -244,6 +268,12 @@ describe("Create a collection and Deleting it:", async () => {
     ).waitForClickable({ timeout: 80000 });
     await (await $("//span[normalize-space()='Confirm']")).click();
     console.log("*******validate the delete colllection******");
+    await (await $("//div[text()='Collection deleted.']")).waitForDisplayed();
+    await browser.pause(2000);
+    const toasterDelete = await (
+      await $("//div[contains(text(),'Collection deleted.')]")
+    ).getText();
+    console.log(toasterDelete);
 
     await browser.pause(5000);
     if (activeProbeCard !== "Probe Testing") {

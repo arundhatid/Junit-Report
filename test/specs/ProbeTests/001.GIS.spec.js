@@ -96,15 +96,18 @@ describe("Login for CDD app ", async () => {
     }
 
     try {
-      await (await login.$CloseBox).waitForDisplayed()
-      await (await login.$CloseBox).click()
-     } catch (e) {
-      console.log('closed box is not appear for this test User account');
-     }
+      await (await login.$CloseBox).waitForDisplayed();
+      await (await login.$CloseBox).click();
+    } catch (e) {
+      console.log("closed box is not appear for this test User account");
+    }
 
     await mapWebelement.waitForDisplayed({ timeout: 90000 });
     console.log("*****checking prmotheus matrics for GIS map element****");
     if (await mapWebelement.isDisplayed()) {
+      await (
+        await SearchPanel.$searchIcon
+      ).waitForDisplayed({ timeout: 40000 });
       await (
         await SearchPanel.$searchIcon
       ).waitForClickable({ timeout: 40000 });
@@ -112,7 +115,7 @@ describe("Login for CDD app ", async () => {
       await (
         await SearchPanel.$firstSearchResults
       ).waitForDisplayed({ timeout: 80000 });
-      console.log('***search panel Results are diplayed or not***');
+      console.log("***search panel Results are diplayed or not***");
       expectchai(
         await $("(//div[@class='search-icon-label'])[1]").isDisplayed()
       ).to.be.true;
