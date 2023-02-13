@@ -100,9 +100,16 @@ stages:
                       # Deploy Probe
                       echo "Authenticating with SA key"
                       gcloud auth activate-service-account --key-file $(Agent.TempDirectory)/prod-cdd.json
-                      chmod 777 probe-deployment/deploy.sh
-                      echo "Using the mapped env var for this task works and is recommended: $SECRETCREDS"
-                      sh probe-deployment/deploy.sh
+
+
+                      if [[ $(kubectl get deployment cdd-probe-deployment -n data-discovery | awk 'FNR==2 {print $4}') == '1' ]]; then
+                          chmod 777 probe-deployment/deploy.sh
+                          echo "Using the mapped env var for this task works and is recommended: $SECRETCREDS"
+                          sh probe-deployment/deploy.sh
+                      else
+                          echo "I am not allowed to deploy because there are no available pods, may be someone reduced the replica set to 0"
+                      fi
+
                   env:
                     SECRETCREDS: $(svcaccountcreds)
 

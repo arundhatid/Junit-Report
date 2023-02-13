@@ -1,0 +1,52 @@
+pool:
+  name: gaia-osdu-vsts-agents-new
+
+trigger: none
+
+parameters:
+  - name: replica
+    displayName: Replica Set Scale
+    type: number
+    values:
+      - 0
+      - 1
+
+stages:
+  - stage: deploy
+    jobs:
+      - deployment: cdd_probe
+        environment: cddreplica
+        displayName: set_replica
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: DownloadSecureFile@1
+                  displayName: "Download secure file"
+                  inputs:
+                    secureFile: "prod-cdd.json"
+
+                - task: Bash@3
+                  displayName: "Scale replica for probe in PROD EU"
+                  inputs:
+                    targetType: inline
+                    script: |
+                      # Deploy Probe
+                      echo "Authenticating with SA key"
+                      gcloud auth activate-service-account --key-file $(Agent.TempDirectory)/prod-cdd.json
+
+                      echo "Connect to the cluster"
+                      gcloud container clusters get-credentials data-discovery --region europe-west4 --project p-cdd-services
+
+                      echo Scale the deployment to ${{ parameters.replica }}
+                      kubectl scale deploy cdd-probe-deployment -n data-discovery --replicas=${{ parameters.replica }}
+
+                - task: Bash@3
+                  displayName: "Revoke credentials"
+                  condition: succeededOrFailed()
+                  inputs:
+                    targetType: inline
+                    script: |
+                      set -e
+                      gcloud auth revoke $(gcloud config get-value account)
