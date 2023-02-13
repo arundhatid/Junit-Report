@@ -101,6 +101,8 @@ stages:
                       echo "Authenticating with SA key"
                       gcloud auth activate-service-account --key-file $(Agent.TempDirectory)/prod-cdd.json
 
+                      echo "Connect to the cluster"
+                      gcloud container clusters get-credentials data-discovery --region europe-west4 --project p-cdd-services
 
                       if [[ $(kubectl get deployment cdd-probe-deployment -n data-discovery | awk 'FNR==2 {print $4}') == '1' ]]; then
                           chmod 777 probe-deployment/deploy.sh

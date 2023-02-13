@@ -166,7 +166,7 @@ exports.config = {
           outputDir: "driver-logs", // overwrites the config.outputDir
           args: ["--silent"],
           chromedriverCustomPath:
-            "C:\\Users\\priya.Ingole\\Downloads\\chromedriver_win32",
+            "C:\\Users\\priya.Ingole\\Downloads\\chromedriver_win32 (1)",
         },
       ],
     ],

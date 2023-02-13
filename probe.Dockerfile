@@ -45,28 +45,18 @@ RUN npm install -g \
 # Install the chrome driver
 RUN apt-get update
 RUN apt-get install -y fonts-liberation libappindicator3-1 xdg-utils
-ENV CHROME_VERSION 108.0.5359.125
 RUN wget -O /usr/src/google-chrome-stable_current_amd64.deb "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 RUN apt-get install -y /usr/src/google-chrome-stable_current_amd64.deb
 RUN rm /usr/src/google-chrome-stable_current_amd64.deb
-
-#RUN wget -O /usr/src/google-chrome-stable_current_amd64.deb "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb" && \
-#dpkg -i /usr/src/google-chrome-stable_current_amd64.deb ; \
-#dpkg -i /usr/src/google-chrome-stable_current_amd64.deb ; \
-#apt-get install -f -y && \
-#apt-get install /usr/src/google-chrome-stable_current_amd64.deb \
-# rm -f /usr/src/google-chrome-stable_current_amd64.deb
 RUN google-chrome --version
 # We copy everything except the node_modules folder and whatever is in .dockerignore file.
 ADD . /app
 # Install dependencies right inside the docker. Private package will be installed as well.
 # Appropriate chromedriver (for linux) is installed automatically, basead on packege version in package.json.
-# for example: "chromedriver": "^102.0.0"
 RUN npm install
-# Load tests service ulr
-ENV SERVICE_URL not_defined
-ENV USERS_COUNT 1
+RUN npm install chromedriver --chromedriver_version=LATEST
+RUN npm list --depth=0
 
 RUN chmod 777 -R /app/probe-deployment
 RUN chmod +x /app/start.sh

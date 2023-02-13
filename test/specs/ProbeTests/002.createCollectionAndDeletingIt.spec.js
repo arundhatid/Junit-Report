@@ -190,8 +190,9 @@ describe("Create a collection and Deleting it:", async () => {
       console.log("*****Validate Collection*******");
     } catch (e) {
       console.log("*****waiting for collection save successfully");
+      console.log("*****get failed metrices as failed to create new coll because coll name already exit");
     }
-
+    
     await browser.pause(5000);
     if (toasterSave1 == "Results saved." || toasterSave2 == "Results saved.") {
       var options = {
