@@ -69,3 +69,16 @@ Logs can be found at Grafana - Loki : <https://grafana-prod.discovery.cloud.slb-
 Metrics can be found is Grafana - Thanos : <https://grafana-prod.discovery.cloud.slb-ds.com/explore?orgId=1&left=%7B%22datasource%22:%22E12jhcenz%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22datasource%22:%7B%22type%22:%22prometheus%22,%22uid%22:%22E12jhcenz%22%7D,%22editorMode%22:%22code%22,%22expr%22:%22cdd_probe_total%22,%22legendFormat%22:%22__auto%22,%22range%22:true,%22instant%22:true%7D%5D,%22range%22:%7B%22from%22:%22now-12h%22,%22to%22:%22now%22%7D%7D>
 
 ![Image](./images/metrics.JPG)
+
+## Probe Run Info
+
+If the Image Deploy pipeline shows "I am not allowed to deploy because there are no available pods, may be someone reduced the replica set to 0" message in "Deploy Probe to PROD-EU cluster" task in the pipeline, this means that the probe replica has been set to 0. After this run the Replica scale pipeline to scale the probe pod to 1 from 0"
+
+Pipeline for the Replica Scale can be found here : <https://dev.azure.com/slb-swt/gaia/_build?definitionId=21869>
+Pipeline for the image deploy can be found here : <https://dev.azure.com/slb-swt/gaia/_build?definitionId=21320>
+
+0 here means -> we scale to pods to 0 meaning that probe won't run &
+1 here mean -> we scale the pods to 1 meaning that probe would run .
+
+To run probe increase the Scale at 1 which was set to 0.
+To stop the probe running reduce the scale which was set to 1.
