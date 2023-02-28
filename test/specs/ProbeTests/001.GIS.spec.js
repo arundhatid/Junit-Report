@@ -13,13 +13,13 @@ describe("Login for CDD app ", async () => {
     const SECRET_KEY = "fssknsltfkc2sxhy";
     console.log(
       "value of id" +
-      USER_ID +
-      "pass" +
-      PASSWORD +
-      "url" +
-      URL +
-      "secret" +
-      SECRET_KEY
+        USER_ID +
+        "pass" +
+        PASSWORD +
+        "url" +
+        URL +
+        "secret" +
+        SECRET_KEY
     );
     var today = new Date();
     await browser.url(URL);
@@ -29,7 +29,7 @@ describe("Login for CDD app ", async () => {
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     console.log("*****start time=" + startTime);
     var a = startTime.toString().split(":");
-    var startSeconds = parseFloat(((+a[0]) * 60 * 60) + ((+a[1]) * 60) + (+a[2]));
+    var startSeconds = parseFloat(+a[0] * 60 * 60 + +a[1] * 60 + +a[2]);
     console.log("***start seconds = " + startSeconds);
     console.log("title =" + (await browser.getTitle()));
     let titleMatch = (await browser.getTitle()).localeCompare("Data Discovery");
@@ -125,9 +125,9 @@ describe("Login for CDD app ", async () => {
         today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       console.log("*****finish time=" + finishTime);
       var b = finishTime.toString().split(":");
-      var finishSeconds = parseFloat(((+b[0]) * 60 * 60) + ((+b[1]) * 60) + (+b[2]));
+      var finishSeconds = parseFloat(+b[0] * 60 * 60 + +b[1] * 60 + +b[2]);
       console.log("***finish seconds = " + finishSeconds);
-      var totalSeconds = (finishSeconds - startSeconds);
+      var totalSeconds = finishSeconds - startSeconds;
       console.log("*****total seconds =" + totalSeconds);
       expectchai(await mapWebelement.isDisplayed()).to.be.true;
       var options = {
