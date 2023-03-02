@@ -28,6 +28,9 @@ class Login {
         return $('delfi-gui-data-partition section [data-mat-icon-name="close"] svg')
 
     }
+    get $IncorrectIDOrPass() {
+        return $("//span[@id='errorText']");
+    }
 
 
 }
