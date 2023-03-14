@@ -112,13 +112,23 @@ describe("Create a collection and Deleting it:", async () => {
   it("Data Selection , create & delet the simple collection", async () => {
     await (await searchPanel.$searchIcon).waitForClickable({ timeout: 40000 });
     await (await searchPanel.$searchIcon).click();
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForDisplayed({ timeout: 80000 });
+    try {
+      await (
+        await searchPanel.$firstSearchResults
+      ).waitForDisplayed({ timeout: 100000 });
+      await (
+        await searchPanel.$firstSearchResults
+      ).waitForClickable({ timeout: 90000 });
+    } catch (e) {
+      await (
+        await searchPanel.$firstSearchResults
+      ).waitForDisplayed({ timeout: 100000 });
+      await (
+        await searchPanel.$firstSearchResults
+      ).waitForClickable({ timeout: 90000 });
+      console.log("*****retry the First Search Result");
+    }
     await browser.pause(3000);
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForClickable({ timeout: 90000 });
     await (await searchPanel.$firstSearchResults).click();
     console.log("******click on layer******");
     await (
@@ -173,7 +183,7 @@ describe("Create a collection and Deleting it:", async () => {
       await $("//div[@class='dls-content']")
     ).getText();
     console.log(toasterSave1);
-    await browser.pause(3000);
+    await browser.pause(4000);
     await (await $("//div[@class='dls-content']")).waitForDisplayed();
     const toasterSave2 = await (
       await $("//div[@class='dls-content']")
@@ -187,7 +197,7 @@ describe("Create a collection and Deleting it:", async () => {
       const cardTitle = await (
         await activeProbeCard.$("div.collection-container__title h6")
       ).getText();
-      expectchai(cardTitle).to.have.string("Probe Testing");
+      expectchai(cardTitle).to.have.string("Probe Testing Coll_01");
       console.log("*****Validate Collection*******");
     } catch (e) {
       console.log("*****waiting for collection save successfully");
