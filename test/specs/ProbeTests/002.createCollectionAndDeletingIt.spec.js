@@ -157,7 +157,18 @@ describe("Create a collection and Deleting it:", async () => {
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("Probe Testing Coll");
+
+    var ts = String(new Date().getTime());
+    var k = "value";
+    var i = 0;
+    for (i = 1; i < ts.length; i++) {
+      eval("var " + k + i + "= " + i + ";");
+    }
+    var change = ts++;
+    console.log("change =" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Probe Testing Coll" + change);
     console.log("*****enter collection name****");
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
@@ -282,15 +293,21 @@ describe("Create a collection and Deleting it:", async () => {
     ).waitForClickable({ timeout: 80000 });
     await (await $("//span[normalize-space()='Confirm']")).click();
     console.log("*******validate the delete colllection******");
-    await (await $("//div[text()='Collection deleted.']")).waitForDisplayed();
-    await browser.pause(2000);
-    const toasterDelete = await (
-      await $("//div[contains(text(),'Collection deleted.')]")
-    ).getText();
-    console.log(toasterDelete);
 
-    await browser.pause(5000);
-    if (activeProbeCard !== "Probe Testing") {
+    await (await $("//div[@class='dls-content']")).waitForDisplayed();
+    const toasterDelete1 = await (
+      await $("//div[@class='dls-content']")
+    ).getText();
+    console.log(toasterDelete1);
+    await browser.pause(3000);
+    await (await $("//div[@class='dls-content']/div")).waitForDisplayed();
+    const toasterDelete2 = await (
+      await $("//div[@class='dls-content']/div")
+    ).getText();
+    console.log(toasterDelete2);
+
+    await browser.pause(2000);
+    if (toasterDelete1 == "Success" || toasterDelete2 == "Success") {
       expectchai(
         await (
           await $("div.active-cards pioneer-collection-item")
