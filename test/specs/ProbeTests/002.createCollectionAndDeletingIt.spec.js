@@ -2,6 +2,7 @@ const searchPanel = require("../../utils/pageobjects/searchPanel.po");
 const Collections = require("../../utils/pageobjects/collections.po");
 const delfi = require("../../utils/methods/Login");
 const login = require("../../utils/pageobjects/login.po.js");
+const map = require("../../utils/pageobjects/map.po");
 const PythonShell = require("python-shell").PythonShell;
 var expectchai = require("chai").expect;
 
@@ -143,6 +144,7 @@ describe("Create a collection and Deleting it:", async () => {
     ).click();
     await (await Collections.$Actions).waitForClickable({ timeout: 80000 });
     await Collections.$Actions.click();
+    await Collections.$collectionMenu.click();
     await Collections.$Add.click();
     await Collections.$Add.click();
     await (
@@ -186,8 +188,8 @@ describe("Create a collection and Deleting it:", async () => {
     await (await Collections.$saveButton).click();
     console.log("****saved coll****");
 
-    await (await $("//button[@class='button-pin-tray']")).waitForDisplayed();
-    await (await $("//button[@class='button-pin-tray']")).click();
+    await (await Collections.$collectionTray).waitForDisplayed();
+    await (await Collections.$collectionTray).click();
 
     await (await $("//div[@class='dls-content']")).waitForDisplayed();
     const toasterSave1 = await (
@@ -200,22 +202,6 @@ describe("Create a collection and Deleting it:", async () => {
       await $("//div[@class='dls-content']")
     ).getText();
     console.log(toasterSave2);
-
-    try {
-      const activeProbeCard = await $(
-        "div.active-cards pioneer-collection-item"
-      );
-      const cardTitle = await (
-        await activeProbeCard.$("div.collection-container__title h6")
-      ).getText();
-      expectchai(cardTitle).to.have.string("Probe Testing Coll_01");
-      console.log("*****Validate Collection*******");
-    } catch (e) {
-      console.log("*****waiting for collection save successfully");
-      console.log(
-        "*****get failed metrices as failed to create new coll because coll name already exit"
-      );
-    }
 
     await browser.pause(5000);
     if (toasterSave1 == "Records saved" || toasterSave2 == "Records saved") {
@@ -278,20 +264,19 @@ describe("Create a collection and Deleting it:", async () => {
 
     const activeProbeCard = await $("div.active-cards pioneer-collection-item");
     await (
-      await activeProbeCard.$('mat-icon[svgicon="more"]')
-    ).waitForClickable({ timeout: 80000 });
-    await (await activeProbeCard.$('mat-icon[svgicon="more"]')).click();
+      await activeProbeCard.$("//button[@data-slb-id='card-menu']")
+    ).waitForClickable();
     await (
-      await $("//button[text()='Delete']")
-    ).waitForClickable({ timeout: 80000 });
-
-    await (await $("//button[text()='Delete']")).click();
+      await activeProbeCard.$("//button[@data-slb-id='card-menu']")
+    ).click();
+    await (await Collections.$deletButton).waitForClickable();
+    await (await Collections.$deletButton).click();
     console.log("*****Delete the collection*******");
 
-    await (
-      await $("mat-dialog-container")
-    ).waitForClickable({ timeout: 80000 });
-    await (await $("//span[normalize-space()='Confirm']")).click();
+    await (await $("mat-dialog-container")).waitForDisplayed();
+    await browser.pause(2000);
+    await (await map.$confrimClear).waitForClickable();
+    await (await map.$confrimClear).click();
     console.log("*******validate the delete colllection******");
 
     await (await $("//div[@class='dls-content']")).waitForDisplayed();

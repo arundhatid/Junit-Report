@@ -33,7 +33,20 @@ exports.config = {
       ],
     ],
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
-    REGRESSION: [["./test/specs/RegressionTests/007.collection.spec.js"]],
+    REGRESSION: [["./test/specs/RegressionTests/005.collection.spec.js"]],
+    // REGRESSION: [
+    //   [
+    //     "./test/specs/RegressionTests/004.GISFeature.spec.js",
+    //     "./test/specs/RegressionTests/006.seismicDataOn2DViewer.spec.js",
+    //     "./test/specs/RegressionTests/007.LayersAndFilters.spec.js",
+    //     "./test/specs/RegressionTests/009. Welllogs.spec.js",
+    //     "./test/specs/RegressionTests/1010.avaliableCards.spec.js",
+    //     "./test/specs/RegressionTests/1011.filterAvaliableCollAndProjects.spec.js",
+    //   ],
+    // ],
+    PERFORMANCE: [
+      ["./test/specs/PerformanceTest/PerformanceTestForGIS.spec.js"],
+    ],
   },
 
   specs: ["./test/specs/**/*.js"],
@@ -289,7 +302,7 @@ exports.config = {
    * Hook that gets executed before the suite starts
    * @param {Object} suite suite details
    */
-  beforeSuite: function (suite) { },
+  beforeSuite: function (suite) {},
   /**
    * Function to be executed before a test (in Mocha/Jasmine) starts.
    */
@@ -321,7 +334,7 @@ exports.config = {
     test,
     context,
     { error, result, duration, passed, retries }
-  ) { },
+  ) {},
 
   /**
    * Hook that gets executed after the suite has ended
