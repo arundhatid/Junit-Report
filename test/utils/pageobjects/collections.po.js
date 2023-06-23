@@ -1,9 +1,7 @@
 class Collections {
-  // get $actions(){
-  //     return $('div[class="action-button"]')
-  // }
+  
   get $Add() {
-    return $('[data-mat-icon-name="add-new-job"]');
+    return $("//mat-icon[starts-with(@data-mat-icon-name,'add')]");
   }
   get $Actions() {
     return $("//span[text()=' Actions ']");
@@ -20,6 +18,9 @@ class Collections {
   get $removeFrom() {
     return $("//span[text()='Remove From']");
   }
+  get $wellbore() {
+    return $("//mat-icon[@data-mat-icon-name='log-set']")
+}
   get $titleCollection() {
     return $('[id="mat-input-0"]');
   }
@@ -42,7 +43,7 @@ class Collections {
     return $("//button[@data-slb-id='confirm']");
   }
   get $collectionTray() {
-    return $("//button[@class='button-pin-tray']");
+    return $("//mat-icon[@class='mat-icon notranslate arrow mat-icon-no-color']");
   }
   get $closeCollectionTray() {
     return $("//button[@class='button-pin-tray is-open']");

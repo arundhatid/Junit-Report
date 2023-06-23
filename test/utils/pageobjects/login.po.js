@@ -1,37 +1,37 @@
 const totp = require("totp-generator");
 class Login {
-    get $SigninAndSignUpButton() {
-        return $('button[data-slb-id="login"]');
-    }
-    get $EmailInputBox() {
-        return $('#emailInput');
-    }
-    get $SubmitBox() {
-        return $("#submitbutton");
-    }
-    get $PasswordInputBox() {
-        return $('#passwordInput');
-    }
-    get $VerifyPassword() {
-        return $("#submitButton");
-    }
-    get $OTPBox() {
-        return $('#verificationCodeInput')
-    }
-    get $SignInBox() {
-        return $("#signInButton");
-    }
-    get $YesBox() {
-        return $('[value="Yes"]');
-    }
-    get $CloseBox() {
-        return $('delfi-gui-data-partition section [data-mat-icon-name="close"] svg')
+  get $SigninAndSignUpButton() {
+    return $('button[data-slb-id="login"]');
+  }
+  get $EmailInputBox() {
+    return $("//input[@id='emailInput']");
+  }
+  get $SubmitBox() {
+    return $("//input[@id='submitbutton']");
+  }
+  get $EnterPassword() {
+    return $("//input[@type='password']");
+  }
+  get $SingIn() {
+    return $("//input[@type='submit']");
+  }
 
-    }
-    get $IncorrectIDOrPass() {
-        return $("//span[@id='errorText']");
-    }
-
-
+  get $OTPBox() {
+    return $("#verificationCodeInput");
+  }
+  get $SignInBox() {
+    return $("#signInButton");
+  }
+  get $YesBox() {
+    return $('[value="Yes"]');
+  }
+  get $CloseBox() {
+    return $(
+      'delfi-gui-data-partition section [data-mat-icon-name="close"] svg'
+    );
+  }
+  get $IncorrectIDOrPass() {
+    return $("//span[@id='errorText']");
+  }
 }
-module.exports = new Login()
+module.exports = new Login();

@@ -27,12 +27,6 @@ describe("Create a collection and Deleting it:", async () => {
         await searchPanel.$searchBox
       ).waitForDisplayed({ timeout: 200000 });
 
-      try {
-        await (await Collections.$closeCollectionTray).isDisplayed();
-        await (await Collections.$closeCollectionTray).click();
-      } catch (e) {
-        console.log("****if coll tray is up by default than close it 1st");
-      }
       console.log("*******title =" + (await browser.getTitle()));
 
       let titleMatch = (await browser.getTitle()).localeCompare(

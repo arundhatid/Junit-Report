@@ -26,19 +26,15 @@ class Map {
     return $('mat-icon[data-mat-icon-name="rectangle-selection"]');
   }
   get $collectionTray() {
-    //return $('button[data-slb-id="collection-tray-pin"]')
     return $("//button[normalize-space()='Collections']");
   }
   get $zoomplus() {
-    //return $('button[data-slb-id="collection-tray-pin"]')
     return $("//mat-icon[@svgicon='plus']");
   }
   get $zoomMinus() {
-    //return $('button[data-slb-id="collection-tray-pin"]')
     return $("//mat-icon[@svgicon='minus']");
   }
   get $RubberbandZoom() {
-    //return $('button[data-slb-id="collection-tray-pin"]')
     return $("//mat-icon[@id='rubberband-selection']");
   }
   get $PolygonSelection() {
@@ -48,7 +44,7 @@ class Map {
     return $("//mat-icon[@id='lasso-selection']");
   }
   get $LineAndCorridor() {
-    return $("//mat-icon[@mattooltip='Line & Corridor']");
+    return $("//mat-icon[@mattooltip='Well Log Selection']");
   }
   get $SliderBar() {
     return $("//div[@class='dls-slider-wrapper']");
@@ -61,6 +57,9 @@ class Map {
   }
   get $confrimClear() {
     return $("//button[@data-slb-id='confirm']");
+  }
+  get $clear() {
+    return $("//mat-icon[@data-slb-id='clear-all-filters-view-modes']");
   }
 }
 module.exports = new Map();

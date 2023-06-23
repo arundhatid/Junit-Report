@@ -1,5 +1,6 @@
 const login = require("../pageobjects/login.po.js");
 const totp = require("totp-generator");
+
 const { TimeoutError } = require("puppeteer-core");
 const PythonShell = require("python-shell").PythonShell;
 class DelfiLogin {
@@ -8,14 +9,14 @@ class DelfiLogin {
     await login.$EmailInputBox.setValue(userName);
     await login.$SubmitBox.click();
     browser.pause(1000);
-    await login.$PasswordInputBox.waitForDisplayed();
-    await login.$PasswordInputBox.setValue(password);
-    await login.$VerifyPassword.click();
+    await login.$EnterPassword.waitForDisplayed();
+    await login.$EnterPassword.setValue(password);
+    await login.$SingIn.click();
 
     try {
       await (
         await login.$IncorrectIDOrPass
-      ).waitForDisplayed({ timeout: 8000 });
+      ).waitForDisplayed({ timeout: 5000 });
       //Prometheus status
       var options = {
         mode: "text",
@@ -36,10 +37,16 @@ class DelfiLogin {
       console.log("****userId pass  would be incorrect");
     }
 
-    await browser.pause(5000);
+    await browser.pause(3000);
     const token = totp(tokenValue);
+    try {
+    await login.$OTPBox.waitForDisplayed({ timeout: 3000 })
     await login.$OTPBox.setValue(token);
     await login.$SignInBox.click();
+    } catch (e) {
+      console.log('***OTP')
+    }
+    
     await login.$YesBox.waitForDisplayed();
     await login.$YesBox.click();
   }
