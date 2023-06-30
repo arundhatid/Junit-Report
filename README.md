@@ -1,5 +1,12 @@
 # README FILE
 
+## Test User details
+
+1. In the system Environment Variables, create variables as below
+   TESTUSER1='DELFI-6976-SM-009@slb.com'
+   TESTUSERPASSWORD1='TWFjaGluZV4xMjM0NTY='
+   SECRET_KEY1='fssknsltfkc2sxhy'
+
 ## Probe
 
 Probe tests can be found here : `./test/specs/ProbeTests` folder where in we have three tests doing the below operations :

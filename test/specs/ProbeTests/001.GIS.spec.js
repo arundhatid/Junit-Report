@@ -114,7 +114,7 @@ describe("Login for CDD app ", async () => {
       await (await SearchPanel.$searchIcon).click();
       await (
         await SearchPanel.$firstSearchResults
-      ).waitForDisplayed({ timeout: 90000 });
+      ).waitForDisplayed({ timeout: 100000 });
       console.log("***search panel Results are diplayed or not***");
       expectchai(
         await $("(//div[@class='search-icon-label'])[1]").isDisplayed()

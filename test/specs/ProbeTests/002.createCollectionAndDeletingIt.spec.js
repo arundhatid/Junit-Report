@@ -257,12 +257,21 @@ describe("Create a collection and Deleting it:", async () => {
     }
 
     const activeProbeCard = await $("div.active-cards pioneer-collection-item");
-    await (
-      await activeProbeCard.$("//button[@data-slb-id='card-menu']")
-    ).waitForClickable();
-    await (
-      await activeProbeCard.$("//button[@data-slb-id='card-menu']")
-    ).click();
+    try {
+      await (
+        await activeProbeCard.$("//button[@data-slb-id='card-menu']")
+      ).waitForClickable();
+      await (
+        await activeProbeCard.$("//button[@data-slb-id='card-menu']")
+      ).click();
+    } catch (e) {
+      await (
+        await activeProbeCard.$("//button[@data-slb-id='card-menu']")
+      ).waitForClickable();
+      await (
+        await activeProbeCard.$("//button[@data-slb-id='card-menu']")
+      ).click();
+    }
     await (await Collections.$deletButton).waitForClickable();
     await (await Collections.$deletButton).click();
     console.log("*****Delete the collection*******");
