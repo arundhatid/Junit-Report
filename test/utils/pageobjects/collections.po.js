@@ -10,7 +10,7 @@ class Collections {
     return $("(//span[@class='mdc-list-item__primary-text'])[1]");
   }
   get $newCollection() {
-    return $("(//span[contains(text(),'New')])[2]");
+    return $("//span[contains(text(),'New Collection')]");
   }
   get $activeCollections() {
     return $("//span[text()='Active Collection']");

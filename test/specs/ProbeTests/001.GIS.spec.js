@@ -8,7 +8,7 @@ describe("Login for CDD app ", async () => {
   it("User should be able to login successfully and GIS Map should be loaded correctly", async () => {
     const mapWebelement = await map.$map;
     const USER_ID = "DELFI-6976-SM-009@slb.com";
-    const PASSWORD = "Machine^123456";
+    const PASSWORD = "AD@pi2023!";
     const URL = "https://data.discovery.delfi.slb.com/";
     const SECRET_KEY = "fssknsltfkc2sxhy";
     console.log(

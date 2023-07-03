@@ -10,7 +10,7 @@ var expectchai = require("chai").expect;
 describe("Create a collection and Deleting it:", async () => {
   before(async () => {
     const USER_ID = "DELFI-6976-SM-009@slb.com";
-    const PASSWORD = "Machine^123456";
+    const PASSWORD = "AD@pi2023!";
     const URL = "https://data.discovery.delfi.slb.com/";
     const SECRET_KEY = "fssknsltfkc2sxhy";
     await browser.url(URL);

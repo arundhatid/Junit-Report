@@ -31,7 +31,7 @@ class Login {
     );
   }
   get $IncorrectIDOrPass() {
-    return $("//span[@id='errorText']");
+    return $("//div[@id='passwordError']");
   }
 }
 module.exports = new Login();
