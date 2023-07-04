@@ -44,9 +44,8 @@ exports.config = {
         "./test/specs/RegressionTests/1093975.User can perform text search in Availble cards section of Collection Tray.spec.js",
         "./test/specs/RegressionTests/1041647.User can view Focus, Unique, Overlapping and Excluded data when comparing active collections.spec.js",
         "./test/specs/RegressionTests/951039.User Creates Collections Of Various Data Items From Various Data Types.spec.js",
-    
       ],
-     ],
+    ],
     PERFORMANCE: [
       ["./test/specs/PerformanceTest/PerformanceTestForGIS.spec.js"],
     ],

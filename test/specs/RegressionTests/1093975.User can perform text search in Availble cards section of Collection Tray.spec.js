@@ -103,7 +103,9 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("coll_Avaliable cards" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("coll_Avaliable cards" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
@@ -165,7 +167,9 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("Coll For Text_Search" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Coll For Text_Search" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption

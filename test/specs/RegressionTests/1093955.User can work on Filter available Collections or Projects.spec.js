@@ -110,7 +110,9 @@ describe("Verify User can work on Filter available Collections/Projects :", asyn
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("coll_Avaliable cards" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("coll_Avaliable cards" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
@@ -172,7 +174,9 @@ describe("Verify User can work on Filter available Collections/Projects :", asyn
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("Coll For Text_Search" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Coll For Text_Search" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
@@ -196,7 +200,7 @@ describe("Verify User can work on Filter available Collections/Projects :", asyn
     await browser.pause(3000);
 
     await (await Collections.$collectionTray).click();
-   // await (await Collections.$eyeUnhideIcon).click();
+    // await (await Collections.$eyeUnhideIcon).click();
     await (await searchPanel.$searchBox).waitForDisplayed();
     await (await searchPanel.$crossResult).click();
     await (await searchPanel.$searchBox).click();

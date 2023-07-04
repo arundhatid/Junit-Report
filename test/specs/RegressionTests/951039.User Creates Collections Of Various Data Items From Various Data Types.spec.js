@@ -119,7 +119,9 @@ describe("Create a collections:", async () => {
     }
     var change = ts++;
     console.log("change =" + change);
-    await (await Collections.$collectionName).setValue("Well Logs Coll" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Well Logs Coll" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
@@ -588,7 +590,7 @@ describe("Create a collections:", async () => {
     await (
       await $("//a[@data-slb-id='side-panel-header-back-button']")
     ).click();
-    
+
     await (await searchPanel.$searchBox).click();
     await (await searchPanel.$searchIcon).click();
     await browser.pause(3000);
@@ -612,7 +614,9 @@ describe("Create a collections:", async () => {
     }
     var change = ts++;
     console.log("change =" + change);
-    await (await Collections.$collectionName).setValue("Coll for Prospects" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Coll for Prospects" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
@@ -801,7 +805,9 @@ describe("Create a collections:", async () => {
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("Active Collection_03" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Active Collection_03" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
@@ -857,7 +863,9 @@ describe("Create a collections:", async () => {
     await (
       await Collections.$collectionName
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$collectionName).setValue("Active Collection_04" + change);
+    await (
+      await Collections.$collectionName
+    ).setValue("Active Collection_04" + change);
     await (await Collections.$collectionDiscreption).waitForDisplayed();
     await (
       await Collections.$collectionDiscreption
