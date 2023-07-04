@@ -1,2 +1,4 @@
 node_modules
 probe-deployment/files/dbs/
+.env
+.gitignore

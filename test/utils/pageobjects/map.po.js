@@ -55,6 +55,9 @@ class Map {
   get $BasemapSelection() {
     return $("//mat-icon[@id='basemap-selection']");
   }
+  get $clear() {
+    return $("//mat-icon[@data-slb-id='clear-all-filters-view-modes']");
+  }
   get $confrimClear() {
     return $("//button[@data-slb-id='confirm']");
   }

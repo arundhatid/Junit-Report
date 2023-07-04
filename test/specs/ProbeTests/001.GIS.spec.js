@@ -226,5 +226,6 @@ describe("Login for CDD app ", async () => {
       }
     );
     await (await SearchPanel.$flexBox).waitForDisplayed({ timeout: 90000 });
+    
   });
 });
