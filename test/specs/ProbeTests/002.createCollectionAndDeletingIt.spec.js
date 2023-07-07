@@ -26,6 +26,14 @@ describe("Create a collection and Deleting it:", async () => {
       await (
         await searchPanel.$searchBox
       ).waitForDisplayed({ timeout: 200000 });
+      try {
+        await (
+          await Collections.$closeCollectionTray
+        ).waitForDisplayed({ timeout: 8000 });
+        await (await Collections.$closeCollectionTray).click();
+      } catch (e) {
+        console.log("****if coll tray is up by default than close it 1st");
+      }
 
       console.log("*******title =" + (await browser.getTitle()));
 
@@ -39,6 +47,15 @@ describe("Create a collection and Deleting it:", async () => {
       console.log("*****" + titleMatch);
       console.log("****close Box is not display for this test user a/c*****");
     }
+    await (await map.$clear).waitForClickable();
+    await (await map.$clear).click();
+    await browser.pause(1000);
+    await (await map.$confrimClear).waitForDisplayed();
+    await (await map.$confrimClear).click();
+    await browser.pause(2000);
+    await (await map.$zoomToWorldView).waitForClickable();
+    await map.$zoomToWorldView.click();
+    await browser.pause(1000);
 
     console.log("****checking  visibility of search box******");
     if ((await searchPanel.$searchBox).waitForClickable({ timeout: 200000 })) {
@@ -296,11 +313,6 @@ describe("Create a collection and Deleting it:", async () => {
 
     await browser.pause(2000);
     if (toasterDelete1 == "Success" || toasterDelete2 == "Success") {
-      expectchai(
-        await (
-          await $("div.active-cards pioneer-collection-item")
-        ).isDisplayed()
-      ).to.be.not.true;
       var options = {
         mode: "text",
         pythonOptions: ["-u"],
@@ -357,12 +369,14 @@ describe("Create a collection and Deleting it:", async () => {
         }
       );
     }
-
-    await (await Collections.$closeCollectionTray).waitForDisplayed();
+    expectchai(
+      await (await $("div.active-cards pioneer-collection-item")).isDisplayed()
+    ).to.be.not.true;
+    await (await Collections.$collectionTray).waitForDisplayed();
     await (
-      await Collections.$closeCollectionTray
+      await Collections.$collectionTray
     ).waitForClickable({ timeout: 80000 });
-    await (await Collections.$closeCollectionTray).click();
+    await (await Collections.$collectionTray).click();
     var options = {
       mode: "text",
       pythonOptions: ["-u"],
