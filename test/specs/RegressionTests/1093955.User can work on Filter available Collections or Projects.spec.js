@@ -51,27 +51,7 @@ describe("Verify User can work on Filter available Collections/Projects :", asyn
       ).to.be.equals(+0);
       console.log("*****" + titleMatch);
     }
-    try {
-      await (await searchPanel.$crossResult).isDisplayed();
-      await (await searchPanel.$crossResult).click();
-      await (await map.$clear).waitForClickable();
-      await (await map.$clear).click();
-      await (await map.$confrimClear).waitForDisplayed();
-      await (await map.$confrimClear).click();
-      await browser.pause(8000);
-      await (await map.$zoomToWorldView).waitForClickable();
-      await map.$zoomToWorldView.click();
-      await browser.pause(2000);
-    } catch (e) {
-      await (await map.$clear).waitForClickable();
-      await (await map.$clear).click();
-      await (await map.$confrimClear).waitForDisplayed();
-      await (await map.$confrimClear).click();
-      await browser.pause(8000);
-      await (await map.$zoomToWorldView).waitForClickable();
-      await map.$zoomToWorldView.click();
-      await browser.pause(2000);
-    }
+    await zoomToExtend.removeOldAction();
   });
   it("Verify Filter available Collections/Projects icon on Summary card", async () => {
     const layer = "cheal";

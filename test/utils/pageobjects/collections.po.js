@@ -127,7 +127,11 @@ class Collections {
     return $("//button[@data-slb-id='remove']");
   }
   get $AddItems() {
-    return $("//button[@data-slb-id='add']");
-  }
+    return $("//button[@data-slb-id='add']")
+}
+get $MenuButton() {
+    return $("(//button[@data-slb-id='card-menu'])[1]")
+}
+
 }
 module.exports = new Collections();

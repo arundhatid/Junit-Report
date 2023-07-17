@@ -33,7 +33,11 @@ exports.config = {
       ],
     ],
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
-    //REGRESSION: [["./test/specs/RegressionTests/933741.User Performs Basic Map And GIS Toolbox Features.spec.js"]],
+    // REGRESSION: [
+    //   [
+    //     "./test/specs/RegressionTests/1172896.User can add or remove selected data using collection card.spec.js",
+    //   ],
+    // ],
     REGRESSION: [
       [
         "./test/specs/RegressionTests/933741.User Performs Basic Map And GIS Toolbox Features.spec.js",
@@ -42,6 +46,7 @@ exports.config = {
         "./test/specs/RegressionTests/934573.User views Well Logs Associated With Wells.spec.js",
         "./test/specs/RegressionTests/1093955.User can work on Filter available Collections or Projects.spec.js",
         "./test/specs/RegressionTests/1093975.User can perform text search in Availble cards section of Collection Tray.spec.js",
+        "./test/specs/RegressionTests/1172896.User can add or remove selected data using collection card.spec.js",
         "./test/specs/RegressionTests/1041647.User can view Focus, Unique, Overlapping and Excluded data when comparing active collections.spec.js",
         "./test/specs/RegressionTests/951039.User Creates Collections Of Various Data Items From Various Data Types.spec.js",
       ],
@@ -115,7 +120,7 @@ exports.config = {
           "--disable-features=VizDisplayCompositor",
           "--disable-prompt-on-repost",
           "--new-window",
-          "--headless",
+          //"--headless",
         ],
       },
       acceptInsecureCerts: true,
