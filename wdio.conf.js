@@ -120,7 +120,7 @@ exports.config = {
           "--disable-features=VizDisplayCompositor",
           "--disable-prompt-on-repost",
           "--new-window",
-          //"--headless",
+          "--headless",
         ],
       },
       acceptInsecureCerts: true,
