@@ -393,4 +393,13 @@ exports.config = {
    */
   // onReload: function(oldSessionId, newSessionId) {
   // }
+  reporters: [
+    'dot',
+    ['junit', {
+        outputDir: './',            
+        outputFileFormat: function(options) { // optional
+            return `results-file.xml`
+        }
+    }]
+  ],
 };
