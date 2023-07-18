@@ -393,7 +393,7 @@ exports.config = {
    */
   // onReload: function(oldSessionId, newSessionId) {
   // }
-  reporters: [
+  reporters: ['spec',
     'dot',
     ['junit', {
         outputDir: './',            
