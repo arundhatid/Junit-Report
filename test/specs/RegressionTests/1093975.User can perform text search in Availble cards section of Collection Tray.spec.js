@@ -1,71 +1,16 @@
 const searchPanel = require("../../utils/pageobjects/searchPanel.po");
 const map = require("../../utils/pageobjects/map.po");
 const delfi = require("../../utils/methods/Login.Regre");
-const zoomToExtend = require("../../utils/methods/zoomToExtend");
+const zoomToExtend = require("../../utils/methods/clearAllFilterAndViewMode");
 const login = require("../../utils/pageobjects/login.po.js");
 const Collections = require("../../utils/pageobjects/collections.po");
+const createNewPackage = require("../../utils/methods/packageCreation");
 
 var expectchai = require("chai").expect;
 
 describe(" Perform text search in Availble cards section of Collection Tray :", async () => {
-  before(async () => {
-    var USER_ID = process.env["TESTUSER1"];
-    var PASSWORD = process.env["TESTUSERPASSWORD1"];
-    var SECRET_KEY = process.env["SECRET_KEY1"];
-    const URL = "https://evq.discovery.cloud.slb-ds.com/";
-    const mapWebelement = await map.$map;
-
-    console.log(
-      "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
-    );
-
-    await browser.url(URL);
-
-    try {
-      await delfi
-        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
-        .waitForDisplayed({ timeout: 10000 });
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
-      await (await login.$CloseBox).click();
-    } catch (e) {
-      await mapWebelement.waitForDisplayed({ timeout: 200000 });
-      console.log("*******title =" + (await browser.getTitle()));
-
-      let titleMatch = (await browser.getTitle()).localeCompare(
-        "Data Discovery"
-      );
-      console.log("***checking Authentication****");
-      expectchai(
-        (await browser.getTitle()).localeCompare("Data Discovery")
-      ).to.be.equals(+0);
-      console.log("*****" + titleMatch);
-      console.log("****close Box is not display for this test user a/c*****");
-    }
-
-    try {
-      await (await searchPanel.$crossResult).isDisplayed();
-      await (await searchPanel.$crossResult).click();
-    } catch (e) {
-      console.log("****if coll tray is up by default than close it 1st");
-    }
-    await (await map.$clear).waitForClickable();
-    await (await map.$clear).click();
-    await browser.pause(5000);
-    await (await map.$confrimClear).waitForDisplayed();
-    await (await map.$confrimClear).click();
-    await browser.pause(3000);
-    await (await map.$zoomToWorldView).waitForClickable();
-    await map.$zoomToWorldView.click();
-    await browser.pause(2000);
+  after(async () => {
+    await zoomToExtend.removeOldAction();
   });
   it("Verify Text search in Collection Tray when none of the filter is selected", async () => {
     const layer = "cheal";
@@ -75,23 +20,8 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     await (await searchPanel.$searchIcon).click();
 
     console.log("***Search cheal well log****");
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForDisplayed({ timeout: 80000 });
-    await (await searchPanel.$firstSearchResults).moveTo();
-    await browser.pause(3000);
-    await (await Collections.$Actions).waitForClickable({ timeout: 90000 });
-    await Collections.$Actions.click();
-    await Collections.$collectionMenu.click();
-    await (await Collections.$Add).waitForClickable({ timeout: 80000 });
-    await Collections.$Add.click();
-    await (
-      await Collections.$newCollection
-    ).waitForClickable({ timeout: 80000 });
-    await Collections.$newCollection.click();
-    console.log("****Creating collection****");
-    await (await Collections.$collectionName).waitForDisplayed();
-    await browser.pause(3000);
+    await createNewPackage.packageCreation();
+
     var ts = String(new Date().getTime());
     var k = "value";
     var i = 0;
@@ -120,7 +50,7 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
       await Collections.$collectionTray
     ).waitForClickable({ timeout: 80000 });
     await (await Collections.$collectionTray).click();
-    await (await $("//div[text()='Results saved.']")).waitForDisplayed();
+    await (await Collections.$Resultsaved).waitForDisplayed();
     await browser.pause(3000);
     await (
       await Collections.$collectionTray
@@ -129,8 +59,8 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
 
     await zoomToExtend.zoomToExtend(layer);
     await browser.pause(3000);
-    await (await map.$zoomplus).waitForClickable();
-    await (await map.$zoomplus).click();
+    // await (await map.$zoomplus).waitForClickable();
+    // await (await map.$zoomplus).click();
 
     //click on rect selection
     console.log("*****rectangular selection");
@@ -140,22 +70,7 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     expect(rectSelect).toBeClickable();
     await browser.pause(5000);
     await mapWebelement.dragAndDrop({ x: 100, y: 50 });
-
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForDisplayed({ timeout: 80000 });
-    await (await Collections.$Actions).waitForClickable({ timeout: 90000 });
-    await Collections.$Actions.click();
-    await Collections.$collectionMenu.click();
-    await (await Collections.$Add).waitForClickable({ timeout: 80000 });
-    await Collections.$Add.click();
-    await (
-      await Collections.$newCollection
-    ).waitForClickable({ timeout: 80000 });
-    await Collections.$newCollection.click();
-    console.log("****Creating collection****");
-    await (await Collections.$collectionName).waitForDisplayed();
-    await browser.pause(3000);
+    await createNewPackage.packageCreation();
     var ts = String(new Date().getTime());
     var k = "value";
     var i = 0;
@@ -186,15 +101,14 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     await (await Collections.$collectionTray).waitForDisplayed();
     await (await Collections.$collectionTray).waitForClickable();
     await (await Collections.$collectionTray).click();
-    await (await $("//div[text()='Results saved.']")).waitForDisplayed();
-    //await (await Collections.$eyeUnhideIcon).click();
+    await (await Collections.$Resultsaved).waitForDisplayed();
     await (
       await Collections.$collSearchBox
     ).waitForClickable({ timeout: 90000 });
     await (await Collections.$collSearchBox).click();
     console.log("***click on coll search box");
     await (await Collections.$collSearchBox).setValue("Available cards");
-    await (await Collections.$collSearchIcon).waitForClickable();
+    await (await Collections.$collSearchIcon).waitForDisplayed();
     await (await Collections.$collSearchIcon).click();
 
     expectchai(await Collections.$avaliableColl.getText()).to.have.string(
@@ -202,10 +116,6 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     );
     console.log("*****entered text is appear in Available Cards");
     await browser.pause(3000);
-    console.log(
-      await (await $("div.collection-container__header h6")).getText()
-    );
-
     expectchai(await Collections.$activeCardColl.getText()).to.have.string(
       "Coll For Text_Search"
     );
@@ -232,7 +142,7 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     await (await Collections.$collSearchBox).click();
     console.log("***click on coll search box");
     await (await Collections.$collSearchBox).setValue("Available cards");
-    await (await Collections.$collSearchIcon).waitForClickable();
+    await (await Collections.$collSearchIcon).waitForDisplayed();
     await (await Collections.$collSearchIcon).click();
 
     expectchai(await Collections.$avaliableColl.getText()).to.have.string(
@@ -240,10 +150,6 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     );
     console.log("*****entered text is appear in Available Cards");
     await browser.pause(4000);
-    console.log(
-      await (await $("div.collection-container__header h6")).getText()
-    );
-
     expectchai(await Collections.$activeCardColl.getText()).to.have.string(
       "Coll For Text_Search"
     );
@@ -260,7 +166,7 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     console.log(
       "******Verify Text search in Collection Tray when Filter available Collections/Projects filter is selected started"
     );
-    await (await searchPanel.$crossResult).waitForClickable();
+    await (await searchPanel.$crossResult).waitForDisplayed();
     await (await searchPanel.$crossResult).click();
     await (await searchPanel.$searchBox).click();
     await (await searchPanel.$searchIcon).click();
@@ -290,12 +196,12 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
       await Collections.$collectionChip
     ).getAttribute("class");
     console.log(collectionChip);
-    expect(collectionChip).toHaveAttribute(
-      [
-        "mat-mdc-chip mat-mdc-tooltip-trigger mat-primary mdc-evolution-chip mat-mdc-standard-chip filter-selected",
-      ],
-      "collection chip is not highlighted "
+    expectchai(
+      await (await Collections.$collectionChip).getAttribute("class")
+    ).to.have.string(
+      "mat-mdc-chip mat-mdc-tooltip-trigger mat-primary mdc-evolution-chip mat-mdc-standard-chip filter-selected"
     );
+
     await (
       await Collections.$collSearchBox
     ).waitForClickable({ timeout: 90000 });
@@ -304,10 +210,6 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     await (await Collections.$collSearchBox).setValue("Available cards");
     await (await Collections.$collSearchIcon).waitForClickable();
     await (await Collections.$collSearchIcon).click();
-
-    console.log(
-      await (await $("div.collection-container__header h6")).getText()
-    );
 
     expectchai(await Collections.$activeCardColl.getText()).to.have.string(
       "Coll For Text_Search"
@@ -326,8 +228,8 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     console.log(
       "Verify 'No Collections and Projects available' message test started"
     );
-    await (await Collections.$collSearchBox).setValue("toolbar");
-    await (await Collections.$collSearchIcon).waitForClickable();
+    await (await Collections.$collSearchBox).setValue("hyxe");
+    await (await Collections.$collSearchIcon).waitForDisplayed();
     await (await Collections.$collSearchIcon).click();
     await (await Collections.$noCollAvl).waitForDisplayed();
     expectchai(await Collections.$noCollAvl.getText()).to.have.string(
@@ -335,40 +237,36 @@ describe(" Perform text search in Availble cards section of Collection Tray :", 
     );
     console.log("No Collections or Projects Available is display");
     await browser.pause(4000);
-    console.log(
-      await (await $("div.collection-container__header h6")).getText()
-    );
 
     expectchai(await Collections.$activeCardColl.getText()).to.have.string(
       "Coll For Text_Search"
     );
     console.log("****verify Active Cards section is remain as it is");
     await (await Collections.$collSearchBox).click();
-    await (await $("(//mat-icon[@svgicon='more'])[1]")).waitForDisplayed();
-    await (await $("(//mat-icon[@svgicon='more'])[1]")).waitForClickable();
-    await (await $("(//mat-icon[@svgicon='more'])[1]")).click();
+    await (await Collections.$MenuButton).waitForDisplayed();
+    await (await Collections.$MenuButton).waitForClickable();
+    await (await Collections.$MenuButton).click();
     await (await Collections.$deletButton).waitForClickable({ timeout: 80000 });
     await (await Collections.$deletButton).click();
     await (await $("mat-dialog-container")).waitForDisplayed();
     await (await map.$confrimClear).click();
-    await (await $("//div[text()='Collection deleted.']")).waitForDisplayed();
+    await (await Collections.$Deleted).waitForDisplayed();
     console.log("***1 coll delete");
     await browser.pause(3000);
-    await (await $("(//mat-icon[@svgicon='more'])[1]")).waitForDisplayed();
-    await (await $("(//mat-icon[@svgicon='more'])[1]")).waitForClickable();
-    await (await $("(//mat-icon[@svgicon='more'])[1]")).click();
+    await (await Collections.$MenuButton).waitForDisplayed();
+    await (await Collections.$MenuButton).waitForClickable();
+    await (await Collections.$MenuButton).click();
     await (await Collections.$deletButton).waitForClickable({ timeout: 80000 });
     await (await Collections.$deletButton).click();
     await (await $("mat-dialog-container")).waitForDisplayed();
     await (await map.$confrimClear).click();
-    await (await $("//div[text()='Collection deleted.']")).waitForDisplayed();
+    await (await Collections.$Deleted).waitForDisplayed();
     await (await Collections.$closeCustomChip).waitForClickable();
     await (await Collections.$closeCustomChip).click();
     await (
       await Collections.$collectionTray
     ).waitForClickable({ timeout: 80000 });
     await (await Collections.$collectionTray).click();
-    await zoomToExtend.removeOldAction();
     await browser.pause(3000);
     console.log("******AVL CARD FINISHED");
     await browser.pause(3000);

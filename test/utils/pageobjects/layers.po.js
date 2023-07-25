@@ -72,14 +72,47 @@ class Layers {
   get $ProspectDropdown() {
     return $("(//button[@data-slb-id='toggle-filters'])[16]");
   }
-  get $ProspectFilterSearch() {
-    return $("//mat-chip[contains(text(),'IHS')]");
+  get $ProspectSearchBox() {
+    return $("(//input[@placeholder='Search attributes'])[5]");
+  }
+  get $ProspetLayer1() {
+    return $("//span[text()=' 003/06A (1) ']");
+  }
+  get $ProspetLayer2() {
+    return $("//span[contains(text(),' 003/13A (1) ')]");
+  }
+  get $ProspetLayer3() {
+    return $("//span[contains(text(),' 003/23A (1) ')]");
+  }
+  get $ProspetLayer4() {
+    return $("//span[contains(text(),' 003/23B (1) ')]");
+  }
+  get $ProspetLayer5() {
+    return $("//span[contains(text(),' 003/24A (1) ')]");
   }
   get $filterResetbtn() {
-    return $("//a[@data-slb-id='clear-all-filters-button']");
+    return $("//mat-icon[@svgicon='filter-reset']");
   }
   get $filterIcon() {
     return $("//a[@data-slb-id='show-all-filters-button']");
+  }
+  get $normalclick() {
+    return $("//div[@class='layers-panel-header']");
+  }
+  get $nopreview() {
+    return $("//mat-icon[@svgicon='no-preview']");
+  }
+  get $backLayerArrow() {
+    return $("//a[@data-slb-id='side-panel-header-back-button']");
+  }
+  get $nofilterApplied() {
+    return $("//p[text()='No filters are applied']");
+  }
+  get $removeLayer() {
+    return $("//button[text()=' Remove ']");
+  }
+  get $close() {
+    return $("//mat-icon[@svgicon='close']");
   }
 }
 

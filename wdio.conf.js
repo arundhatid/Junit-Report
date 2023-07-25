@@ -33,13 +33,16 @@ exports.config = {
       ],
     ],
     E2E: [["./test/specs/E2ETests/005.deleteCollection.spec.js"]],
+    BROWSER: [["./test/utils/methods/browserLaunch.Regre.js"]],
     // REGRESSION: [
-    //   [
-    //     "./test/specs/RegressionTests/1172896.User can add or remove selected data using collection card.spec.js",
+    //   ["./test/specs/RegressionTests/001.authentication.spec.js",
+    //     "./test/specs/RegressionTests//1093975.User can perform text search in Availble cards section of Collection Tray.spec.js",
     //   ],
     // ],
+
     REGRESSION: [
       [
+        "./test/specs/RegressionTests/001.authentication.spec.js",
         "./test/specs/RegressionTests/933741.User Performs Basic Map And GIS Toolbox Features.spec.js",
         "./test/specs/RegressionTests/930089.User Is Able Open Seismic Data In 2D Viewer.spec.js",
         "./test/specs/RegressionTests/933825.User Works On Layers And Filters.spec.js",

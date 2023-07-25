@@ -5,67 +5,16 @@ const SummaryCard = require("../../utils/pageobjects/summaryCard.po");
 const delfi = require("../../utils/methods/Login.Regre");
 const login = require("../../utils/pageobjects/login.po.js");
 const Canvas = require("../../utils/pageobjects/canvas.po.js");
+const zoomToExtend = require("../../utils/methods/clearAllFilterAndViewMode");
+const Viewer = require("../../utils/pageobjects/viewer.po.js");
+const createNewPackage = require("../../utils/methods/packageCreation");
+const browserLaunch = require("./001.authentication.spec");
 
 var expectchai = require("chai").expect;
 
 describe("Seismic data in 2D Viewer:", async () => {
-  before(async () => {
-    var USER_ID = process.env["TESTUSER1"];
-    var PASSWORD = process.env["TESTUSERPASSWORD1"];
-    var SECRET_KEY = process.env["SECRET_KEY1"];
-    const URL = "https://evq.discovery.cloud.slb-ds.com/";
-    const mapWebelement = await map.$map;
-
-    console.log(
-      "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
-    );
-
-    await browser.url(URL);
-
-    try {
-      await delfi
-        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
-        .waitForDisplayed({ timeout: 10000 });
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
-      await (await login.$CloseBox).click();
-    } catch (e) {
-      await mapWebelement.waitForDisplayed({ timeout: 200000 });
-      console.log("*******title =" + (await browser.getTitle()));
-
-      let titleMatch = (await browser.getTitle()).localeCompare(
-        "Data Discovery"
-      );
-      console.log("***checking Authentication****");
-      expectchai(
-        (await browser.getTitle()).localeCompare("Data Discovery")
-      ).to.be.equals(+0);
-      console.log("*****" + titleMatch);
-      console.log("****close Box is not display for this test user a/c*****");
-    }
-    try {
-      await (await searchPanel.$crossResult).isDisplayed();
-      await (await searchPanel.$crossResult).click();
-    } catch (e) {
-      console.log("****if coll tray is up by default than close it 1st");
-    }
-    await (await map.$clear).waitForClickable();
-    await (await map.$clear).click();
-    await browser.pause(2000);
-    await (await map.$confrimClear).waitForDisplayed();
-    await (await map.$confrimClear).click();
-    await browser.pause(5000);
-    await (await map.$zoomToWorldView).waitForClickable();
-    await map.$zoomToWorldView.click();
-    await browser.pause(2000);
+  after(async () => {
+      await zoomToExtend.removeOldAction();
   });
   it(" Vaerify that Seismic 2D layer to be present along with other layers", async () => {
     await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
@@ -90,14 +39,11 @@ describe("Seismic data in 2D Viewer:", async () => {
     await (
       await searchPanel.$firstSearchResults
     ).waitForDisplayed({ timeout: 80000 });
+    expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true;
+    expectchai(
+      await searchPanel.$1stSearchResultsText.getText()
+    ).to.have.string("Seismic 2D Line");
 
-    const searchResult = await (
-      await $('(//div[@class="search-item-row"]/div)[1]')
-    ).getText();
-    expect(searchResult).toHaveTextContaining(
-      [" Seismic 2D Line "],
-      "search Result is not display on left panel"
-    );
     console.log("****search result should be appear on left panel");
     await browser.pause(5000);
     await layers.$MoveCheckbox.waitForClickable();
@@ -109,15 +55,10 @@ describe("Seismic data in 2D Viewer:", async () => {
       await searchPanel.$firstSearchResults
     ).waitForDisplayed({ timeout: 80000 });
     await browser.pause(10000);
-    const searchResultAfterMove = await (
-      await $('(//div[@class="search-item-row"]/div)[1]')
-    ).getText();
-    console.log(searchResultAfterMove);
-    expect(searchResultAfterMove).toHaveTextContaining(
-      [" Seismic 2D Line  "],
-      "search Result is not display on left panel afer chick on update checkBox * move the map"
-    );
-
+    expectchai(
+      await searchPanel.$1stSearchResultsText.getText()
+    ).to.have.string("Seismic 2D Line");
+    console.log(await searchPanel.$1stSearchResultsText.getText());
     await browser.pause(5000);
   });
 
@@ -147,14 +88,7 @@ describe("Seismic data in 2D Viewer:", async () => {
     await (
       await SummaryCard.$open2DViewer
     ).waitForDisplayed({ timeout: 80000 });
-    const dataCount = await (
-      await $("//mat-icon[@title='Open 2D Viewer']/span")
-    ).getText();
-    console.log(dataCount);
-    expect(dataCount).toHaveText(
-      ["1"],
-      "2D Seismic icon is not shown  as a badge with the number of 2D lines available. "
-    );
+    expectchai(await SummaryCard.$open2DViewer.getText()).to.have.string("1");
 
     await browser.pause(3000);
     await (await SummaryCard.$seismicFirstCard).waitForClickable();
@@ -167,11 +101,8 @@ describe("Seismic data in 2D Viewer:", async () => {
       await SummaryCard.$thumbnailImageContainer
     ).waitForDisplayed({ timeout: 80000 });
     console.log("*****checking the card is expandable or not");
-    expectchai(
-      await (
-        await $("//div[@class='gis-thumbnail-image-container']")
-      ).isDisplayed()
-    ).to.be.true;
+    expectchai(await SummaryCard.$thumbnailImageContainer.isDisplayed()).to.be
+      .true;
     console.log("*****Image container is present");
   });
 
@@ -263,12 +194,7 @@ describe("Seismic data in 2D Viewer:", async () => {
     await (await SummaryCard.$Trace).waitForDisplayed();
     expectchai(await (await SummaryCard.$Trace).isDisplayed()).to.be.true;
     await browser.pause(5000);
-
-    await (
-      await $(
-        "//button[@class='crosshair-readouts__button crosshair-readouts__button--close']"
-      )
-    ).click();
+    await (await Viewer.$closeCrossHairTool).click();
     await (await SummaryCard.$headersGrids).waitForClickable();
     await (await SummaryCard.$headersGrids).click();
     console.log("****click on header grids");
@@ -315,28 +241,16 @@ describe("Seismic data in 2D Viewer:", async () => {
     await (await SummaryCard.$sliceButton).click();
     console.log("******click on slice btn");
     await (await SummaryCard.$sliceClickPopUp).waitForDisplayed();
-    const sliceClickPopUpMSG = await (
-      await $(
-        "(//div[@class='ng-star-inserted']//div[@class='ng-star-inserted'])[2]"
-      )
-    ).getText();
-    console.log(sliceClickPopUpMSG);
-    expect(sliceClickPopUpMSG).toHaveTextContaining(
-      [" Navigation to specific slices is not available for this file. "],
-      "pop up is not launch after clicking on slice btn"
+    expectchai(await SummaryCard.$sliceClickPopUp.getText()).to.have.string(
+      "Navigation to specific slices is not available for this file."
     );
+
     console.log("******Verufy pop up");
     await browser.pause(5000);
-    await (await $("(//mat-icon[@svgicon='close'])[2]")).waitForClickable();
-    expectchai(
-      await (await $("(//mat-icon[@svgicon='close'])[2]")).isClickable()
-    ).to.be.true;
-    await (await $("(//mat-icon[@svgicon='close'])[2]")).click();
-    console.log("*****cross the 2D viewer");
-    await (await map.$clear).waitForClickable();
-    await (await map.$clear).click();
-    await (await map.$confrimClear).waitForDisplayed();
-    await (await map.$confrimClear).click();
+    await (await Viewer.$closeViewer).waitForClickable();
+    expectchai(await (await Viewer.$closeViewer).isClickable()).to.be.true;
+    await (await Viewer.$closeViewer).click();
+    console.log("*****close the 2D viewer");
     console.log("*****SEISMIC 2D FINISHED");
     await browser.pause(3000);
   });

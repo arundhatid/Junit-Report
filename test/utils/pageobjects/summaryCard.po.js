@@ -8,6 +8,7 @@ class SummaryCard {
   get $open2DViewer() {
     return $("//mat-icon[@title='Open 2D Viewer']/span");
   }
+
   get $2DViewerBtn() {
     return $(
       "//div[@class='button-holder']//mat-icon[@title='Open 2D Viewer']"
@@ -93,6 +94,9 @@ class SummaryCard {
   }
   get $wellboreViewerBtn() {
     return $("(//mat-icon[@title='Open Wellbore in Log Viewer'])[1]");
+  }
+  get $wellborebadge() {
+    return $("(//span[@class='mat-badge-content mat-badge-active'])[2]");
   }
 
   //div[@class='gis-thumbnail-image-container']

@@ -1,6 +1,7 @@
-const searchPanel = require("../../utils/pageobjects/searchPanel.po");
-const map = require("../../utils/pageobjects/map.po");
-const layers = require("../../utils/pageobjects/layers.po");
+const searchPanel = require("../pageobjects/searchPanel.po");
+const map = require("../pageobjects/map.po");
+const layers = require("../pageobjects/layers.po");
+const Collections = require("../pageobjects/collections.po");
 
 class ZoomToExtend {
   async zoomToExtend(layer) {
@@ -31,24 +32,20 @@ class ZoomToExtend {
       await (await searchPanel.$firstSearchResults).click();
       console.log("****click on back if back to group result is display");
     }
-
     await (
-      await $(
-        "//gis-search-result-header[1]//section[1]//div[1]//div[1]//img[1]"
-      )
+      await searchPanel.$1stresultFromfirstSearchResults
     ).waitForDisplayed();
+
     console.log("****zoom to extend****");
     await (await searchPanel.$zoomToExtends).click();
     await (await searchPanel.$crossResult).click();
+    //await (await searchPanel.$searchBox).clearValue();
     await browser.pause(5000);
     await map.$zoomToWorldView.waitForDisplayed({ timeout: 20000 });
     await map.$zoomToWorldView.click();
   }
   async removeOldAction() {
-    try {
-      await (await searchPanel.$crossResult).isDisplayed();
-      await (await searchPanel.$crossResult).click();
-    } catch (e) {}
+    
     await (await map.$clear).waitForClickable();
     await (await map.$clear).click();
     await (await map.$confrimClear).waitForDisplayed();
@@ -59,13 +56,29 @@ class ZoomToExtend {
     await browser.pause(2000);
     await (await layers.$showLayers).waitForClickable();
     await (await layers.$showLayers).click();
-    await (await $("//div[@class='layers-panel-header']")).click();
+    await (await layers.$normalclick).click();
     await (await layers.$globalHideLayersBtn).waitForClickable();
     await (await layers.$globalHideLayersBtn).click();
     await browser.pause(1000);
     await (await layers.$globalUnHideLayersBtn).waitForClickable();
     await (await layers.$globalUnHideLayersBtn).click();
-    await (await searchPanel.$crossResult).click();
+    const cross = await (
+      await searchPanel.$backOrClose
+    ).getAttribute("data-slb-id");
+    console.log(cross);
+    if (cross == "side-panel-header-close-button") {
+      await (await searchPanel.$crossResult).click();
+    } else {
+      await (await layers.$backLayerArrow).click();
+    }
+    try {
+      await (
+        await Collections.$closeCollectionTray
+      ).waitForDisplayed({ timeout: 5000 });
+      await (await Collections.$collectionTray).click();
+    } catch (e) {
+      console.log("****if coll tray is up by default than close it 1st");
+    }
     await browser.pause(2000);
   }
 }

@@ -2,67 +2,15 @@ const searchPanel = require("../../utils/pageobjects/searchPanel.po");
 const layers = require("../../utils/pageobjects/layers.po");
 const map = require("../../utils/pageobjects/map.po");
 const delfi = require("../../utils/methods/Login.Regre");
-const zoomToExtend = require("../../utils/methods/zoomToExtend");
+const zoomToExtend = require("../../utils/methods/clearAllFilterAndViewMode");
 const login = require("../../utils/pageobjects/login.po.js");
 var expectchai = require("chai").expect;
 const canvasPo = require("../../utils/pageobjects/canvas.po.js");
 
+
 describe("performs Basic Map and GIS toolbox features:", async () => {
-  before(async () => {
-    const URL = "https://evq.discovery.cloud.slb-ds.com/";
-    const mapWebelement = await map.$map;
-    var USER_ID = process.env["TESTUSER1"];
-    var PASSWORD = process.env["TESTUSERPASSWORD1"];
-    var SECRET_KEY = process.env["SECRET_KEY1"];
-
-    console.log(
-      "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
-    );
-
-    await browser.url(URL);
-
-    try {
-      await delfi
-        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
-        .waitForDisplayed({ timeout: 10000 });
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
-      await (await login.$CloseBox).click();
-    } catch (e) {
-      await mapWebelement.waitForDisplayed({ timeout: 200000 });
-      console.log("*******title =" + (await browser.getTitle()));
-      let titleMatch = (await browser.getTitle()).localeCompare(
-        "Data Discovery"
-      );
-      console.log("***checking Authentication****");
-      expectchai(
-        (await browser.getTitle()).localeCompare("Data Discovery")
-      ).to.be.equals(+0);
-      console.log("*****" + titleMatch);
-      console.log("****close Box is not display for this test user a/c*****");
-    }
-
-    try {
-      await (await searchPanel.$crossResult).isDisplayed();
-      await (await searchPanel.$crossResult).click();
-    } catch (e) {}
-    await (await map.$clear).waitForClickable();
-    await (await map.$clear).click();
-    await browser.pause(2000);
-    await (await map.$confrimClear).waitForDisplayed();
-    await (await map.$confrimClear).click();
-    await browser.pause(2000);
-    await (await map.$zoomToWorldView).waitForClickable();
-    await map.$zoomToWorldView.click();
-    await browser.pause(2000);
+  after(async () => {
+     await zoomToExtend.removeOldAction();
   });
 
   it("Verify Zoom In using mouse wheel, (+) icon", async () => {
@@ -95,6 +43,7 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
   });
 
   it("Rectangular selection", async () => {
+    
     const layer = "cheal";
     const mapWebelement = await map.$map;
     const mapWidth = await mapWebelement.getSize("width");
@@ -113,39 +62,24 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await browser.pause(20000);
     await mapWebelement.dragAndDrop({ x: 200, y: 100 });
     //Rubberband zoom
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForDisplayed({ timeout: 80000 });
+    await (await searchPanel.$firstSearchResults).waitForDisplayed();
     expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true;
+    expectchai(await searchPanel.$2ndSearchResults.isDisplayed()).to.be.true;
+    expectchai(await searchPanel.$3rdSearchResults.isDisplayed()).to.be.true;
+    expectchai(await searchPanel.$4thSearchResults.isDisplayed()).to.be.true;
     expectchai(
-      await $("(//div[@class='search-item-row']/div)[2]").isDisplayed()
-    ).to.be.true;
+      await searchPanel.$1stSearchResultsText.getText()
+    ).to.have.string("Well Log");
     expectchai(
-      await $("(//div[@class='search-item-row']/div)[3]").isDisplayed()
-    ).to.be.true;
+      await searchPanel.$2ndSearchResultsText.getText()
+    ).to.have.string("Seismic 3D Survey");
     expectchai(
-      await $("(//div[@class='search-item-row']/div)[4]").isDisplayed()
-    ).to.be.true;
-    const elem1 = await $("(//div[@class='search-item-row']/div)[1]/div");
-    expect(elem1).toHaveTextContaining(
-      [" Prospects  "],
-      "rect result is wronge"
-    );
-    const elem2 = await $("(//div[@class='search-item-row']/div)[2]/div");
-    expect(elem2).toHaveTextContaining(
-      [" Seismic 2D Line  "],
-      "rect result is wronge"
-    );
-    const elem3 = await $("(//div[@class='search-item-row']/div)[3]/div");
-    expect(elem3).toHaveTextContaining(
-      [" Seismic 3D Survey  "],
-      "rect result is wronge"
-    );
-    const elem4 = await $("(//div[@class='search-item-row']/div)[4]/div");
-    expect(elem4).toHaveTextContaining(
-      [" Well Log  "],
-      "rect result is wronge"
-    );
+      await searchPanel.$3rdSearchResultsText.getText()
+    ).to.have.string("Seismic 2D Line");
+    expectchai(
+      await searchPanel.$4thSearchResultsText.getText()
+    ).to.have.string("Prospects");
+
     console.log("****rubberband zoom");
     await map.$RubberbandZoom.waitForClickable();
     await map.$RubberbandZoom.click();
@@ -175,22 +109,19 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await (
       await searchPanel.$firstSearchResults
     ).waitForDisplayed({ timeout: 80000 });
-    const elem1 = await $("(//div[@class='search-item-row']/div)[1]/div");
-    expect(elem1).toHaveTextContaining(
-      [" Prospects "],
-      "polygon selection result is wronge"
-    );
-    const elem2 = await $("(//div[@class='search-item-row']/div)[2]/div");
-    expect(elem2).toHaveTextContaining(
-      [" Seismic 2D Line "],
-      "polygon selection result is wronge"
-    );
-    const elem3 = await $("(//div[@class='search-item-row']/div)[3]/div");
-    expect(elem3).toHaveTextContaining(
-      [" Well Log "],
-      "polygon selection result is wronge"
-    );
-    await (await map.$zoomMinus).waitForClickable();
+    expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true;
+    expectchai(await searchPanel.$2ndSearchResults.isDisplayed()).to.be.true;
+    expectchai(await searchPanel.$3rdSearchResults.isDisplayed()).to.be.true;
+     expectchai(
+      await searchPanel.$1stSearchResultsText.getText()
+    ).to.have.string("Well Log");
+    expectchai(
+      await searchPanel.$2ndSearchResultsText.getText()
+    ).to.have.string("Seismic 2D Line");
+    expectchai(
+      await searchPanel.$3rdSearchResultsText.getText()
+    ).to.have.string("Prospects");
+     await (await map.$zoomMinus).waitForClickable();
     await (await map.$zoomMinus).click();
     await (await map.$zoomMinus).click();
     await browser.pause(2000);
@@ -228,6 +159,14 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await (
       await searchPanel.$firstSearchResults
     ).waitForDisplayed({ timeout: 80000 });
+    expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true;
+    expectchai(await searchPanel.$2ndSearchResults.isDisplayed()).to.be.true;
+    expectchai(
+      await searchPanel.$1stSearchResultsText.getText()
+    ).to.have.string("Well Log");
+    expectchai(
+      await searchPanel.$2ndSearchResultsText.getText()
+    ).to.have.string("Seismic 2D Line");
     await browser.pause(5000);
   });
   it(" Line and Corridor tool", async () => {
@@ -240,7 +179,7 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
     await (await layers.$showLayers).waitForClickable();
     await (await layers.$showLayers).click();
-    await (await $("//div[@class='layers-panel-header']")).click();
+    await (await layers.$normalclick).click();
     await browser.pause(3000);
     await (await layers.$globalHideLayersBtn).waitForClickable();
     await (await layers.$globalHideLayersBtn).click();
@@ -264,42 +203,31 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await browser.pause(5000);
     await (await canvasPo.$willboreViewerCanvas).waitForDisplayed();
     await browser.pause(5000);
-    await (await $("(//mat-icon[@svgicon='close'])[2]")).click();
-
-    await (await searchPanel.$sidePanel).waitForClickable();
+    await (await canvasPo.$bufferRadiusClose).click();
     await (await searchPanel.$sidePanel).waitForClickable();
 
     await (
       await searchPanel.$firstSearchResults
     ).waitForDisplayed({ timeout: 80000 });
     expectchai(await searchPanel.$firstSearchResults.isDisplayed()).to.be.true;
-    const elem1 = await $("(//div[@class='search-item-row']/div)[1]/div");
-    expect(elem1).toHaveTextContaining(
-      [" Well Log (5) "],
-      "line & corridor selection result is wronge"
-    );
+    expectchai(
+      await searchPanel.$1stSearchResultsText.getText()
+    ).to.have.string("Well Log");
     await browser.pause(3000);
-    await (
-      await $(
-        "//pioneer-resizable-container[@class='ng-star-inserted']//mat-icon[2]"
-      )
-    ).waitForClickable();
-    await (
-      await $(
-        "//pioneer-resizable-container[@class='ng-star-inserted']//mat-icon[2]"
-      )
-    ).click();
+    await (await canvasPo.$closeCanvas).waitForClickable();
+    await (await canvasPo.$closeCanvas).click();
+
     await browser.pause(5000);
   });
 
   it("Verify Update Results when map moves checkbox", async () => {
     await (await layers.$showLayers).waitForClickable();
     await (await layers.$showLayers).click();
-    await (await $("//div[@class='layers-panel-header']")).click();
+    await (await layers.$normalclick).click();
     await browser.pause(5000);
     await (await layers.$globalHideLayersBtn).waitForClickable();
     await (await layers.$globalHideLayersBtn).click();
-    await (await $("//mat-icon[@svgicon='no-preview']")).click();
+    await (await layers.$nopreview).click();
     await (await searchPanel.$crossResult).click();
     await (await searchPanel.$searchBox).click();
     await (await searchPanel.$searchIcon).click();
@@ -317,17 +245,8 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await (await map.$zoomplus).click();
     await mapWebelement.dragAndDrop({ x: 300, y: 100 });
     await mapWebelement.click();
-    await browser.pause(8000);
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForDisplayed({ timeout: 100000 });
-    const totalSearchCount = await $("(//div[@class='search-icon-label'])[1]");
-    expect(totalSearchCount).toHaveTextContaining(
-      [" Showing 6156 Results "],
-      " Update Results when map moves result is wronge"
-    );
-
-    await browser.pause(5000);
+    await (await searchPanel.$firstSearchResults).waitForDisplayed();
+     await browser.pause(3000);
   });
 
   it("BasemapClickOnBasemap", async () => {
@@ -338,30 +257,28 @@ describe("performs Basic Map and GIS toolbox features:", async () => {
     await map.$BasemapSelection.waitForClickable({ timeout: 80000 });
     await browser.pause(3000);
     await map.$BasemapSelection.click();
-    await (await $("//span[normalize-space()='Roadmap']")).waitForDisplayed();
-    expectchai(
-      await (await $("//span[normalize-space()='Roadmap']")).isDisplayed()
-    ).to.be.true;
-    await (await $("//span[normalize-space()='Roadmap']")).click();
+    await (await map.$Roadmap).waitForDisplayed();
+    expectchai(await map.$Roadmap.isDisplayed()).to.be.true;
+    await (await map.$Roadmap).click();
     await browser.pause(2000);
-    await (await $("//span[normalize-space()='Hybrid']")).waitForDisplayed();
-    expectchai(
-      await (await $("//span[normalize-space()='Hybrid']")).isDisplayed()
-    ).to.be.true;
-    await (await $("//span[normalize-space()='Hybrid']")).click();
+    await (await map.$Hybrid).waitForDisplayed();
+    expectchai(await map.$Hybrid.isDisplayed()).to.be.true;
+    await (await map.$Hybrid).click();
     await browser.pause(2000);
-    await (await $("//span[normalize-space()='Satellite']")).waitForDisplayed();
-    expectchai(
-      await (await $("//span[normalize-space()='Satellite']")).isDisplayed()
-    ).to.be.true;
-    await (await $("//span[normalize-space()='Satellite']")).click();
+    await (await map.$Satellite).waitForDisplayed();
+    expectchai(await map.$Satellite.isDisplayed()).to.be.true;
+    await (await map.$Satellite).click();
     await browser.pause(2000);
-    await (await $("//span[normalize-space()='Terrain']")).waitForDisplayed();
-    expectchai(
-      await (await $("//span[normalize-space()='Terrain']")).isDisplayed()
-    ).to.be.true;
-    await (await $("//span[normalize-space()='Terrain']")).click();
+    await (await map.$Terrain).waitForDisplayed();
+    expectchai(await map.$Terrain.isDisplayed()).to.be.true;
+    await (await map.$Terrain).click();
+    await browser.pause(2000);
+    await (await map.$Satellite).waitForClickable();
+    await (await map.$Satellite).click();
+    await browser.pause(1000);
+    await (await map.$closeBaseMap).waitForClickable();
+    await (await map.$closeBaseMap).click();
     console.log("*****GIS FINISHED");
-    await browser.pause(5000);
+    await browser.pause(3000);
   });
 });

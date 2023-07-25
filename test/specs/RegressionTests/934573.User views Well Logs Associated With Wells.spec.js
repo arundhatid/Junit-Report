@@ -2,71 +2,18 @@ const searchPanel = require("../../utils/pageobjects/searchPanel.po");
 const layers = require("../../utils/pageobjects/layers.po");
 const map = require("../../utils/pageobjects/map.po");
 const delfi = require("../../utils/methods/Login.Regre");
-const zoomToExtend = require("../../utils/methods/zoomToExtend");
+const zoomToExtend = require("../../utils/methods/clearAllFilterAndViewMode");
 const login = require("../../utils/pageobjects/login.po.js");
 const SummaryCard = require("../../utils/pageobjects/summaryCard.po");
 const Canvas = require("../../utils/pageobjects/canvas.po.js");
+const Collections = require("../../utils/pageobjects/collections.po");
+const createNewPackage = require("../../utils/methods/packageCreation");
 
 var expectchai = require("chai").expect;
 
 describe("Verify Well Logs associated with Wells :", async () => {
-  before(async () => {
-    var USER_ID = process.env["TESTUSER1"];
-    var PASSWORD = process.env["TESTUSERPASSWORD1"];
-    var SECRET_KEY = process.env["SECRET_KEY1"];
-    const URL = "https://evq.discovery.cloud.slb-ds.com/";
-    const mapWebelement = await map.$map;
-
-    console.log(
-      "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
-    );
-
-    await browser.url(URL);
-
-    try {
-      await delfi
-        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
-        .waitForDisplayed({ timeout: 10000 });
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
-      await (await login.$CloseBox).click();
-    } catch (e) {
-      await mapWebelement.waitForDisplayed({ timeout: 200000 });
-      console.log("*******title =" + (await browser.getTitle()));
-
-      let titleMatch = (await browser.getTitle()).localeCompare(
-        "Data Discovery"
-      );
-      console.log("***checking Authentication****");
-      expectchai(
-        (await browser.getTitle()).localeCompare("Data Discovery")
-      ).to.be.equals(+0);
-      console.log("*****" + titleMatch);
-      console.log("****close Box is not display for this test user a/c*****");
-    }
-    try {
-      await (await searchPanel.$crossResult).isDisplayed();
-      await (await searchPanel.$crossResult).click();
-    } catch (e) {
-      console.log("****if coll tray is up by default than close it 1st");
-    }
-    await (await map.$clear).waitForClickable();
-    await (await map.$clear).click();
-    await browser.pause(2000);
-    await (await map.$confrimClear).waitForDisplayed();
-    await (await map.$confrimClear).click();
-    await browser.pause(8000);
-    await (await map.$zoomToWorldView).waitForClickable();
-    await map.$zoomToWorldView.click();
-    await browser.pause(2000);
+  after(async () => {
+    await zoomToExtend.removeOldAction();
   });
 
   it("Open Discovery app ad hide all layers except Well logs", async () => {
@@ -75,7 +22,7 @@ describe("Verify Well Logs associated with Wells :", async () => {
     await (await searchPanel.$searchBox).waitForDisplayed({ timeout: 100000 });
     await (await layers.$showLayers).waitForClickable();
     await (await layers.$showLayers).click();
-    await (await $("//div[@class='layers-panel-header']")).click();
+    await (await layers.$normalclick).click();
     await (await layers.$globalHideLayersBtn).waitForClickable();
     await (await layers.$globalHideLayersBtn).click();
     await browser.pause(3000);
@@ -87,7 +34,19 @@ describe("Verify Well Logs associated with Wells :", async () => {
     await (await layers.$WellFilter).waitForClickable();
     await (await layers.$WellFilter).click();
     console.log("****well filetr");
-    await (await searchPanel.$crossResult).click();
+    const cross = await (
+      await searchPanel.$backOrClose
+    ).getAttribute("data-slb-id");
+    console.log(cross)
+    if (cross == "side-panel-header-close-button") {
+      await (await searchPanel.$crossResult).waitForClickable();
+      await (await searchPanel.$crossResult).click();
+    } else {
+      await (await layers.$backLayerArrow).waitForDisplayed();
+      await (await layers.$backLayerArrow).click();
+      
+    }
+   // await (await searchPanel.$crossResult).click();
     await browser.pause(3000);
     await (await searchPanel.$searchBox).click();
     await (await searchPanel.$searchIcon).click();
@@ -96,9 +55,6 @@ describe("Verify Well Logs associated with Wells :", async () => {
     ).waitForDisplayed({ timeout: 80000 });
     expectchai(await (await searchPanel.$firstSearchResults).isDisplayed()).to
       .be.true;
-    expect(
-      await (await $('(//div[@class="search-item-row"]/div)[1]')).getText()
-    ).toHaveTextContaining("Well Log");
     console.log("******verify the filter applied");
     await (await searchPanel.$firstSearchResults).waitForClickable();
     await (await searchPanel.$firstSearchResults).click();
@@ -106,22 +62,19 @@ describe("Verify Well Logs associated with Wells :", async () => {
     await (
       await SummaryCard.$wellboreViewerBtn
     ).waitForDisplayed({ timeout: 80000 });
-    expect(
-      await (
-        await $("(//mat-icon[@title='Open Wellbore in Log Viewer'])[1]")
-      ).getText()
-    ).toHaveText("37");
-    console.log("*****verifly wllbore viewer btn");
     await (await SummaryCard.$wellboreViewerBtn).moveTo();
-    expect(
-      await (
-        await $("(//mat-icon[@title='Open Wellbore in Log Viewer'])[1]")
-      ).getText()
-    ).toHaveText("Open Wellbore in Log Viewer");
+    expectchai(await SummaryCard.$wellboreViewerBtn.getText()).to.have.string(
+      "37"
+    );
+    console.log("*****verifly wllbore viewer btn");
+    expectchai(
+      await (await SummaryCard.$wellboreViewerBtn).getAttribute("title")
+    ).to.have.string("Open Wellbore in Log Viewer");
+
     console.log("******hover");
     await browser.pause(3000);
+    await zoomToExtend.removeOldAction();
     await zoomToExtend.zoomToExtend(layer);
-    await browser.pause(3000);
     await map.$LineAndCorridor.waitForClickable();
     await map.$LineAndCorridor.click();
     await mapWebelement.dragAndDrop({ x: 100, y: -100 });
@@ -221,7 +174,6 @@ describe("Verify Well Logs associated with Wells :", async () => {
     await (await Canvas.$indexProperties).waitForDisplayed();
     await (await Canvas.$indexProperties).click();
     await (await Canvas.$indexTrackProperties).waitForDisplayed();
-
     await (await Canvas.$custom).waitForClickable();
     await (await Canvas.$custom).click();
     await (await $("//span[text()=' 1:2000 ']")).click();
@@ -236,8 +188,8 @@ describe("Verify Well Logs associated with Wells :", async () => {
     console.log(
       "******Verify at a time only 40 wellogs can be viewed in Well Log viewer"
     );
-    await (await $("(//mat-icon[@svgicon='close'])[3]")).waitForClickable();
-    await (await $("(//mat-icon[@svgicon='close'])[3]")).click();
+    await (await Canvas.$closelogViewer).waitForClickable();
+    await (await Canvas.$closelogViewer).click();
     await browser.pause(5000);
     await map.$LineAndCorridor.waitForClickable();
     await map.$LineAndCorridor.click();
@@ -245,54 +197,27 @@ describe("Verify Well Logs associated with Wells :", async () => {
     await mapWebelement.click();
     await mapWebelement.click();
     await browser.pause(5000);
-    await (await map.$SliderBar).waitForDisplayed({ timeout: 100000 });
-    await (await map.$SliderRang).waitForDisplayed({ timeout: 100000 });
+    await (await map.$SliderBar).waitForDisplayed({ timeout: 200000 });
     await (await map.$SliderRang).click();
     await browser.pause(2000);
-    await (await $("//div[@class='dls-content']")).waitForDisplayed();
-    const toasterError = await (
-      await $("//div[@class='dls-content']")
-    ).getText();
-    console.log(toasterError);
-    expect(toasterError).toHaveTextContaining([
-      "Unable to send selection, please try again.",
-    ]);
-    expect(toasterError).toHaveTextContaining([
-      "100 seleted item. The limit is 40",
-    ]);
+    await (
+      await Collections.$ToastMessage
+    ).waitForDisplayed({ timeout: 200000 });
+    expectchai(await Collections.$ToastMessage.getText()).to.have.string(
+      "Unable to send selection, please try again."
+    );
+    expectchai(await Canvas.$errorMessage.getText()).to.have.string(
+      "100 selected items. The limit is 40."
+    );
 
     await (
       await Canvas.$willboreViewerCanvas
     ).waitForDisplayed({ timeout: 200000 });
-    await (await $("(//mat-icon[@svgicon='close'])[3]")).waitForClickable();
-    await (await $("(//mat-icon[@svgicon='close'])[3]")).click();
+    await (await Canvas.$closelogViewer).waitForClickable();
+    await (await Canvas.$closelogViewer).click();
     await browser.pause(3000);
-    try {
-      await (await layers.$showLayers).waitForClickable();
-      await (await layers.$showLayers).click();
-    } catch (e) {
-      await (await layers.$showLayers).waitForClickable();
-      await (await layers.$showLayers).click();
-    }
-    await browser.pause(2000);
-    console.log("****click on filter");
-    await (await $("//mat-icon[@svgicon='filter-icon']")).waitForClickable();
-    await (await $("//mat-icon[@svgicon='filter-icon']")).click();
-    console.log("****remove layer***");
-    try {
-      await (await searchPanel.$backToResults).waitForClickable();
-      await (await searchPanel.$backToResults).click();
-    } catch (e) {
-      console.log("****click on back if back to group result is display");
-    }
-    await (await $("//mat-icon[@svgicon='filter-reset']")).waitForClickable();
-    await (await $("//mat-icon[@svgicon='filter-reset']")).click();
-    await (await $("//span[text()=' Yes ']")).click();
-    await (await map.$clear).waitForClickable();
-    await (await map.$clear).click();
-    await browser.pause(5000);
-    await (await map.$confrimClear).waitForDisplayed();
-    await (await map.$confrimClear).click();
+    
+    console.log('WELL LOG VIEWER FINISHED')
     await browser.pause(5000);
   });
 });

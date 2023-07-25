@@ -74,6 +74,20 @@ class Canvas {
   get $uploadIcon() {
     return $("//span[@class='upload-text']");
   }
+  get $bufferRadiusClose() {
+    return $("(//mat-icon[@svgicon='close'])[2]");
+  }
+  get $errorMessage() {
+    return $("//div[text()='100 selected items. The limit is 40.']");
+  }
+  get $closeCanvas() {
+    return $(
+      "//pioneer-resizable-container[@class='ng-star-inserted']//mat-icon[2]"
+    );
+  }
+  get $closelogViewer() {
+    return $("(//mat-icon[@svgicon='close'])[3]");
+  }
 }
 
 module.exports = new Canvas();

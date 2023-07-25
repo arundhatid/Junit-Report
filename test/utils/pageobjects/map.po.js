@@ -10,6 +10,9 @@ class Map {
   get $closeIcon() {
     return $('mat-icon[data-mat-icon-name="close"]');
   }
+  get $closeBaseMap() {
+    return $("(//mat-icon[@data-mat-icon-name='close'])[2]");
+  }
   get $searchBox() {
     return $("#gisSearch");
   }
@@ -63,6 +66,18 @@ class Map {
   }
   get $clear() {
     return $("//mat-icon[@data-slb-id='clear-all-filters-view-modes']");
+  }
+  get $Roadmap() {
+    return $("//span[normalize-space()='Roadmap']");
+  }
+  get $Hybrid() {
+    return $("//span[normalize-space()='Hybrid']");
+  }
+  get $Satellite() {
+    return $("//span[normalize-space()='Satellite']");
+  }
+  get $Terrain() {
+    return $("//span[normalize-space()='Terrain']");
   }
 }
 module.exports = new Map();

@@ -4,53 +4,13 @@ const map = require("../../utils/pageobjects/map.po");
 const Collections = require("../../utils/pageobjects/collections.po");
 const delfi = require("../../utils/methods/Login.Regre");
 const login = require("../../utils/pageobjects/login.po.js");
-const zoomToExtend = require("../../utils/methods/zoomToExtend");
+const zoomToExtend = require("../../utils/methods/clearAllFilterAndViewMode");
+const createNewPackage = require("../../utils/methods/packageCreation");
 
 var expectchai = require("chai").expect;
 
 describe("User can add/remove selected data using collection card:", async () => {
-  before(async () => {
-    var USER_ID = process.env["TESTUSER1"];
-    var PASSWORD = process.env["TESTUSERPASSWORD1"];
-    var SECRET_KEY = process.env["SECRET_KEY1"];
-    const URL = "https://evq.discovery.cloud.slb-ds.com/";
-    const mapWebelement = await map.$map;
-    console.log(
-      "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
-    );
-
-    await browser.url(URL);
-
-    try {
-      await delfi
-        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
-        .waitForDisplayed({ timeout: 10000 });
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
-      await (await login.$CloseBox).click();
-    } catch (e) {
-      await mapWebelement.waitForDisplayed({ timeout: 200000 });
-
-      console.log("*******title =" + (await browser.getTitle()));
-
-      let titleMatch = (await browser.getTitle()).localeCompare(
-        "Data Discovery"
-      );
-      console.log("***checking Authentication****");
-      expectchai(
-        (await browser.getTitle()).localeCompare("Data Discovery")
-      ).to.be.equals(+0);
-      console.log("*****" + titleMatch);
-      console.log("****close Box is not display for this test user a/c*****");
-    }
+  after(async () => {
     await zoomToExtend.removeOldAction();
   });
   it("Create package with some data set", async () => {
@@ -58,26 +18,8 @@ describe("User can add/remove selected data using collection card:", async () =>
     await (await searchPanel.$searchBox).click();
     await (await searchPanel.$searchBox).setValue("Cheal");
     await (await searchPanel.$searchIcon).click();
-
     console.log("***Search cheal well log****");
-    await (
-      await searchPanel.$firstSearchResults
-    ).waitForDisplayed({ timeout: 80000 });
-    await (await searchPanel.$firstSearchResults).moveTo();
-    await browser.pause(3000);
-    await (await searchPanel.$firstSearchResults).moveTo();
-    await (await Collections.$Actions).waitForClickable({ timeout: 90000 });
-    await Collections.$Actions.click();
-    await Collections.$collectionMenu.click();
-    await (await Collections.$Add).waitForClickable({ timeout: 80000 });
-    await Collections.$Add.click();
-    await (
-      await Collections.$newCollection
-    ).waitForClickable({ timeout: 80000 });
-    await Collections.$newCollection.click();
-    console.log("****Creating collection****");
-    await (await Collections.$collectionName).waitForDisplayed();
-    await browser.pause(3000);
+    await createNewPackage.packageCreation();
     var ts = String(new Date().getTime());
     var k = "value";
     var i = 0;
@@ -106,13 +48,11 @@ describe("User can add/remove selected data using collection card:", async () =>
       await Collections.$collectionTray
     ).waitForClickable({ timeout: 80000 });
     await (await Collections.$collectionTray).click();
-    await (await $("//div[text()='Results saved.']")).waitForDisplayed();
+    await (await Collections.$Resultsaved).waitForDisplayed();
     await browser.pause(3000);
   });
-  it("Add/remove data in package from menu button", async () => {
-    console.log(
-      "*****Add/remove data in package from menu button test started"
-    );
+  it("Add data in package from menu button", async () => {
+    console.log("*****Add data in package from menu button test started");
     await (await searchPanel.$searchBox).waitForDisplayed();
     await (await searchPanel.$crossResult).click();
     await (await searchPanel.$searchBox).click();
@@ -133,6 +73,20 @@ describe("User can add/remove selected data using collection card:", async () =>
       "*****add Items should be active if there is data in left panel"
     );
     expectchai(AddItem).to.have.string("false");
+    await (await Collections.$AddItems).waitForDisplayed();
+    await (await Collections.$AddItems).click();
+
+    await (await Collections.$ResultAdded).waitForDisplayed();
+    console.log("****Add items done");
+    const AddedCount = await Collections.$Seismic2DCount;
+    await expect(AddedCount).toHaveText(["1.5K"], "wronge result is added");
+    await browser.pause(2000);
+  });
+
+  it("remove data in package from menu button", async () => {
+    console.log("***remove data in package from menu button test started");
+    await (await Collections.$MenuButton).waitForDisplayed();
+    await (await Collections.$MenuButton).click();
     const RemoveItem = await (
       await Collections.$RemoveItems
     ).getAttribute("aria-disabled");
@@ -142,19 +96,19 @@ describe("User can add/remove selected data using collection card:", async () =>
     );
     expectchai(RemoveItem).to.have.string("false");
 
-    await (await Collections.$AddItems).waitForClickable();
-    await (await Collections.$AddItems).click();
-    console.log("****Add items done");
-    await (await $("//div[text()='Results added.']")).waitForDisplayed();
-    const AddedCount = await $("(//div[@class='count'])[2]");
-    await expect(AddedCount).toHaveText(["1.5K"], "wronge result is added");
-    await (await Collections.$MenuButton).waitForClickable();
-    await (await Collections.$MenuButton).click();
+    // await (await Collections.$AddItems).waitForClickable();
+    // await (await Collections.$AddItems).click();
+
+    // await (await Collections.$ResultAdded).waitForDisplayed();
+    // const AddedCount = await Collections.$Seismic2DCount;
+    // await expect(AddedCount).toHaveText(["1.5K"], "wronge result is added");
+    // await (await Collections.$MenuButton).waitForClickable();
+    // await (await Collections.$MenuButton).click();
     await (await Collections.$RemoveItems).waitForClickable();
     await (await Collections.$RemoveItems).click();
     console.log("***remove Items done");
-    await (await $("//div[text()='Results removed.']")).waitForDisplayed();
-    const RemovedCount = await $("(//div[@class='count'])[2]");
+    await (await Collections.$ResultRemoved).waitForDisplayed();
+    const RemovedCount = await Collections.$Seismic2DCount;
     await expect(RemovedCount).toHaveText(
       ["0"],
       "Result is not removed correctly"
@@ -170,7 +124,7 @@ describe("User can add/remove selected data using collection card:", async () =>
     await (await Collections.$RemoveItems).waitForClickable();
     await (await Collections.$RemoveItems).click();
     console.log("***remove all data Items from Package");
-    await (await $("//div[text()='Results removed.']")).waitForDisplayed();
+    await (await Collections.$ResultRemoved).waitForDisplayed();
     await browser.pause(2000);
     await (await Collections.$MenuButton).waitForClickable();
     await (await Collections.$MenuButton).click();
@@ -182,13 +136,12 @@ describe("User can add/remove selected data using collection card:", async () =>
       "*****remove Item should be inactive if there is not data in Package"
     );
     expectchai(RemoveItem1).to.have.string("true");
-
     await (await Collections.$MenuButton).click();
     await browser.pause(2000);
   });
   it("Verifly the ADD and remove button If there is not data in left Panel", async () => {
     console.log("******If there is not data in left Panel test started");
-    await (await searchPanel.$crossResult).waitForClickable();
+    await (await searchPanel.$crossResult).waitForDisplayed();
     await (await searchPanel.$crossResult).click();
     await browser.pause(5000);
     await (await Collections.$MenuButton).waitForDisplayed();
@@ -215,7 +168,7 @@ describe("User can add/remove selected data using collection card:", async () =>
       "*****verify the Error message when data exceeds the 30K limit test started  "
     );
 
-    await (await searchPanel.$searchIcon).waitForClickable();
+    await (await searchPanel.$searchIcon).waitForDisplayed();
     await (await searchPanel.$searchIcon).click();
     await (
       await searchPanel.$firstSearchResults
@@ -227,18 +180,16 @@ describe("User can add/remove selected data using collection card:", async () =>
     await (await Collections.$MenuButton).click();
     await (await Collections.$AddItems).waitForClickable();
     await (await Collections.$AddItems).click();
-
-    await (await $("//div[@class='dls-content']")).waitForDisplayed();
+    await (await Collections.$ToastMessage).waitForDisplayed();
     await browser.pause(3000);
     console.log("****checking the error message");
-    await (await $("//div[@class='dls-content']")).waitForDisplayed();
+    await (await Collections.$ToastMessage).waitForDisplayed();
     console.log("****toaster appear");
-    const toasterSaveError = await (
-      await $("//div[contains(text(),'Unable to add results')]")
-    ).getText();
-    console.log("****unable to save");
-    expectchai(toasterSaveError).to.have.string(
+    expectchai(await Collections.$ToastMessage.getText()).to.have.string(
       "Unable to add results, please try again."
+    );
+    expectchai(await Collections.$ToastMessage2.getText()).to.have.string(
+      "The number of selected items exceeds the limit of"
     );
     console.log("****assert pass");
     await browser.pause(2000);
@@ -247,7 +198,7 @@ describe("User can add/remove selected data using collection card:", async () =>
     await (await Collections.$deletButton).click();
     await (await $("mat-dialog-container")).waitForDisplayed();
     await (await map.$confrimClear).click();
-    await (await $("//div[text()='Collection deleted.']")).waitForDisplayed();
+    await (await Collections.$Deleted).waitForDisplayed();
     await (await Collections.$collectionTray).waitForClickable();
     await (await Collections.$collectionTray).click();
     console.log("ADD AND REMOVE DATA FINISHED");
