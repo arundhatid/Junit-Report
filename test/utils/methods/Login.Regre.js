@@ -84,7 +84,7 @@ class DelfiLogin {
     
     try {
       await login.$OTPBox.waitForDisplayed({ timeout: 5000 });
-      if (await login.$EnterPassword.isDisplayed())
+      if (await login.$OTPBox.isDisplayed())
       {
         console.log("Generating TOTP code");
         const token = totp(Buffer.from(tokenValue, "base64").toString());        
