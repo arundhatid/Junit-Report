@@ -2,6 +2,17 @@ const login = require("../pageobjects/login.po.js");
 const totp = require("totp-generator");
 class DelfiLogin {
   async delfiLogin(userName, password, tokenValue, URL) {
+    console.log(
+      "username" +
+        userName +
+        "password" +
+        password +
+        "secret" +
+        SECRET_KEY +
+        "URL" +
+         URL 
+        
+    );
     try{
       console.log('Launching application')
       await browser.url(URL);
@@ -39,7 +50,7 @@ class DelfiLogin {
         await (
           await login.$EnterPassword
         ).setValue(Buffer.from(password, "base64").toString());
-        await login.$SingIn.click();
+        
       }
       else
       {

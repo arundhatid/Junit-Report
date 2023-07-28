@@ -11,17 +11,8 @@ var expectchai = require("chai").expect;
       var USER_ID = process.env["TESTUSER1"];
       var PASSWORD = process.env["TESTUSERPASSWORD1"];
       var SECRET_KEY = process.env["SECRET_KEY1"];
-      const URL = "https://evq.discovery.cloud.slb-ds.com/";
-      console.log(
-        "value of id" +
-          USER_ID +
-          "pass" +
-          PASSWORD +
-          "url" +
-          URL +
-          "secret" +
-          SECRET_KEY
-      );
+      const URL = "https://evq.discovery.cloud.slb-ds.com";
+      
     
     //const mapWebelement = await map.$map;
 
