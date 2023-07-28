@@ -6,7 +6,12 @@ const zoomToExtend = require("../../utils/methods/clearAllFilterAndViewMode");
 var expectchai = require("chai").expect;
 
   describe("browser Launch:", async () => {
+    
     it("Authentication", async () => {
+      var USER_ID = process.env["TESTUSER1"];
+      var PASSWORD = process.env["TESTUSERPASSWORD1"];
+      var SECRET_KEY = process.env["SECRET_KEY1"];
+      const URL = "https://evq.discovery.cloud.slb-ds.com/";
       console.log(
         "value of id" +
           USER_ID +
@@ -17,10 +22,7 @@ var expectchai = require("chai").expect;
           "secret" +
           SECRET_KEY
       );
-    var USER_ID = process.env["TESTUSER1"];
-    var PASSWORD = process.env["TESTUSERPASSWORD1"];
-    var SECRET_KEY = process.env["SECRET_KEY1"];
-    const URL = "https://evq.discovery.cloud.slb-ds.com/";
+    
     const mapWebelement = await map.$map;
 
     console.log(
