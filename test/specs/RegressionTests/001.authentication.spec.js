@@ -11,19 +11,20 @@ var expectchai = require("chai").expect;
       var USER_ID = process.env["TESTUSER1"];
       var PASSWORD = process.env["TESTUSERPASSWORD1"];
       var SECRET_KEY = process.env["SECRET_KEY1"];
-      const URL = "https://evq.discovery.cloud.slb-ds.com";
+      var URL = process.env["CDD_URL"]
+      
       
     
     //const mapWebelement = await map.$map;
 
-    
+    await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY,URL);
     try {
       // await delfi
       //   .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
       //   .waitForDisplayed({ timeout: 10000 });
       // await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       // await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY,URL);
+      //await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY,URL);
       // if (await login.$CloseBox.isDisplayed())
       // {
       //   await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });

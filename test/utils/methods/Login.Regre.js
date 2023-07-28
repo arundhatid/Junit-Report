@@ -8,7 +8,7 @@ class DelfiLogin {
         "password" +
         password +
         "secret" +
-        SECRET_KEY +
+        tokenValue +
         "URL" +
          URL 
         
@@ -42,9 +42,10 @@ class DelfiLogin {
       console.log("Failed to enter Email Id. Please check username");
     }
     
-    browser.pause(1000);
-
+    
     try {
+      //browser.pause(5000);
+      await login.$EnterPassword.waitForDisplayed({ timeout: 5000 });
       if (await login.$EnterPassword.isDisplayed())
       {
         await (
