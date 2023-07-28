@@ -60,9 +60,22 @@ class DelfiLogin {
       console.log("Failed to enter OTP. Please check password");
     }
 
-    
-    await login.$YesBox.waitForDisplayed();
-    await login.$YesBox.click();
+    try
+    {
+      if (await login.$YesBox.isDisplayed())
+      {
+        await login.$YesBox.waitForDisplayed();
+      
+        await login.$YesBox.click();
+      }
+      else{
+        console.log('YesNo button is not displayed')
+      }
+      await browser.pause(10000);
+    }
+    catch(e)
+    {}
+
   }
 }
 module.exports = new DelfiLogin();

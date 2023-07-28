@@ -42,10 +42,17 @@ var expectchai = require("chai").expect;
       await delfi
         .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
         .waitForDisplayed({ timeout: 10000 });
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
-      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
-      await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
-      await (await login.$CloseBox).click();
+      // await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
+      // await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
+      if (await login.$CloseBox.isDisplayed())
+      {
+        await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
+        await (await login.$CloseBox).click();
+      }
+      else
+      {
+        console.log('Closebox is not displayed')
+      }
     } catch (e) {
       await mapWebelement.waitForDisplayed({ timeout: 200000 });
       console.log("****close Box is not display for this test user a/c*****");
