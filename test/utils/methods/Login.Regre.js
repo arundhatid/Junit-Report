@@ -73,6 +73,7 @@ class DelfiLogin {
       {
         console.log('Clicking SignIn Button')
         await login.$SingIn.click();
+        console.log('Pause 3000')
         await browser.pause(3000);
       }
     }
@@ -110,7 +111,7 @@ class DelfiLogin {
 
     try
     {
-      await login.$YesBox.waitForDisplayed({ timeout: 5000 });
+      
       console.log("Clicking Yes Button");
       if (await login.$YesBox.isDisplayed())      
       {     
@@ -119,6 +120,7 @@ class DelfiLogin {
       else{
         console.log('YesNo button is not displayed')
       }
+      console.log('pause again')
       await browser.pause(10000);
       console.log('Browser title while authenticating for first time is: ' + await browser.getTitle())
     }
