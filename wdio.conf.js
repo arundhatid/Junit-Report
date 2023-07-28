@@ -99,7 +99,7 @@ exports.config = {
           "--lang=en-US",
           "--no-sandbox",
           "--incognito",
-          //   '--headless',
+          '--headless',
           "--autoplay-policy=no-user-gesture-required", // https://developer.chrome.com/blog/autoplay/
           //'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
           "--log-level=3", // Disable unusual logging in windows run
@@ -123,7 +123,7 @@ exports.config = {
           "--disable-features=VizDisplayCompositor",
           "--disable-prompt-on-repost",
           "--new-window",
-          "--headless",
+          //"--headless",
         ],
       },
       acceptInsecureCerts: true,
