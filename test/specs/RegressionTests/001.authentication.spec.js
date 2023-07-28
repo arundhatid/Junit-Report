@@ -48,6 +48,7 @@ var expectchai = require("chai").expect;
       (await browser.getTitle()).localeCompare("Data Discovery")
     ).to.be.equals(+0);
     console.log("*****" + titleMatch);
+    await browser.pause(10000);
     await zoomToExtend.removeOldAction();
     })
       
