@@ -7,6 +7,16 @@ var expectchai = require("chai").expect;
 
   describe("browser Launch:", async () => {
     it("Authentication", async () => {
+      console.log(
+        "value of id" +
+          USER_ID +
+          "pass" +
+          PASSWORD +
+          "url" +
+          URL +
+          "secret" +
+          SECRET_KEY
+      );
     var USER_ID = process.env["TESTUSER1"];
     var PASSWORD = process.env["TESTUSERPASSWORD1"];
     var SECRET_KEY = process.env["SECRET_KEY1"];
