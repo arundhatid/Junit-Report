@@ -37,14 +37,22 @@ class DelfiLogin {
     try {
       console.log("Generating TOTP code");
       const token = totp(tokenValue);
+      console.log('Secret key is: ' + tokenValue)
       console.log("TOTP code is: " + token);
       await login.$OTPBox.waitForDisplayed({ timeout: 3000 });
       await login.$OTPBox.setValue(token);
-      await login.$SignInBox.click();
+      
     } catch (e) {
       console.log("Failed to enter OTP. Please check password");
     }
 
+    try{
+      await login.$SignInBox.click();
+    }
+    catch(e)
+    {
+      console.log('Failed to click on SignIn button after entering otp')
+    }
     await login.$YesBox.waitForDisplayed();
     await login.$YesBox.click();
   }
