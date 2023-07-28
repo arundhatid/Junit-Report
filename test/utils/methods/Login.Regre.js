@@ -1,22 +1,50 @@
 const login = require("../pageobjects/login.po.js");
 const totp = require("totp-generator");
 class DelfiLogin {
-  async delfiLogin(userName, password, tokenValue) {
-    try {
-      await login.$EmailInputBox.waitForDisplayed();
-      await login.$EmailInputBox.setValue(userName);
-      await login.$SubmitBox.click();
-    } catch (e) {
+  async delfiLogin(userName, password, tokenValue, URL) {
+    try{
+      console.log('Launching application')
+      await browser.url(URL);
+      await browser.pause(10000);
+      console.log('browser url which is launched is: ' +  await browser.getUrl())
+    }
+    catch (e)
+    {
+      console.log('Failed to launch application')
+    }
+    
+    try
+    {
+      if (await login.$EmailInputBox.isDisplayed())
+      {
+        await login.$EmailInputBox.waitForDisplayed();
+        await login.$EmailInputBox.setValue(userName);
+        await login.$SubmitBox.click();
+      }
+      else
+      {
+          console.log("EmailInputBox is not displayed")
+      }
+      
+    }
+    catch (e) {
       console.log("Failed to enter Email Id. Please check username");
     }
     
     browser.pause(1000);
 
     try {
-      await (
-        await login.$EnterPassword
-      ).setValue(Buffer.from(password, "base64").toString());
-      await login.$SingIn.click();
+      if (await login.$EnterPassword.isDisplayed())
+      {
+        await (
+          await login.$EnterPassword
+        ).setValue(Buffer.from(password, "base64").toString());
+        await login.$SingIn.click();
+      }
+      else
+      {
+        console.log("Password is not displayed.");  
+      }
     } catch (e) {
       console.log("Failed to enter Password. Trying again.");
       await (
@@ -72,6 +100,7 @@ class DelfiLogin {
         console.log('YesNo button is not displayed')
       }
       await browser.pause(10000);
+      console.log('Browser title while authenticating for first time is: ' + await browser.getTitle())
     }
     catch(e)
     {}
