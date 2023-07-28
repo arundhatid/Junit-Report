@@ -82,31 +82,31 @@ class DelfiLogin {
     }
 
     
-    try {
-      await login.$OTPBox.waitForDisplayed({ timeout: 5000 });
-      if (await login.$OTPBox.isDisplayed())
-      {
-        console.log("Generating TOTP code");
-        const token = totp(Buffer.from(tokenValue, "base64").toString());        
+    // try {
+    //   await login.$OTPBox.waitForDisplayed({ timeout: 5000 });
+    //   if (await login.$OTPBox.isDisplayed())
+    //   {
+    //     console.log("Generating TOTP code");
+    //     const token = totp(Buffer.from(tokenValue, "base64").toString());        
         
-          await login.$OTPBox.waitForDisplayed({ timeout: 3000 });
-          await login.$OTPBox.setValue(token);
-          try{
-            await login.$SignInBox.click();
-          }
-          catch(e)
-          {
-            console.log('Failed to click on SignIn button after entering otp')
-          }        
+    //       await login.$OTPBox.waitForDisplayed({ timeout: 3000 });
+    //       await login.$OTPBox.setValue(token);
+    //       try{
+    //         await login.$SignInBox.click();
+    //       }
+    //       catch(e)
+    //       {
+    //         console.log('Failed to click on SignIn button after entering otp')
+    //       }        
         
-      }
-      else
-      {
-          console.log('OTP Window is not displayed')
-      }
-    } catch (e) {
-      console.log("Failed to enter OTP. Please check password");
-    }
+    //   }
+    //   else
+    //   {
+    //       console.log('OTP Window is not displayed')
+    //   }
+    // } catch (e) {
+    //   console.log("Failed to enter OTP. Please check password");
+    // }
 
     try
     {
