@@ -40,20 +40,27 @@ class DelfiLogin {
       console.log('Secret key is: ' + tokenValue)
       console.log('Secret key unencrypted is: ' + Buffer.from(tokenValue, "base64").toString())
       console.log("TOTP code is: " + token);
-      await login.$OTPBox.waitForDisplayed({ timeout: 3000 });
-      await login.$OTPBox.setValue(token);
-      
+      if (await login.$OTPBox.isDisplayed())
+      {
+        await login.$OTPBox.waitForDisplayed({ timeout: 3000 });
+        await login.$OTPBox.setValue(token);
+        try{
+          await login.$SignInBox.click();
+        }
+        catch(e)
+        {
+          console.log('Failed to click on SignIn button after entering otp')
+        }
+      }
+      else
+      {
+        console.log('OTP Window is not displayed')
+      }
     } catch (e) {
       console.log("Failed to enter OTP. Please check password");
     }
 
-    try{
-      await login.$SignInBox.click();
-    }
-    catch(e)
-    {
-      console.log('Failed to click on SignIn button after entering otp')
-    }
+    
     await login.$YesBox.waitForDisplayed();
     await login.$YesBox.click();
   }
