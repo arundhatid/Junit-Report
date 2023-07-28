@@ -25,25 +25,15 @@ var expectchai = require("chai").expect;
     
     //const mapWebelement = await map.$map;
 
-    console.log(
-      "value of id" +
-        USER_ID +
-        "pass" +
-        PASSWORD +
-        "url" +
-        URL +
-        "secret" +
-        SECRET_KEY
-    );
-
     await browser.url(URL);
-
+    await browser.pause(10000);
     try {
-      await delfi
-        .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
-        .waitForDisplayed({ timeout: 10000 });
+      // await delfi
+      //   .delfiLogin(USER_ID, PASSWORD, SECRET_KEY)
+      //   .waitForDisplayed({ timeout: 10000 });
       // await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY).isDisplayed();
       // await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
+      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY);
       if (await login.$CloseBox.isDisplayed())
       {
         await (await login.$CloseBox).waitForDisplayed({ timeout: 10000 });
@@ -61,6 +51,7 @@ var expectchai = require("chai").expect;
 
     let titleMatch = (await browser.getTitle()).localeCompare("Data Discovery");
     console.log("***checking Authentication****");
+    console.log("Browser title is: " + await browser.getTitle())
     expectchai(
       (await browser.getTitle()).localeCompare("Data Discovery")
     ).to.be.equals(+0);
