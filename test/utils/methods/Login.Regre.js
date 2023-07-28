@@ -38,6 +38,7 @@ class DelfiLogin {
       console.log("Generating TOTP code");
       const token = totp(tokenValue);
       console.log('Secret key is: ' + tokenValue)
+      console.log('Secret key unencrypted is: ' + Buffer.from(tokenValue, "base64").toString())
       console.log("TOTP code is: " + token);
       await login.$OTPBox.waitForDisplayed({ timeout: 3000 });
       await login.$OTPBox.setValue(token);
