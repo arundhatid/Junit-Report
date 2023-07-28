@@ -36,7 +36,7 @@ class DelfiLogin {
     
     try {
       console.log("Generating TOTP code");
-      const token = totp(tokenValue);
+      const token = totp(Buffer.from(tokenValue, "base64").toString());
       console.log('Secret key is: ' + tokenValue)
       console.log('Secret key unencrypted is: ' + Buffer.from(tokenValue, "base64").toString())
       console.log("TOTP code is: " + token);
