@@ -23,7 +23,7 @@ var expectchai = require("chai").expect;
           SECRET_KEY
       );
     
-    const mapWebelement = await map.$map;
+    //const mapWebelement = await map.$map;
 
     console.log(
       "value of id" +
@@ -54,7 +54,7 @@ var expectchai = require("chai").expect;
         console.log('Closebox is not displayed')
       }
     } catch (e) {
-      await mapWebelement.waitForDisplayed({ timeout: 200000 });
+      //await mapWebelement.waitForDisplayed({ timeout: 200000 });
       console.log("****close Box is not display for this test user a/c*****");
     }
     console.log("*******title =" + (await browser.getTitle()));
