@@ -41,6 +41,10 @@ var expectchai = require("chai").expect;
     }
     console.log("*******title =" + (await browser.getTitle()));
 
+    if (await browser.getTitle() == 'Sign in to your account')
+    {
+      await delfi.delfiLogin(USER_ID, PASSWORD, SECRET_KEY,URL);
+    }
     let titleMatch = (await browser.getTitle()).localeCompare("Data Discovery");
     console.log("***checking Authentication****");
     console.log("Browser title is: " + await browser.getTitle())
@@ -49,6 +53,7 @@ var expectchai = require("chai").expect;
     ).to.be.equals(+0);
     console.log("*****" + titleMatch);
     await browser.pause(10000);
+    
     await zoomToExtend.removeOldAction();
     })
       
