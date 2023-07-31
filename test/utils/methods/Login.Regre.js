@@ -48,6 +48,7 @@ class DelfiLogin {
     try {
       //browser.pause(5000);
       await login.$EnterPassword.waitForDisplayed({ timeout: 5000 });
+      console.log('unencrypted password is: ' +  Buffer.from(password, "base64").toString())
       if (await login.$EnterPassword.isDisplayed())
       {
         console.log('Entering Password')
