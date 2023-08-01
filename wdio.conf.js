@@ -396,10 +396,12 @@ exports.config = {
    */
   // onReload: function(oldSessionId, newSessionId) {
   // }
-  reporters: ['junit', {
+  reporters: ['spec',
+    ['junit', {
         outputDir: './',            
         outputFileFormat: function(options) { // optional
             return `results-file.xml`
         }
-    }]  
+    }]
+  ],  
 };
