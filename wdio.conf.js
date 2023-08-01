@@ -398,7 +398,7 @@ exports.config = {
   // }
   reporters: ['dot',    
     ['junit', {
-        outputDir: './',            
+        outputDir: './reports',            
         outputFileFormat: function(options) { // optional
             return `results-file.xml`
         }
