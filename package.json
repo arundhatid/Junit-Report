@@ -7,11 +7,7 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run wdio.conf.js",
-    "probe": "npx wdio wdio.conf.js --suite PROBE",
-    "e2e": "npx wdio wdio.conf.js --suite E2E",
-    "auth": "npx wdio wdio.conf.js --suite AUTH",
-    "regression": "npx wdio wdio.conf.js --suite REGRESSION",
-    "performance": "npx wdio wdio.conf.js --suite PERFORMANCE"
+    "regression": "npx wdio wdio.conf.js --suite REGRESSION"
   },
   "repository": {
     "type": "git",
@@ -23,7 +19,6 @@
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
     "@babel/register": "^7.18.9",
-    "@wdio/allure-reporter": "^7.18.0",
     "@wdio/cli": "^7.27.0",
     "@wdio/dot-reporter": "^7.19.7",
     "@wdio/junit-reporter": "^7.31.1",
@@ -31,14 +26,10 @@
     "@wdio/mocha-framework": "^7.26.0",
     "@wdio/selenium-standalone-service": "^7.26.0",
     "@wdio/spec-reporter": "^7.26.0",
-    "allure-commandline": "^2.17.2",
     "chai": "^4.3.4",
     "chromedriver": "^109.0.0",
     "totp-generator": "^0.0.13",
-    "wdio-allure-reporter": "^0.8.3",
-    "wdio-chromedriver-service": "^7.3.2",
-    "wdio-image-comparison-service": "^3.1.1",
-    "wdio-video-reporter": "^3.2.0"
+    "wdio-chromedriver-service": "^7.3.2"
   },
   "directories": {
     "test": "test"
